@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "com.soluvis.croffle.v1.sample.password",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.sample.password'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.sample.driverclassname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.sample.driverclassname'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.gcloud.driverclassname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.gcloud.driverclassname'"
+  }
+]}

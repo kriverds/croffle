@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.sample.mapper.SampleMapper">
+
+	<insert id="insertSample" parameterType="Map">
+		INSERT INTO GIVR.SAMPLE_TABLE(
+			  COLUMN1
+			, COLUMN2
+		)
+		VALUES(
+			 #{COLUMN1}
+			,#{COLUMN2}
+		)
+	</insert>
+	
+	<select id="selectSample"  parameterType="Map" resultType="Map">
+		SELECT COLUMN1, COLUMN2
+		FROM GIVR.SAMPLE_TABLE
+	</select>
+</mapper>
