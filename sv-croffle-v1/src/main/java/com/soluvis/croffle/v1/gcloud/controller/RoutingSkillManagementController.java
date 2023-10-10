@@ -21,17 +21,40 @@ import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+/**
+ * 클래스 설명	: 라우팅스킬 매니지먼트 컨트롤러
+ * @Class Name 	: RoutingSkillManagementController
+ * @date   		: 2023. 10. 10.
+ * @author   	: Riverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Controller
-@RequestMapping(value = "/v1/api/gcloud/management/skill")
-public class SkillManagementController {
+@RequestMapping(value = "/v1/api/gcloud/management/routingskill")
+public class RoutingSkillManagementController {
 
 	@Autowired
 	GCConnector gcconnector;
 
-	Logger logger = LoggerFactory.getLogger(SkillManagementController.class);
+	Logger logger = LoggerFactory.getLogger(RoutingSkillManagementController.class);
 
 
-	@GetMapping(value="/routingskills/list", produces="application/json; charset=UTF-8")
+	/**
+	 * 메서드 설명	: 라우팅스킬 리스트를 조회한다.
+	 * @Method Name : getRoutingSkillList
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@GetMapping(value="/skills", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getRoutingSkillList(HttpServletRequest request) throws Exception{
 		gcconnector.connect();
 		gcconnector.getRoutingSkillList();
@@ -40,7 +63,21 @@ public class SkillManagementController {
 		return "OK";
 	}
 
-	@GetMapping(value="/routingskills/{userId}", produces="application/json; charset=UTF-8")
+	/**
+	 * 메서드 설명	: 상담사가 보유한 라우팅스킬 리스트를 조회한다.
+	 * @Method Name : getUserRoutingskills
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@GetMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getUserRoutingskills(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId) throws Exception{
 		logger.info("{}", userId);
@@ -52,12 +89,28 @@ public class SkillManagementController {
 		return "OK";
 	}
 
-	@PostMapping(value="/routingskills/{userId}", produces="application/json; charset=UTF-8")
+	/**
+	 * 메서드 설명	: 상담사에게 라우팅스킬을 추가한다.
+	 * @Method Name : postUserRoutingskills
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@PostMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postUserRoutingskills(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId
 			, @RequestBody Map<String,Object> param) throws Exception{
 
 		String skillId = param.get("skillId")==null?"":(String)param.get("skillId");
+		
 		Double level = param.get("level")==null?0D:(Double)param.get("level");
 
 		gcconnector.connect();
@@ -67,7 +120,22 @@ public class SkillManagementController {
 		return "OK";
 	}
 
-	@DeleteMapping(value="/routingskills/{userId}", produces="application/json; charset=UTF-8")
+	/**
+	 * 메서드 설명	: 상담사에게 부여된 라우팅스킬을 삭제한다.
+	 * @Method Name : deleteUserRoutingskill
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@DeleteMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteUserRoutingskill(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId
 			, @RequestBody Map<String,Object> param) throws Exception{
@@ -95,7 +163,7 @@ public class SkillManagementController {
 	 * @return
 	 * @throws Exception
 	 */
-	@PostMapping(value="/routingskills/{userId}/bulk", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/skills/bulk/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String patchUserRoutingskillsBulk(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId
 			, @RequestBody List<Map<String,Object>> lParam) throws Exception{
@@ -130,7 +198,7 @@ public class SkillManagementController {
 	 * @return
 	 * @throws Exception
 	 */
-	@PutMapping(value="/routingskills/{userId}/bulk", produces="application/json; charset=UTF-8")
+	@PutMapping(value="/skills/bulk/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String putUserRoutingskillsBulk(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId
 			, @RequestBody List<Map<String,Object>> lParam) throws Exception{

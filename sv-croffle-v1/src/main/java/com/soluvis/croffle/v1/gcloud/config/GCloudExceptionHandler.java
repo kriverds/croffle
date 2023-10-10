@@ -1,5 +1,7 @@
 package com.soluvis.croffle.v1.gcloud.config;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,25 @@ public class GCloudExceptionHandler extends DefaultHandlerExceptionResolver{
 	@ExceptionHandler(Exception.class)
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
-		log.error("message", ex);
+		log.error("###Error", ex);
+		ModelAndView pResult = super.doResolveException(request, response, handler, ex);
 
+		String errorMsg = "";
 		if(ex instanceof ApiException) {
 			gcconnector.close();
+		}else if(ex instanceof ClassCastException) {
+			errorMsg = "check parameter type";
 		}
-
-		return super.doResolveException(request, response, handler, ex);
+		
+		
+		if(pResult == null) {
+			try {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsg);
+			} catch (IOException e) {
+				logger.error("{}", e);
+			}
+		}
+		return pResult;
 	}
 
 

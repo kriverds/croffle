@@ -20,6 +20,16 @@ import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+/**
+ * 클래스 설명	: 상담사 매니지먼트 컨트롤러
+ * @Class Name 	: AgentManagementController
+ * @date   		: 2023. 10. 10.
+ * @author   	: Riverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Controller
 @RequestMapping(value = "/v1/api/gcloud/management/agent")
 public class AgentManagementController {
@@ -39,7 +49,20 @@ public class AgentManagementController {
 		return "OK";
 	}
 
-	@GetMapping(value="/users/list", produces="application/json; charset=UTF-8")
+	/**
+	 * 메서드 설명	: 상담사 전체 리스트를 조회한다.
+	 * @Method Name : getAvailableUserList
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@GetMapping(value="/users", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getAvailableUserList(HttpServletRequest request ) throws Exception{
 		gcconnector.connect();
 		gcconnector.getAvailableUserList();
@@ -48,6 +71,20 @@ public class AgentManagementController {
 		return "OK";
 	}
 	
+	/**
+	 * 메서드 설명	: 상담사를 조회한다.
+	 * @Method Name : getAvailableUser
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@GetMapping(value="/users/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getAvailableUser(HttpServletRequest request 
 			, @PathVariable(name = "userId", required = true) String userId) throws Exception{
@@ -58,6 +95,20 @@ public class AgentManagementController {
 		return "OK";
 	}
 
+	/**
+	 * 메서드 설명	: 상담사를 생성한다.
+	 * @Method Name : postUsers
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@PostMapping(value="/users", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postUsers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
@@ -72,6 +123,21 @@ public class AgentManagementController {
 		return "OK";
 	}
 
+	/**
+	 * 메서드 설명	: 상담사를 수정한다.
+	 * @Method Name : patchUser
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@PatchMapping(value="/users/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String patchUser(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId
@@ -86,6 +152,20 @@ public class AgentManagementController {
 		return "OK";
 	}
 
+	/**
+	 * 메서드 설명	: 상담사를 삭제한다.
+	 * @Method Name : deleteUser
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@DeleteMapping(value="/users/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteUser(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId) throws Exception{

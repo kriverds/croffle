@@ -32,15 +32,22 @@ import com.mypurecloud.sdk.v2.model.GroupCreate.VisibilityEnum;
 import com.mypurecloud.sdk.v2.model.GroupEntityListing;
 import com.mypurecloud.sdk.v2.model.GroupMembersUpdate;
 import com.mypurecloud.sdk.v2.model.GroupUpdate;
+import com.mypurecloud.sdk.v2.model.Queue;
+import com.mypurecloud.sdk.v2.model.QueueEntityListing;
+import com.mypurecloud.sdk.v2.model.QueueMember;
+import com.mypurecloud.sdk.v2.model.QueueMemberEntityListing;
 import com.mypurecloud.sdk.v2.model.RoutingSkill;
 import com.mypurecloud.sdk.v2.model.SkillEntityListing;
 import com.mypurecloud.sdk.v2.model.StationEntityListing;
 import com.mypurecloud.sdk.v2.model.UpdateUser;
 import com.mypurecloud.sdk.v2.model.User;
 import com.mypurecloud.sdk.v2.model.UserEntityListing;
+import com.mypurecloud.sdk.v2.model.UserQueue;
+import com.mypurecloud.sdk.v2.model.UserQueueEntityListing;
 import com.mypurecloud.sdk.v2.model.UserRoutingSkill;
 import com.mypurecloud.sdk.v2.model.UserRoutingSkillPost;
 import com.mypurecloud.sdk.v2.model.UserSkillEntityListing;
+import com.mypurecloud.sdk.v2.model.WritableEntity;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.soluvis.croffle.v1.gcloud.engine.listener.ChannelMetadataListener;
 
@@ -692,6 +699,144 @@ public class GCConnector {
 		Empty result = apiInstance.deleteGroupMembers(groupId, userId);
 		
 		logger.info("{}", result);
+	}
+	
+	/**
+	 * 메서드 설명	: 라우팅큐 리스트를 조회한다.
+	 * @Method Name : getRoutingQueues
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @throws IOException
+	 * @throws ApiException
+	 * @notify
+	 * 
+	 */
+	public void getRoutingQueues() throws IOException, ApiException {
+		RoutingApi apiInstance = new RoutingApi();
+		Integer pageNumber = 1; // Integer | Page number
+		Integer pageSize = 100; // Integer | Page size
+		String sortOrder = "asc"; // String | Note: results are sorted by name.
+		String name = null; // String | Filter by queue name
+		List<String> id = null; // List<String> | Filter by queue ID(s)
+		List<String> divisionId = null; // List<String> | Filter by queue division ID(s)
+		List<String> peerId = null; // List<String> | Filter by queue peer ID(s)
+		Boolean hasPeer = null; // Boolean | Filter by queues associated with peer
+		QueueEntityListing result = apiInstance.getRoutingQueues(pageNumber, pageSize, sortOrder, name, id, divisionId, peerId, hasPeer);
+		
+		List<Queue> en = result.getEntities();
+
+    	en.forEach(child -> logger.info("name[{}] id[{}]", child.getName(), child.getId()));
+    	
+	}
+	
+	/**
+	 * 메서드 설명	: 유저가 보유중인 큐 리스트를 조회한다.
+	 * @Method Name : getUserQueues
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param userId
+	 * @throws IOException
+	 * @throws ApiException
+	 * @notify
+	 * 
+	 */
+	public void getUserQueues(String userId) throws IOException, ApiException {
+		UsersApi apiInstance = new UsersApi();
+		
+		Integer pageSize = 100; // Integer | Page size
+		Integer pageNumber = 1; // Integer | Page number
+		Boolean joined = true; // Boolean | Is joined to the queue
+		List<String> divisionId = null; // List<String> | Division ID(s)
+		
+		UserQueueEntityListing result = apiInstance.getUserQueues(userId, pageSize, pageNumber, joined, divisionId);
+		
+		List<UserQueue> en = result.getEntities();
+
+    	en.forEach(child -> logger.info("name[{}] id[{}]", child.getName(), child.getId()));
+		
+		logger.info("{}", result);
+
+	}
+	
+	/**
+	 * 메서드 설명	: 라우팅큐에 할당 된 상담사 리스트를 조회한다.
+	 * @Method Name : getRoutingQueueMembers
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param queueId
+	 * @throws IOException
+	 * @throws ApiException
+	 * @notify
+	 * 
+	 */
+	public void getRoutingQueueMembers(String queueId) throws IOException, ApiException {
+		RoutingApi apiInstance = new RoutingApi();
+		Integer pageNumber = 1; // Integer | 
+		Integer pageSize = 100; // Integer | Max value is 100
+		String sortOrder = "asc"; // String | Note: results are sorted by name.
+		List<String> expand = null; // List<String> | Which fields, if any, to expand.
+		Boolean joined = null; // Boolean | Filter by joined status
+		String name = null; // String | Filter by queue member name
+		List<String> profileSkills = null; // List<String> | Filter by profile skill
+		List<String> skills = null; // List<String> | Filter by skill
+		List<String> languages = null; // List<String> | Filter by language
+		List<String> routingStatus = null; // List<String> | Filter by routing status
+		List<String> presence = null; // List<String> | Filter by presence
+		
+		QueueMemberEntityListing result = apiInstance.getRoutingQueueMembers(queueId, pageNumber, pageSize, sortOrder, expand, name, profileSkills, skills, languages, routingStatus, presence, name, joined);
+		
+		List<QueueMember> en = result.getEntities();
+		
+		en.forEach(child -> logger.info("name[{}] id[{}]", child.getName(), child.getId()));
+	}
+	
+	/**
+	 * 메서드 설명	: 라우팅큐에 상담사를 추가/삭제한다.
+	 * @Method Name : postRoutingQueueMembers
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param queueId
+	 * @param userId
+	 * @param deleteFlag : true[삭제] false[추가]
+	 * @throws IOException
+	 * @throws ApiException
+	 * @notify
+	 * - 최대 100명
+	 */
+	public void postRoutingQueueMembers(String queueId, String userId, boolean deleteFlag) throws IOException, ApiException {
+		RoutingApi apiInstance = new RoutingApi();
+		WritableEntity we = new WritableEntity();
+		we.setId(userId);
+		List<WritableEntity> body = new ArrayList<>(); // List<WritableEntity> | Queue Members
+		body.add(we);
+		apiInstance.postRoutingQueueMembers(queueId, body, deleteFlag);
+	}
+	
+	/**
+	 * 메서드 설명	: 라우팅큐에서 상담사를 삭제한다.
+	 * @Method Name : deleteRoutingQueueMember
+	 * @date   		: 2023. 10. 10.
+	 * @author   	: Riverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param queueId
+	 * @param userId
+	 * @throws IOException
+	 * @throws ApiException
+	 * @notify
+	 * 
+	 */
+	public void deleteRoutingQueueMember(String queueId, String userId) throws IOException, ApiException {
+		RoutingApi apiInstance = new RoutingApi();
+		apiInstance.deleteRoutingQueueMember(queueId, userId);
 	}
 	
 }

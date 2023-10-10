@@ -23,14 +23,24 @@ import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+/**
+ * 클래스 설명	: 상담사 그룹 매니지먼트 컨트롤러
+ * @Class Name 	: GroupAgentManagementController
+ * @date   		: 2023. 10. 10.
+ * @author   	: Riverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Controller
-@RequestMapping(value = "/v1/api/gcloud/management/agentgroup")
-public class AgentGroupManagementController {
+@RequestMapping(value = "/v1/api/gcloud/management/group/agent")
+public class GroupAgentManagementController {
 
 	@Autowired
 	GCConnector gcconnector;
 
-	Logger logger = LoggerFactory.getLogger(AgentGroupManagementController.class);
+	Logger logger = LoggerFactory.getLogger(GroupAgentManagementController.class);
 
 
 	/**
@@ -48,7 +58,7 @@ public class AgentGroupManagementController {
 	 * @notify
 	 * 
 	 */
-	@GetMapping(value="/groups/list", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/groups", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getGroups(HttpServletRequest request ) throws IOException, ApiException, WebSocketException{
 		gcconnector.connect();
 		gcconnector.getGroups();
@@ -185,7 +195,7 @@ public class AgentGroupManagementController {
 	 * @notify
 	 * 
 	 */
-	@GetMapping(value="/groups/members/{groupId}", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getGroupMembers(HttpServletRequest request 
 			, @PathVariable(name = "groupId", required = true) String groupId) throws IOException, ApiException, WebSocketException{
 		gcconnector.connect();
@@ -213,7 +223,7 @@ public class AgentGroupManagementController {
 	 * @notify
 	 * 
 	 */
-	@PostMapping(value="/groups/members/{groupId}", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postGroupMembers(HttpServletRequest request
 			, @PathVariable(name = "groupId", required = true) String groupId
 			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
@@ -244,7 +254,7 @@ public class AgentGroupManagementController {
 	 * @notify
 	 * 
 	 */
-	@DeleteMapping(value="/groups/members/{groupId}", produces="application/json; charset=UTF-8")
+	@DeleteMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteGroupMemebers(HttpServletRequest request
 			, @PathVariable(name = "groupId", required = true) String groupId
 			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
