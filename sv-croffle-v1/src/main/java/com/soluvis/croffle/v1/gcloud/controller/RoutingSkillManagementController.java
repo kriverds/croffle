@@ -3,6 +3,8 @@ package com.soluvis.croffle.v1.gcloud.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- * 
+ *
  */
 @Controller
 @RequestMapping(value = "/v1/api/gcloud/management/routingskill")
@@ -39,6 +41,8 @@ public class RoutingSkillManagementController {
 	GCConnector gcconnector;
 
 	Logger logger = LoggerFactory.getLogger(RoutingSkillManagementController.class);
+	JSONObject result = new JSONObject();
+	ObjectMapper om = new ObjectMapper();
 
 
 	/**
@@ -52,15 +56,18 @@ public class RoutingSkillManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/skills", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getRoutingSkillList(HttpServletRequest request) throws Exception{
 		gcconnector.connect();
-		gcconnector.getRoutingSkillList();
+		JSONObject rJO = gcconnector.getRoutingSkillList();
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -75,7 +82,7 @@ public class RoutingSkillManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getUserRoutingskills(HttpServletRequest request
@@ -83,10 +90,13 @@ public class RoutingSkillManagementController {
 		logger.info("{}", userId);
 
 		gcconnector.connect();
-		gcconnector.getUserRoutingskills(userId);
+		JSONObject rJO = gcconnector.getUserRoutingskills(userId);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -102,7 +112,7 @@ public class RoutingSkillManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@PostMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postUserRoutingskills(HttpServletRequest request
@@ -110,14 +120,17 @@ public class RoutingSkillManagementController {
 			, @RequestBody Map<String,Object> param) throws Exception{
 
 		String skillId = param.get("skillId")==null?"":(String)param.get("skillId");
-		
+
 		Double level = param.get("level")==null?0D:(Double)param.get("level");
 
 		gcconnector.connect();
-		gcconnector.postUserRoutingskills(userId, skillId, level);
+		JSONObject rJO = gcconnector.postUserRoutingskills(userId, skillId, level);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -133,7 +146,7 @@ public class RoutingSkillManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@DeleteMapping(value="/skills/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteUserRoutingskill(HttpServletRequest request
@@ -146,7 +159,12 @@ public class RoutingSkillManagementController {
 		gcconnector.deleteUserRoutingskill(userId, skillId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -178,10 +196,13 @@ public class RoutingSkillManagementController {
 		}
 
 		gcconnector.connect();
-		gcconnector.patchUserRoutingskillsBulk(userId, skillIdList, dLevelList);
+		JSONObject rJO = gcconnector.patchUserRoutingskillsBulk(userId, skillIdList, dLevelList);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -213,9 +234,12 @@ public class RoutingSkillManagementController {
 		}
 
 		gcconnector.connect();
-		gcconnector.putUserRoutingskillsBulk(userId, skillIdList, dLevelList);
+		JSONObject rJO = gcconnector.putUserRoutingskillsBulk(userId, skillIdList, dLevelList);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 }

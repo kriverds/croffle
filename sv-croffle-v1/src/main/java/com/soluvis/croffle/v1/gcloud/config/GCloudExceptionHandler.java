@@ -37,8 +37,8 @@ public class GCloudExceptionHandler extends DefaultHandlerExceptionResolver{
 		}else if(ex instanceof ClassCastException) {
 			errorMsg = "check parameter type";
 		}
-		
-		
+
+
 		if(pResult == null) {
 			try {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsg);

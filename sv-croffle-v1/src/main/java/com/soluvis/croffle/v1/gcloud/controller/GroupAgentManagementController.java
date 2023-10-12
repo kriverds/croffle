@@ -3,9 +3,12 @@ package com.soluvis.croffle.v1.gcloud.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mypurecloud.sdk.v2.ApiException;
+import com.mypurecloud.sdk.v2.model.Group;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
 
@@ -31,7 +35,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- * 
+ *
  */
 @Controller
 @RequestMapping(value = "/v1/api/gcloud/management/group/agent")
@@ -41,7 +45,9 @@ public class GroupAgentManagementController {
 	GCConnector gcconnector;
 
 	Logger logger = LoggerFactory.getLogger(GroupAgentManagementController.class);
-
+	JSONObject result = new JSONObject();
+	ObjectMapper om = new ObjectMapper();
+	
 
 	/**
 	 * 메서드 설명	: 그룹 리스트를 가져온다.
@@ -55,18 +61,22 @@ public class GroupAgentManagementController {
 	 * @throws IOException
 	 * @throws ApiException
 	 * @throws WebSocketException
+	 * @throws JSONException
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/groups", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getGroups(HttpServletRequest request ) throws IOException, ApiException, WebSocketException{
+	public @ResponseBody String getGroups(HttpServletRequest request ) throws Exception{
 		gcconnector.connect();
-		gcconnector.getGroups();
+		JSONObject rJO = gcconnector.getGroups();
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 	/**
 	 * 메서드 설명	: 그룹 정보를 가져온다.
 	 * @Method Name : getGroup
@@ -81,16 +91,20 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/groups/{groupId}", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getGroup(HttpServletRequest request 
-			, @PathVariable(name = "groupId", required = true) String groupId) throws IOException, ApiException, WebSocketException{
+	public @ResponseBody String getGroup(HttpServletRequest request
+			, @PathVariable(name = "groupId", required = true) String groupId) throws Exception{
 		gcconnector.connect();
-		gcconnector.getGroup(groupId);
+		Group rVO = gcconnector.getGroup(groupId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject(om.writeValueAsString(rVO));
+		result.put("item", rJO);
+
+		logger.info("{}", result);
+		return result.toString();
 	}
 
 	/**
@@ -107,19 +121,21 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@PostMapping(value="/groups", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postGroups(HttpServletRequest request
-			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
-
+			, @RequestBody Map<String,Object> param) throws Exception{
 		String name = param.get("name")==null?"":(String)param.get("name");
 
 		gcconnector.connect();
-		gcconnector.postGroups(name);
+		JSONObject rJO = gcconnector.postGroups(name);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -137,20 +153,22 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@PutMapping(value="/groups/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String putGroup(HttpServletRequest request
 			, @PathVariable(name = "groupId", required = true) String groupId
-			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
-
+			, @RequestBody Map<String,Object> param) throws Exception{
 		String name = param.get("name")==null?"":(String)param.get("name");
 
 		gcconnector.connect();
-		gcconnector.putGroup(groupId, name);
+		JSONObject rJO = gcconnector.putGroup(groupId, name);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -167,18 +185,23 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@DeleteMapping(value="/groups/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteGroup(HttpServletRequest request
-			, @PathVariable(name = "groupId", required = true) String groupId) throws IOException, ApiException, WebSocketException{
+			, @PathVariable(name = "groupId", required = true) String groupId) throws Exception{
 		gcconnector.connect();
 		gcconnector.deleteGroup(groupId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 	/**
 	 * 메서드 설명	: 그룹 멤버를 조회한다.
 	 * @Method Name : getGroupMembers
@@ -192,20 +215,24 @@ public class GroupAgentManagementController {
 	 * @throws IOException
 	 * @throws ApiException
 	 * @throws WebSocketException
+	 * @throws JSONException
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getGroupMembers(HttpServletRequest request 
-			, @PathVariable(name = "groupId", required = true) String groupId) throws IOException, ApiException, WebSocketException{
+	public @ResponseBody String getGroupMembers(HttpServletRequest request
+			, @PathVariable(name = "groupId", required = true) String groupId) throws Exception{
 		gcconnector.connect();
-		gcconnector.getGroupMembers(groupId);
+		JSONObject rJO = gcconnector.getGroupMembers(groupId);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
-	
+
+
 	/**
 	 * 메서드 설명	: 그룹 멤버를 추가한다.
 	 * @Method Name : postGroupMembers
@@ -221,22 +248,26 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@PostMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postGroupMembers(HttpServletRequest request
 			, @PathVariable(name = "groupId", required = true) String groupId
-			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
-
+			, @RequestBody Map<String,Object> param) throws Exception{
 		String userId = param.get("userId")==null?"":(String)param.get("userId");
 
 		gcconnector.connect();
 		gcconnector.postGroupMembers(groupId, userId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 	/**
 	 * 메서드 설명	: 그룹 멤버를 삭제한다.
 	 * @Method Name : deleteGroupMemebers
@@ -252,20 +283,24 @@ public class GroupAgentManagementController {
 	 * @throws ApiException
 	 * @throws WebSocketException
 	 * @notify
-	 * 
+	 *
 	 */
 	@DeleteMapping(value="/members/{groupId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteGroupMemebers(HttpServletRequest request
 			, @PathVariable(name = "groupId", required = true) String groupId
-			, @RequestBody Map<String,Object> param) throws IOException, ApiException, WebSocketException{
-		
+			, @RequestBody Map<String,Object> param) throws Exception{
 		String userId = param.get("userId")==null?"":(String)param.get("userId");
-		
+
 		gcconnector.connect();
 		gcconnector.deleteGroupMemebers(groupId, userId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 }

@@ -1,7 +1,9 @@
-package com.soluvis.croffle.v1.gcloud.controller;
+	package com.soluvis.croffle.v1.gcloud.controller;
 
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- * 
+ *
  */
 @Controller
 @RequestMapping(value = "/v1/api/gcloud/management/queue/routingqueue")
@@ -37,8 +39,10 @@ public class RoutingQueueManagementController {
 	GCConnector gcconnector;
 
 	Logger logger = LoggerFactory.getLogger(RoutingQueueManagementController.class);
+	JSONObject result = new JSONObject();
+	ObjectMapper om = new ObjectMapper();
 
-	
+
 	/**
 	 * 메서드 설명	: 라우팅큐 리스트를 조회한다.
 	 * @Method Name : getRoutingQueues
@@ -50,16 +54,18 @@ public class RoutingQueueManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/queues", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getRoutingQueues(HttpServletRequest request) throws Exception{
-		
 		gcconnector.connect();
-		gcconnector.getRoutingQueues();
+		JSONObject rJO = gcconnector.getRoutingQueues();
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -74,20 +80,21 @@ public class RoutingQueueManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/queues/{userId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getUserQueues(HttpServletRequest request
 			, @PathVariable(name = "userId", required = true) String userId) throws Exception{
-		logger.info("{}", userId);
-		
 		gcconnector.connect();
-		gcconnector.getUserQueues(userId);
+		JSONObject rJO = gcconnector.getUserQueues(userId);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 	/**
 	 * 메서드 설명	: 라우팅큐에 할당 된 상담사 리스트를 조회한다.
 	 * @Method Name : getRoutingQueueMembers
@@ -100,20 +107,21 @@ public class RoutingQueueManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@GetMapping(value="/members/{queueId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String getRoutingQueueMembers(HttpServletRequest request
 			, @PathVariable(name = "queueId", required = true) String queueId) throws Exception{
-		logger.info("{}", queueId);
-		
 		gcconnector.connect();
-		gcconnector.getRoutingQueueMembers(queueId);
+		JSONObject rJO = gcconnector.getRoutingQueueMembers(queueId);
 		gcconnector.close();
 
-		return "OK";
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
-	
+
 	/**
 	 * 메서드 설명	: 라우팅큐에 상담사를 추가한다.
 	 * @Method Name : postRoutingQueueMembers
@@ -127,21 +135,24 @@ public class RoutingQueueManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@PostMapping(value="/members/{queueId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String postRoutingQueueMembers(HttpServletRequest request
 			, @PathVariable(name = "queueId", required = true) String queueId
 			, @RequestBody Map<String,Object> param) throws Exception{
-		logger.info("{}", queueId);
-		
 		String userId = param.get("userId")==null?"":(String)param.get("userId");
-		
+
 		gcconnector.connect();
 		gcconnector.postRoutingQueueMembers(queueId, userId, false);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 
 	/**
@@ -157,20 +168,23 @@ public class RoutingQueueManagementController {
 	 * @return
 	 * @throws Exception
 	 * @notify
-	 * 
+	 *
 	 */
 	@DeleteMapping(value="/members/{queueId}", produces="application/json; charset=UTF-8")
 	public @ResponseBody String deleteRoutingQueueMember(HttpServletRequest request
 			, @PathVariable(name = "queueId", required = true) String queueId
 			, @RequestBody Map<String,Object> param) throws Exception{
-		logger.info("{}", queueId);
-		
 		String userId = param.get("userId")==null?"":(String)param.get("userId");
-		
+
 		gcconnector.connect();
 		gcconnector.deleteRoutingQueueMember(queueId, userId);
 		gcconnector.close();
 
-		return "OK";
+		JSONObject rJO = new JSONObject();
+		rJO.put("object", "");
+		result.put("item", rJO);
+
+		logger.info("{}", rJO);
+		return result.toString();
 	}
 }

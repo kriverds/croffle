@@ -13,7 +13,7 @@ public class SampleRdsProperties {
 	private String rdsType = null;
 	private String rdsHost = null;
 	private int rdsPort = 0;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(SampleRdsProperties.class);
 
 	boolean parse(){

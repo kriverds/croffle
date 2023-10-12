@@ -13,7 +13,7 @@ public class GCloudRdsProperties {
 	private String rdsType = null;
 	private String rdsHost = null;
 	private int rdsPort = 0;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(GCloudRdsProperties.class);
 
 	boolean parse(){

@@ -76,6 +76,12 @@
 		    <artifactId>platform-client-v2</artifactId>
 		    <version>188.1.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20230618</version>
+		</dependency>
 	</dependencies>
 
 	<build>
