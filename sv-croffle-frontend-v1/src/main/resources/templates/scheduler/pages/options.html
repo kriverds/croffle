@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{scheduler/common/layouts/default}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title th:text="${title}"></title>
+</head>
+<th:block layout:fragment="script">
+	<script th:inline="javascript" type="text/javascript" th:src="@{/scheduler/pages/js/options.js}"></script>
+</th:block>
+<th:block layout:fragment="css"></th:block>
+<div layout:fragment="Content">
+	<div class="pt-3"></div>
+	<div class="row">
+		<div class="col-sm-12 col-md-6 text-start">
+			<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Add Option Group"><button type="button" class="btn btn-primary" onclick="croffle.optionGroup.showModal()">
+					<svg class="bi pe-none" width="16" height="16">
+						<use xlink:href="#folder-plus" /></svg>
+				</button></span>
+		</div>
+		<div class="col-sm-12 col-md-6 text-end">
+			<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Excel"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_excel">
+					<svg class="bi pe-none" width="16" height="16">
+						<use xlink:href="#excel" /></svg>
+				</button></span>
+			<button type="button" class="btn btn-primary" onClick="croffle.option.table.addRow()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Add Option">
+				<svg class="bi pe-none" width="16" height="16">
+					<use xlink:href="#plus" /></svg>
+			</button>
+			<button type="button" class="btn btn-primary" onClick="croffle.option.table.removeRow()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Remove Option">
+				<svg class="bi pe-none" width="16" height="16">
+					<use xlink:href="#minus" /></svg>
+			</button>
+			<button type="button" class="btn btn-primary ms-3" onClick="croffle.option.save()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Save">
+				<svg class="bi pe-none" width="16" height="16">
+					<use xlink:href="#save" /></svg>
+			</button>
+			<button type="button" class="btn btn-primary" onClick="croffle.option.search()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-title="Search">
+				<svg class="bi pe-none" width="16" height="16">
+					<use xlink:href="#search" /></svg>
+			</button>
+		</div>
+	</div>
+	<table id="tbl_option" class="display compact" style="width: 100%">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>App</th>
+				<th>Group</th>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Created</th>
+				<th>Modified</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<th:block layout:fragment="Modal">
+	<div class="modal fade" id="modal_optiongroup" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Option Group</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label class="col-form-label">Name:</label> <input type="text" class="form-control" id="optiongroup_name">
+							 <input type="text" class="form-control" style="display:none;">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onClick="croffle.optionGroup.save()">저장</button>
+					<button type="button" class="btn btn-danger" onClick="croffle.optionGroup.delete()">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_excel" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Excel</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label class="col-form-label">작업을 요청 하시겠습니까?</label>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onClick="croffle.option.table.export()">Export</button>
+					<button type="button" class="btn btn-danger" onClick="$('#file_import').click();">Import</button>
+					<input class="form-control" type="file" id="file_import" style="display:none;" accept=".xlsx, .xls">
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

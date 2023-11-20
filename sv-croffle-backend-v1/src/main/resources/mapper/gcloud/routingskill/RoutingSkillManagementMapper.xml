@@ -1,0 +1,88 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.gcloud.mapper.RoutingSkillManagementMapper">
+	
+	<insert id="insertAgentSkillPresent"  parameterType="Map">
+		INSERT INTO bake.agent_skill_present(
+			  USER_ID
+			, SKILL_ID
+			, SKILL_LEVEL
+			, CREATED_DATE)
+		VALUES
+		<foreach collection="presentList" item="item" separator=",">
+		(
+			  #{item.USER_ID}
+			, #{item.SKILL_ID}
+			, #{item.SKILL_LEVEL}
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+		)
+		</foreach>
+		<!-- ON CONFLICT (USER_ID, SKILL_ID) DO NOTHING -->
+	</insert>
+	
+	<insert id="insertSkillManagementHistory"  parameterType="Map">
+		INSERT INTO bake.skill_management_history(
+			  job_id
+			, job_date
+			, job_category
+			, target_cart
+			, emp_id
+			, skill_list
+			, level_list
+			, operator_id
+			, create_date)
+		VALUES
+		<foreach collection="userList" item="item" separator=",">
+		(
+			  nextval('bake.skill_management_history_sq')
+			, #{job_date}
+			, #{job_category}
+			, #{target_cart}
+			, #{item.emp_id}
+			, #{skill_list}
+			, #{level_list}
+			, #{operator_id}
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+		)
+		</foreach>
+		<!-- ON CONFLICT (USER_ID, SKILL_ID) DO NOTHING -->
+	</insert>
+	
+	<delete id="deleteAllAgentSkillPresent">
+		DELETE FROM bake.agent_skill_present
+	</delete>
+	
+	<delete id="deleteAgentSkillPresent" parameterType="Map">
+		DELETE FROM bake.agent_skill_present
+		WHERE user_id IN
+		(<foreach collection="userList" item="item" separator=",">
+			#{item.USER_ID}
+		</foreach>)
+	</delete>
+	
+	<select id="selectUser" resultType="Map" parameterType="Map">
+		SELECT 
+			*
+		FROM
+			bake.user_info
+		WHERE
+			1=1
+		<if test="userList != null">
+		AND emp_id IN(
+			<foreach collection="userList" item="item" separator=",">
+			  #{item.id}
+			</foreach>
+		)
+		</if>
+	</select>
+	<select id="selectSkillByCart" resultType="Map" parameterType="Map">
+		SELECT 
+			*
+		FROM
+			bake.cart_to_skill
+		WHERE
+			cart_id = #{CART_ID}
+	</select>
+</mapper>

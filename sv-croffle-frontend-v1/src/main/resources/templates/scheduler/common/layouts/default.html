@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--라이브러리 참조 : Thymeleaf & Thymeleaf Layout -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--공통 JS / CSS 영역을 관리하는 환경 영역-->
+<head>
+<!--Common Title-->
+<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Croffle</title>
+<th:block th:replace="~{scheduler/common/fragments/config :: ConfigFragment}"></th:block>
+<script th:inline="javascript" type="text/javascript" th:src="@{/common/js/init.js}"></script>
+<th:block layout:fragment="script"></th:block>
+<link th:inline="css" rel="stylesheet" th:href="@{/common/css/templates.css}" />
+<th:block layout:fragment="css"></th:block>
+</head>
+<body>
+	<div class="b-example-hr"></div>
+	<main class="d-flex flex-nowrap">
+		<!--Header 영역을 참조합니다.-->
+		<div class="b-example-vr"></div>
+		<th:block th:replace="~{scheduler/common/fragments/sidebars :: SideBarFragment}"></th:block>
+		<div class="b-example-vr"></div>
+		<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: calc(100% - 350px);">
+			<th:block th:replace="~{scheduler/common/fragments/header :: HeaderFragment}"></th:block>
+			<!--Content 내용 영역을 참조합니다-->
+			<div class="mb-auto">
+				<div layout:fragment="Content"></div>
+			</div>
+			<!--Footer 영역을 참조합니다.-->
+			<footer th:replace="~{scheduler/common/fragments/footer :: FooterFragment}"></footer>
+		</div>
+	</main>
+	<th:block layout:fragment="Modal"></th:block>
+	<div class="modal fade" id="modal_loading" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="display: grid;">
+			<div class="d-flex justify-content-center">
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_success" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="modal_success_title">Success</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p id="modal_success_message"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modal_fail" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="modal_fail_title">Fail</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p id="modal_fail_message"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
