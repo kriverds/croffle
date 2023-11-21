@@ -133,9 +133,12 @@ public class RoutingSkillManagementService {
 		JSONArray userJA = jParam.getJSONArray("userList");
 		userJAtoMap = om.readValue(userJA.toString(), typeReference);
 		userParamMap.put("userList", userJAtoMap);
+		logger.info("##{}", "User Info 테이블 조회");
+
 		userAllInfoList = routingSkillManagementMapper.selectUser(userParamMap);
 
 		skillListByCartParam.put("CART_ID", targetCart);
+		logger.info("##{}", "카트로 스킬 조회");
 		skillListByCart = routingSkillManagementMapper.selectSkillByCart(skillListByCartParam);
 		List<String> skillList = new ArrayList<>();
 		List<Double> levelList = new ArrayList<>();
@@ -151,6 +154,7 @@ public class RoutingSkillManagementService {
 		for (int i = 0; i < userAllInfoList.size(); i++) {
 			Map<String, Object> userAllInfoMap = userAllInfoList.get(i);
 			String userId = userAllInfoMap.get("gcloud_uuid").toString();
+			logger.info("##{}", "스킬부여"+i);
 			JSONObject cJO = gcconnector.putUserRoutingskillsBulk(userId, skillListByCart);
 			result.put(userId, cJO);
 		}
