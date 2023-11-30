@@ -1,0 +1,124 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.scheduler.mapper.SchedulerMapper">
+
+	<select id="selectOptionGroup" parameterType="Map" resultType="Map">
+		SELECT
+			  id
+			, name
+			, created_date
+			, created_by
+			, modified_date
+			, modified_by			
+		FROM
+			bake.scheduler_option_group
+		WHERE
+			1=1
+		ORDER BY
+			name
+	</select>
+	
+	<select id="selectOption" parameterType="Map" resultType="Map">
+		SELECT
+			  a.id
+			, a.application_id
+			, a.name
+			, a.value
+			, a.group_id
+			, a.created_date
+			, a.created_by
+			, a.modified_date
+			, a.modified_by	
+		FROM
+			  bake.scheduler_option a
+			, bake.scheduler_option_group b
+		WHERE
+			a.group_id = b.id
+		<if test="group_id != null">
+			a.group_id = #{group_id}
+		</if>
+		ORDER by
+			b.name, a.name
+	</select>
+	
+	<insert id="insertOptionGroup" parameterType="Map" >
+		INSERT INTO bake.scheduler_option_group
+		(
+			  id
+			, name
+			, created_date
+			, created_by
+			, modified_date
+			, modified_by
+		) VALUES
+		(
+			  nextval('bake.seq_scheduler_option_group')
+			, #{name}
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, 'system'
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, 'system'
+		)
+	</insert>
+	
+	<insert id="insertOption" parameterType="Map" >
+		INSERT INTO bake.scheduler_option
+		(
+			  id
+			, application_id
+			, name
+			, value
+			, group_id
+			, created_date
+			, created_by
+			, modified_date
+			, modified_by
+		) VALUES
+		(
+			  nextval('bake.seq_scheduler_option')
+			, #{application_id}
+			, #{name}
+			, #{value}
+			, #{group_id}
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, 'system'
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, 'system'
+		)
+	</insert>
+	
+	<update id="updateOptionGroup" parameterType="Map" >
+		UPDATE bake.scheduler_option_group SET
+			  name = #{name}
+			, modified_date = to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, modified_by = 'system'
+		WHERE 
+			  id = #{id}
+	</update>
+	
+	<update id="updateOption" parameterType="Map" >
+		UPDATE bake.scheduler_option SET
+			  application_id = #{application_id}
+			, name = #{name}
+			, value = #{value}
+			, group_id = #{group_id}
+			, modified_date = to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			, modified_by = 'system'
+		WHERE 
+			  id = #{id}
+	</update>
+	
+	<delete id="deleteOptionGroup" parameterType="Map">
+		DELETE FROM bake.scheduler_option_group
+		WHERE 
+			name = #{name}
+	</delete>
+	
+	<select id="deleteOption"  parameterType="Map" resultType="Map">
+		DELETE FROM bake.scheduler_option
+		WHERE 
+			id = #{id}
+	</select>
+</mapper>

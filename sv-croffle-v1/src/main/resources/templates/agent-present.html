@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상담사 실적현황</title>
+<script th:inline="javascript" type="text/javascript" th:src="@{/lib/js/jquery-3.7.1.min.js}"></script>
+<script th:inline="javascript" type="text/javascript" th:src="@{/lib/js/bootstrap.bundle.min.js}"></script>
+<script th:inline="javascript" type="text/javascript" th:src="@{/lib/js/dayjs.min.js}"></script>
+<script th:inline="javascript" type="text/javascript" th:src="@{/js/agent-present.js}"></script>
+<script th:inline="javascript">
+const empId = /*[[${empId}]]*/"";
+</script>
+<link th:inline="css" rel="stylesheet" th:href="@{/lib/css/bootstrap.min.css}" />
+<link th:inline="css" rel="stylesheet" th:href="@{/css/custom.css}" />
+</head>
+<body>
+	<div id="screen1" class="custom-container">
+		<div class="row padding-right-5">
+			<div class="col padding-10">
+				<span id="username" class="h5 strong">강대석</span> <span id="agent_id" class="h5 strong">(<label th:text="${empId}"></label>)</span>
+			</div>
+			<div class="col30 padding-top-5" style="max-width:180px;">
+				<div class="card" >
+					<span class="text-box-w2 screen-btn"> <span name="presentName" class="h5 strong padding-right-5">로그아웃</span> <span name="presentTime" class="h5 padding-right-5 strong text-darkpurple center-y">00:00:00</span> <span><img name="presentImage" th:src="@{/img/new/img_user_break.png}" height="16px" /></span>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<span class="text_b strong h4 padding-bottom-left-10">개인 실적</span>
+			</div>
+		</div>
+		<div class="row padding-x-5">
+			<div class="col text-left">
+				<div class="card">
+					<div class="card-body">
+						<div class="row padding-left-20">
+							<div class="col" title="인바운드 수">
+								<span><img class="icon padding_right_13" th:src="@{/img/new/img_inbound.png}" height="18px" /></span> <span class="text-box-border-pink" name="privateInboundCnt">0</span>
+							</div>
+							<div class="col" title="아웃바운드 수">
+								<span><img class="icon padding_right_13" th:src="@{/img/new/img_outbound.png}" height="18px" /></span> <span class="text-box-border-pink" name="privateOutboundCnt">0</span>
+							</div>
+						</div>
+						<div class="row padding-left-20">
+							<div class="col" title="인바운드 시간">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_inbound_time.png}" height="18px" /></span> <span class="text-pink center-y" name="privateInboundTime">00:00:00</span>
+							</div>
+							<div class="col" title="아웃바운드 시간">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_outbound_time.png}" height="18px" /></span> <span class="text-pink center-y" name="privateOutboundTime">00:00:00</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col text-left">
+				<div class="card">
+					<div class="card-body">
+						<div class="row padding-left-20">
+							<div class="col" title="로그인 시간">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_user_login.png}" height="18px" /></span> <span class="text-purple center-y" name="privateLoginTime">00:00:00</span>
+							</div>
+							<div class="col" title="대기 시간">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_total_waiting.png}" height="18px" /></span> <span class="text-darkpurple center-y" name="privateReadyTime">00:00:00</span>
+							</div>
+						</div>
+						<div class="row padding-left-20">
+							<div class="col" title="후처리 시간">
+								<span><img class="icon padding-right-11" th:src="@{/img/new/img_acw.png}" height="18px" /></span> <span class="text-purple center-y" name="privateAcwTime">00:00:00</span>
+							</div>
+							<div class="col" title="이석 시간">
+								<span><img class="icon padding-right-10" th:src="@{/img/new/img_total_break.png}" height="18px" /></span> <span class="text-darkpurple center-y" name="privateNotReadyTime">00:00:00</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row jb-division-line2">
+		</div>
+		<div class="row">
+			<div class="col">
+				<span class="text_b strong h4 padding-bottom-left-10" style="top:8px; position:relative;">전체 실적</span>
+			</div>
+			<div class="col text-right padding-right-10">
+				<button type="button" class="btn btn-secondary" onClick="croffle.openPrivateSetting();">
+                	<svg style="bottom:1px; position:relative;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+  						<path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"></path>
+					</svg>
+            	</button>
+			</div>
+		</div>
+		<div class="row padding-x-5">
+			<div class="col text-left">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col" title="총 인바운드 수">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_inbound.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalInboundCnt">0</span>
+							</div>
+							<div class="col" title="총 응답 수">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_total_answered.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalAnswerCnt">0</span>
+							</div>
+							<div class="col" title="응답률">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_total_acd_rate.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalAnswerRate">00.0%</span>
+							</div>
+							<div class="col" title="실시간 대기호 수">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_total_waiting.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalWaitingCnt">0</span>
+							</div>
+							<div class="col" title="대기 상담원 수">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_total_ready.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalReadyCnt">0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="screen2" class="custom-container">
+		<div class="row padding-x-5">			
+			<div class="col20" style="max-width:180px;">
+				<div class="card screen-btn">
+					<div class="card-body">
+						<div class="row text-center">
+							<div class="col">
+								<span class=""> <span name="presentName" class="h5 strong padding-right-5">로그오프</span> <span name="presentTime" class="h5 padding-right-5 strong text-darkpurple center-y">00:00:00</span> <span><img name="presentImage" th:src="@{/img/new/img_user_break.png}" height="16px" /></span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col" title="총 인바운드 수">
+								<span class="line-1"><img class="icon padding-right-12" th:src="@{/img/new/img_inbound.png}" height="18px" /></span> <span class="text-box-fill-pink center-y" name="totalInboundCnt">0</span>
+							</div>
+							<div class="col" title="총 응답 수">
+								<span class="line-1"><img class="icon" th:src="@{/img/new/img_total_answered.png}" height="18px" /></span> <span class="text-box-fill-pink center-y" name="totalAnswerCnt">0</span>
+							</div>
+							<div class="col" title="실시간 대기호 수">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_total_waiting.png}" height="18px" /></span> <span class="text-box-fill-pink center-y" name="totalWaitingCnt">0</span>
+							</div>
+							<div class="col" title="응답률">
+								<span><img class="icon padding-right-12" th:src="@{/img/new/img_total_acd_rate.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalAnswerRate">00.0%</span>
+							</div>
+							<div class="col" title="대기 상담원 수">
+								<span><img class="icon padding_right_10" th:src="@{/img/new/img_total_ready.png}" height="18px" /></span> <span class="text-box-fill-pink" name="totalReadyCnt">0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

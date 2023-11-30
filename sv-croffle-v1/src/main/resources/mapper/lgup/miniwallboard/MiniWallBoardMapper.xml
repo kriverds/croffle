@@ -1,0 +1,124 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.lgup.mapper.MiniWallBoardMapper">
+	
+	<select id="getAgentStat" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  1
+	</select>
+	<select id="getSkillGroupList" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  skillgroup_id AS skill_group_id
+			, skillgroup_name AS skill_group_name
+		FROM 
+			bake.skillgroup_tbl 
+		GROUP BY 
+			skillgroup_id, skillgroup_name
+	</select>
+	<select id="getPrivateSkillList" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  DISTINCT skill_id
+			, skill_name 
+		FROM 
+			bake.skillgroup_tbl
+		WHERE
+			skillgroup_id IN
+			(
+			<foreach collection="skillGroupList" item="item" separator=",">
+				#{item}
+			</foreach>
+			)
+	</select>
+	
+	<select id="getQueueGroupList" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  queuegroup_id AS queue_group_id
+			, queuegroup_name AS queue_group_name
+		FROM 
+			bake.queuegroup_tbl 
+		GROUP BY 
+			queuegroup_id, queuegroup_name
+	</select>
+	<select id="getPrivateQueueList" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  DISTINCT queue_id
+			, queue_name 
+		FROM 
+			bake.queuegroup_tbl 
+		WHERE
+			queuegroup_id IN
+			(
+			<foreach collection="queueGroupList" item="item" separator=",">
+				#{item}
+			</foreach>
+			)
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -254,7 +254,7 @@ const croffle = {
 					drawCallback: function(settings) {
 						$(`#${_self.option.table.id} tbody > tr`).on('click', function() {
 							$(this).toggleClass('selected');
-						})
+						});
 					},
 				});
 				croffle.option.search();

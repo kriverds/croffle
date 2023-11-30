@@ -1,0 +1,102 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.gcloud.mapper.RoutingSkillManagementMapper">
+	
+	<insert id="insertAgentSkillPresent"  parameterType="Map">
+		INSERT INTO bake.agent_skill_mapping(
+			  user_id
+			, skill_id
+			, skill_level
+			, create_date)
+		VALUES
+		<foreach collection="presentList" item="item" separator=",">
+		(
+			  #{item.user_id}
+			, #{item.skill_id}
+			, #{item.skill_level}
+			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
+		)
+		</foreach>
+		<!-- ON CONFLICT (USER_ID, SKILL_ID) DO NOTHING -->
+	</insert>
+	
+	<insert id="insertSkillManagementHistory"  parameterType="Map">
+		INSERT INTO bake.skill_management_history(
+			  job_id
+			, job_date
+			, job_category
+			, target_cart
+			, emp_id
+			, skill_list
+			, level_list
+			, operator_id
+			, create_date)
+		VALUES
+		<foreach collection="userList" item="item" separator=",">
+		(
+			  NEXTVAL('bake.skill_management_history_sq')
+			, #{job_date}
+			, #{job_category}
+			, #{target_cart}
+			, (SELECT emp_id FROM bake.user_info WHERE gcloud_uuid = #{item.id})
+			<choose>
+				<when test="skillList.size!=0">
+			, array[<foreach collection="skillList" item="skill" separator=",">#{skill}</foreach>]
+				</when>
+				<otherwise>
+			, null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="levelList.size!=0">
+			, array[<foreach collection="levelList" item="level" separator=",">#{level}</foreach>]
+				</when>
+				<otherwise>
+			, null
+				</otherwise>
+			</choose>
+			, #{operator_id}
+			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
+		)
+		</foreach>
+		<!-- ON CONFLICT (USER_ID, SKILL_ID) DO NOTHING -->
+	</insert>
+	
+	<delete id="deleteAllAgentSkillPresent">
+		DELETE FROM bake.agent_skill_mapping
+	</delete>
+	
+	<delete id="deleteAgentSkillPresent" parameterType="Map">
+		DELETE FROM bake.agent_skill_mapping
+		WHERE user_id IN
+		(<foreach collection="userList" item="item" separator=",">
+			#{item.user_id}
+		</foreach>)
+	</delete>
+	
+	<select id="selectUser" resultType="Map" parameterType="Map">
+		SELECT 
+			*
+		FROM
+			bake.user_info
+		WHERE
+			1=1
+		<if test="userList != null">
+		AND emp_id IN(
+			<foreach collection="userList" item="item" separator=",">
+			  #{item.id}
+			</foreach>
+		)
+		</if>
+	</select>
+	<select id="selectSkillByCart" resultType="Map" parameterType="Map">
+		SELECT 
+			*
+		FROM
+			bake.cart_to_skill
+		WHERE
+			cart_id = #{target_cart}
+	</select>
+</mapper>
