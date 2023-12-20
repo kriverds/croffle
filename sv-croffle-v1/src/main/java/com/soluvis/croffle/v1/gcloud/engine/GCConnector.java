@@ -25,6 +25,7 @@ import com.mypurecloud.sdk.v2.ApiResponse;
 import com.mypurecloud.sdk.v2.Configuration;
 import com.mypurecloud.sdk.v2.PureCloudRegionHosts;
 import com.mypurecloud.sdk.v2.api.AnalyticsApi;
+import com.mypurecloud.sdk.v2.api.AuthorizationApi;
 import com.mypurecloud.sdk.v2.api.ConversationsApi;
 import com.mypurecloud.sdk.v2.api.GroupsApi;
 import com.mypurecloud.sdk.v2.api.NotificationsApi;
@@ -51,12 +52,14 @@ import com.mypurecloud.sdk.v2.model.ConversationAggregationQuery;
 import com.mypurecloud.sdk.v2.model.ConversationAggregationQuery.MetricsEnum;
 import com.mypurecloud.sdk.v2.model.ConversationQuery;
 import com.mypurecloud.sdk.v2.model.CreateUser;
+import com.mypurecloud.sdk.v2.model.DomainOrganizationRole;
 import com.mypurecloud.sdk.v2.model.Group;
 import com.mypurecloud.sdk.v2.model.GroupCreate;
 import com.mypurecloud.sdk.v2.model.GroupCreate.VisibilityEnum;
 import com.mypurecloud.sdk.v2.model.GroupEntityListing;
 import com.mypurecloud.sdk.v2.model.GroupMembersUpdate;
 import com.mypurecloud.sdk.v2.model.GroupUpdate;
+import com.mypurecloud.sdk.v2.model.OrganizationRoleEntityListing;
 import com.mypurecloud.sdk.v2.model.Queue;
 import com.mypurecloud.sdk.v2.model.QueueEntityListing;
 import com.mypurecloud.sdk.v2.model.QueueMember;
@@ -69,6 +72,11 @@ import com.mypurecloud.sdk.v2.model.SkillEntityListing;
 import com.mypurecloud.sdk.v2.model.StationEntityListing;
 import com.mypurecloud.sdk.v2.model.UpdateUser;
 import com.mypurecloud.sdk.v2.model.User;
+import com.mypurecloud.sdk.v2.model.UserAggregateQueryClause;
+import com.mypurecloud.sdk.v2.model.UserAggregateQueryFilter;
+import com.mypurecloud.sdk.v2.model.UserAggregateQueryPredicate;
+import com.mypurecloud.sdk.v2.model.UserAggregateQueryResponse;
+import com.mypurecloud.sdk.v2.model.UserAggregationQuery;
 import com.mypurecloud.sdk.v2.model.UserEntityListing;
 import com.mypurecloud.sdk.v2.model.UserQueue;
 import com.mypurecloud.sdk.v2.model.UserQueueEntityListing;
@@ -95,13 +103,13 @@ public class GCConnector {
 	private static final Logger logger = LoggerFactory.getLogger(GCConnector.class);
 
 	// GS개발
-	private static final String CLIENT_ID = "ecf91a65-0043-4da7-92eb-bdd83a5c2cb6";
-	private static final String CLIENT_SECRET = "nhK4fw7a3vh-BPCdfRe311m1rWDbnXJoATteyyeVfvk";
-	private static final String DIVISION_HOME = "fa910857-f776-4dd5-91a9-1d245882ab11";
+//	private static final String CLIENT_ID = "ecf91a65-0043-4da7-92eb-bdd83a5c2cb6";
+//	private static final String CLIENT_SECRET = "nhK4fw7a3vh-BPCdfRe311m1rWDbnXJoATteyyeVfvk";
+//	private static final String DIVISION_HOME = "fa910857-f776-4dd5-91a9-1d245882ab11";
 	// uplusdev
-//	private static final String CLIENT_ID = "e9cc4eaa-5545-4e69-885a-e828949b6204";
-//	private static final String CLIENT_SECRET = "8zoDLvhXlX-O3C38HD01A69uVkvX3u30M4tm08C8bk0";
-//	private static final String DIVISION_HOME = "0aebaa53-2e66-4720-acdb-8a766e2ea6ae";
+	private static final String CLIENT_ID = "e9cc4eaa-5545-4e69-885a-e828949b6204";
+	private static final String CLIENT_SECRET = "8zoDLvhXlX-O3C38HD01A69uVkvX3u30M4tm08C8bk0";
+	private static final String DIVISION_HOME = "0aebaa53-2e66-4720-acdb-8a766e2ea6ae";
 
 	private static NotificationHandler notificationHandler = null;
 
@@ -313,8 +321,7 @@ public class GCConnector {
 	 * @throws JSONException
 	 * @notify - email이 Key로 중복 발생시 ApiException 에러
 	 */
-	public JSONObject postUsers(String name, String email, String department)
-			throws IOException, ApiException, JSONException {
+	public JSONObject postUsers(String name, String email, String department) throws IOException, ApiException, JSONException {
 		UsersApi apiInstance = new UsersApi();
 
 		CreateUser body = new CreateUser();
@@ -380,6 +387,41 @@ public class GCConnector {
 		UsersApi apiInstance = new UsersApi();
 
 		apiInstance.deleteUser(userId);
+	}
+
+	public JSONObject getAuthorizationRoles() throws IOException, ApiException, JSONException {
+
+		AuthorizationApi apiInstance = new AuthorizationApi();
+		Integer pageSize = 50; // Integer | Page size
+		Integer pageNumber = 1; // Integer | Page number
+		List<String> id = Arrays.asList(); // List<String> | A list of user IDs to fetch by bulk
+		List<String> jabberId = Arrays.asList(); // List<String> | A list of jabberIds to fetch by bulk (cannot be used
+													// with the \"id\" parameter)
+		String sortOrder = "ASC"; // String | Ascending or descending sort order
+		List<String> expand = Arrays.asList(); // List<String> | Which fields, if any, to expand
+		String integrationPresenceSource = null;// "integrationPresenceSource_example"; // String | Gets an integration
+												// presence for users instead of their defaults. This parameter will
+												// only be used when presence is provided as an \"expand\". When using
+												// this parameter the maximum number of users that can be returned is
+												// 100.
+		String state = "active"; // ""active"; // String | Only list users of this state
+
+		OrganizationRoleEntityListing  result = apiInstance.getAuthorizationRoles(pageSize, pageNumber, sortOrder, expand, sortOrder, integrationPresenceSource, state, expand, id, null, jabberId);
+		List<DomainOrganizationRole> en = result.getEntities();
+
+		JSONObject resultJO = new JSONObject();
+		JSONArray resultJA = new JSONArray();
+
+		for (DomainOrganizationRole child : en) {
+			JSONObject cJO = new JSONObject(om.writeValueAsString(child));
+			resultJA.put(cJO);
+		}
+
+		resultJO.put("count", resultJA.length());
+		resultJO.put("list", resultJA);
+
+		logger.info("{}", resultJO);
+		return resultJO;
 	}
 
 	/*
@@ -448,6 +490,8 @@ public class GCConnector {
 		logger.info("##getUserRoutingSkill{}", userId);
 
 		UserSkillEntityListing result = apiInstance.getUserRoutingskills(userId, pageSize, pageNumber, sortOrder);
+		logger.info("{}", result);
+
 		List<UserRoutingSkill> en = result.getEntities();
 
 		JSONObject resultJO = new JSONObject();
@@ -573,9 +617,8 @@ public class GCConnector {
 
 		List<UserRoutingSkillPost> body = new ArrayList<>(); // List<UserRoutingSkillPost> | Skill
 
-		for (int i = 0; i < skillList.size(); i++) {
+		for(Map<String,Object> map : skillList) {
 			UserRoutingSkillPost ursp = new UserRoutingSkillPost();
-			Map<String,Object> map = skillList.get(i);
 			ursp.setId(map.get("skill_id").toString());
 			double level = (int) map.get("skill_level");
 			ursp.setProficiency(level);
@@ -1155,11 +1198,30 @@ public class GCConnector {
 		return resultJO;
 	}
 
-	public JSONObject campaignAggregateQuery() throws IOException, ApiException, JSONException {
+	public JSONObject campaignAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
+		JSONObject returnJO = new JSONObject();
+		String fsDate = "";
+		String feDate = "";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = sdf1.parse(startDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		fsDate = sdf2.format(cal.getTime());
+		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		feDate = sdf2.format(cal.getTime());
+		fsDate = fsDate.replace(' ', 'T')+"Z";
+		feDate = feDate.replace(' ', 'T')+"Z";
+
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		ConversationAggregationQuery body = new ConversationAggregationQuery();
-		body.setInterval("2023-01-01T04:00:00.000Z/2023-11-08T05:00:00.000Z");
+		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+//		body.setInterval(fsDate+"/"+feDate);
+
+		JSONObject campaigns = getOutboundCampaigns();
+		JSONArray entities = campaigns.getJSONArray("entities");
+
 		List<MetricsEnum> meList = new ArrayList<>();
 		for (int i = 0; i < MetricsEnum.values().length; i++) {
 			if (i == 21 || i == 22 || i == 28 || i == 29) {
@@ -1171,99 +1233,288 @@ public class GCConnector {
 		ConversationAggregateQueryFilter filter = new ConversationAggregateQueryFilter();
 		filter.setType(ConversationAggregateQueryFilter.TypeEnum.OR);
 
+
+
 		List<ConversationAggregateQueryClause> clauseList = new ArrayList<>();
+		ConversationAggregateQueryClause clause = new ConversationAggregateQueryClause();
+		clause.setType(ConversationAggregateQueryClause.TypeEnum.OR);
+		List<ConversationAggregateQueryPredicate> predicateList = new ArrayList<>();
+		ConversationAggregateQueryPredicate predicate = new ConversationAggregateQueryPredicate();
+		predicate.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
+		for (int i = 0; i < entities.length(); i++) {
+			JSONObject entity = entities.getJSONObject(i);
 
-		ConversationAggregateQueryClause clause1 = new ConversationAggregateQueryClause();
-		clause1.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList1 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate1 = new ConversationAggregateQueryPredicate();
-		predicate1.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate1.setValue("fafb0144-837f-4964-b728-36b92e094c5c");
-		predicateList1.add(predicate1);
-		clause1.setPredicates(predicateList1);
-		ConversationAggregateQueryClause clause2 = new ConversationAggregateQueryClause();
-		clause2.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList2 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate2 = new ConversationAggregateQueryPredicate();
-		predicate2.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate2.setValue("458d074e-2c07-4f45-90e9-aeb8c64ccb3c");
-		predicateList2.add(predicate2);
-		clause2.setPredicates(predicateList2);
-		ConversationAggregateQueryClause clause3 = new ConversationAggregateQueryClause();
-		clause3.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList3 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate3 = new ConversationAggregateQueryPredicate();
-		predicate3.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate3.setValue("724b4089-d2f5-47a3-937b-eb56f12eff81");
-		predicateList3.add(predicate3);
-		clause3.setPredicates(predicateList3);
-		ConversationAggregateQueryClause clause4 = new ConversationAggregateQueryClause();
-		clause4.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList4 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate4 = new ConversationAggregateQueryPredicate();
-		predicate4.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate4.setValue("cc025553-62b6-41e0-859c-b66f4b0b013a");
-		predicateList4.add(predicate4);
-		clause4.setPredicates(predicateList4);
-		ConversationAggregateQueryClause clause5 = new ConversationAggregateQueryClause();
-		clause5.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList5 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate5 = new ConversationAggregateQueryPredicate();
-		predicate5.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate5.setValue("1deb592f-34ab-499a-b973-dcae4dde3c2b");
-		predicateList5.add(predicate5);
-		clause5.setPredicates(predicateList5);
-		ConversationAggregateQueryClause clause6 = new ConversationAggregateQueryClause();
-		clause6.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList6 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate6 = new ConversationAggregateQueryPredicate();
-		predicate6.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate6.setValue("1dfce0b2-bfe2-4845-b30a-25f1894ebbd7");
-		predicateList6.add(predicate6);
-		clause6.setPredicates(predicateList6);
-		ConversationAggregateQueryClause clause7 = new ConversationAggregateQueryClause();
-		clause7.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList7 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate7 = new ConversationAggregateQueryPredicate();
-		predicate7.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate7.setValue("2a51cd42-918d-4e6e-a925-d2496a75dc17");
-		predicateList7.add(predicate7);
-		clause7.setPredicates(predicateList7);
-		ConversationAggregateQueryClause clause8 = new ConversationAggregateQueryClause();
-		clause8.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList8 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate8 = new ConversationAggregateQueryPredicate();
-		predicate8.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate8.setValue("8cb0cb57-1bb6-423b-a93b-d03845eb0fb2");
-		predicateList8.add(predicate8);
-		clause8.setPredicates(predicateList8);
-		ConversationAggregateQueryClause clause9 = new ConversationAggregateQueryClause();
-		clause9.setType(ConversationAggregateQueryClause.TypeEnum.OR);
-		List<ConversationAggregateQueryPredicate> predicateList9 = new ArrayList<>();
-		ConversationAggregateQueryPredicate predicate9 = new ConversationAggregateQueryPredicate();
-		predicate9.setDimension(DimensionEnum.OUTBOUNDCAMPAIGNID);
-		predicate9.setValue("d1eb5e42-2f33-4351-b7d3-07fe875b3727");
-		predicateList9.add(predicate9);
-		clause9.setPredicates(predicateList9);
+			predicate.setValue(entity.getString("id"));
+			predicateList.clear();
+			predicateList.add(predicate);
+			clause.setPredicates(predicateList);
+			clauseList.clear();
+			clauseList.add(clause);
+			filter.setClauses(clauseList);
+			body.setFilter(filter);
 
-		clauseList.add(clause1);
-		clauseList.add(clause2);
-		clauseList.add(clause3);
-		clauseList.add(clause4);
-		clauseList.add(clause5);
-		clauseList.add(clause6);
-		clauseList.add(clause7);
-		clauseList.add(clause8);
-		clauseList.add(clause9);
+			ConversationAggregateQueryResponse result = apiInstance.postAnalyticsConversationsAggregatesQuery(body);
 
-		filter.setClauses(clauseList);
-		body.setFilter(filter);
+			JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+			returnJO.put(entity.getString("id"), resultJO);
+		}
 
-		ConversationAggregateQueryResponse result = apiInstance.postAnalyticsConversationsAggregatesQuery(body);
+		return returnJO;
+	}
 
-		JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+	public JSONObject agentCallAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
+		JSONObject returnJO = new JSONObject();
+		String fsDate = "";
+		String feDate = "";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = sdf1.parse(startDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		fsDate = sdf2.format(cal.getTime());
+		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		feDate = sdf2.format(cal.getTime());
+		fsDate = fsDate.replace(' ', 'T')+"Z";
+		feDate = feDate.replace(' ', 'T')+"Z";
 
-		return resultJO;
+		AnalyticsApi apiInstance = new AnalyticsApi();
+
+		ConversationAggregationQuery body = new ConversationAggregationQuery();
+		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+//		body.setInterval(fsDate+"/"+feDate);
+
+		JSONObject agents = getAvailableUserList();
+		JSONArray entities = agents.getJSONArray("list");
+
+		List<MetricsEnum> meList = new ArrayList<>();
+		for (int i = 0; i < MetricsEnum.values().length; i++) {
+			if (i == 21 || i == 22 || i == 28 || i == 29) {
+			} else {
+				meList.add(MetricsEnum.values()[i]);
+			}
+		}
+		body.setMetrics(meList);
+		ConversationAggregateQueryFilter filter = new ConversationAggregateQueryFilter();
+		filter.setType(ConversationAggregateQueryFilter.TypeEnum.OR);
+
+
+
+		List<ConversationAggregateQueryClause> clauseList = new ArrayList<>();
+		ConversationAggregateQueryClause clause = new ConversationAggregateQueryClause();
+		clause.setType(ConversationAggregateQueryClause.TypeEnum.OR);
+		List<ConversationAggregateQueryPredicate> predicateList = new ArrayList<>();
+		ConversationAggregateQueryPredicate predicate = new ConversationAggregateQueryPredicate();
+		predicate.setDimension(DimensionEnum.USERID);
+		for (int i = 0; i < entities.length(); i++) {
+			JSONObject entity = entities.getJSONObject(i);
+
+			predicate.setValue(entity.getString("id"));
+			predicateList.clear();
+			predicateList.add(predicate);
+			clause.setPredicates(predicateList);
+			clauseList.clear();
+			clauseList.add(clause);
+			filter.setClauses(clauseList);
+			body.setFilter(filter);
+
+			ConversationAggregateQueryResponse result = apiInstance.postAnalyticsConversationsAggregatesQuery(body);
+
+			JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+			returnJO.put(entity.getString("id"), resultJO);
+		}
+
+		return returnJO;
+	}
+
+	public JSONObject agentStatusAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
+		JSONObject returnJO = new JSONObject();
+		String fsDate = "";
+		String feDate = "";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = sdf1.parse(startDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		fsDate = sdf2.format(cal.getTime());
+		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		feDate = sdf2.format(cal.getTime());
+		fsDate = fsDate.replace(' ', 'T')+"Z";
+		feDate = feDate.replace(' ', 'T')+"Z";
+
+		AnalyticsApi apiInstance = new AnalyticsApi();
+
+		UserAggregationQuery body = new UserAggregationQuery();
+		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+//		body.setInterval(fsDate+"/"+feDate);
+
+		JSONObject agents = getAvailableUserList();
+		JSONArray entities = agents.getJSONArray("list");
+
+		List<UserAggregationQuery.MetricsEnum> meList = new ArrayList<>();
+		for (int i = 0; i < UserAggregationQuery.MetricsEnum.values().length; i++) {
+			if (i != 2) {
+				meList.add(UserAggregationQuery.MetricsEnum.values()[i]);
+			}
+		}
+		body.setMetrics(meList);
+		UserAggregateQueryFilter filter = new UserAggregateQueryFilter();
+		filter.setType(UserAggregateQueryFilter.TypeEnum.OR);
+
+
+
+		List<UserAggregateQueryClause> clauseList = new ArrayList<>();
+		UserAggregateQueryClause clause = new UserAggregateQueryClause();
+		clause.setType(UserAggregateQueryClause.TypeEnum.OR);
+		List<UserAggregateQueryPredicate> predicateList = new ArrayList<>();
+		UserAggregateQueryPredicate predicate = new UserAggregateQueryPredicate();
+		predicate.setDimension(UserAggregateQueryPredicate.DimensionEnum.USERID);
+		for (int i = 0; i < entities.length(); i++) {
+			JSONObject entity = entities.getJSONObject(i);
+
+			predicate.setValue(entity.getString("id"));
+			predicateList.clear();
+			predicateList.add(predicate);
+			clause.setPredicates(predicateList);
+			clauseList.clear();
+			clauseList.add(clause);
+			filter.setClauses(clauseList);
+			body.setFilter(filter);
+
+			UserAggregateQueryResponse result = apiInstance.postAnalyticsUsersAggregatesQuery(body);
+
+			JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+			returnJO.put(entity.getString("id"), resultJO);
+		}
+
+		return returnJO;
+	}
+
+	public JSONObject queueAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
+		JSONObject returnJO = new JSONObject();
+		String fsDate = "";
+		String feDate = "";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = sdf1.parse(startDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		fsDate = sdf2.format(cal.getTime());
+		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		feDate = sdf2.format(cal.getTime());
+		fsDate = fsDate.replace(' ', 'T')+"Z";
+		feDate = feDate.replace(' ', 'T')+"Z";
+
+		AnalyticsApi apiInstance = new AnalyticsApi();
+
+		ConversationAggregationQuery body = new ConversationAggregationQuery();
+		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+//		body.setInterval(fsDate+"/"+feDate);
+
+		JSONObject queues = getRoutingQueues();
+		JSONArray entities = queues.getJSONArray("list");
+
+		List<MetricsEnum> meList = new ArrayList<>();
+		for (int i = 0; i < MetricsEnum.values().length; i++) {
+			if (i == 21 || i == 22 || i == 28 || i == 29) {
+			} else {
+				meList.add(MetricsEnum.values()[i]);
+			}
+		}
+		body.setMetrics(meList);
+		ConversationAggregateQueryFilter filter = new ConversationAggregateQueryFilter();
+		filter.setType(ConversationAggregateQueryFilter.TypeEnum.OR);
+
+
+
+		List<ConversationAggregateQueryClause> clauseList = new ArrayList<>();
+		ConversationAggregateQueryClause clause = new ConversationAggregateQueryClause();
+		clause.setType(ConversationAggregateQueryClause.TypeEnum.OR);
+		List<ConversationAggregateQueryPredicate> predicateList = new ArrayList<>();
+		ConversationAggregateQueryPredicate predicate = new ConversationAggregateQueryPredicate();
+		predicate.setDimension(DimensionEnum.QUEUEID);
+		for (int i = 0; i < entities.length(); i++) {
+			JSONObject entity = entities.getJSONObject(i);
+
+			predicate.setValue(entity.getString("id"));
+			predicateList.clear();
+			predicateList.add(predicate);
+			clause.setPredicates(predicateList);
+			clauseList.clear();
+			clauseList.add(clause);
+			filter.setClauses(clauseList);
+			body.setFilter(filter);
+
+			ConversationAggregateQueryResponse result = apiInstance.postAnalyticsConversationsAggregatesQuery(body);
+
+			JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+			returnJO.put(entity.getString("id"), resultJO);
+		}
+
+		return returnJO;
+	}
+
+	public JSONObject skillAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
+		JSONObject returnJO = new JSONObject();
+		String fsDate = "";
+		String feDate = "";
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Date date = sdf1.parse(startDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		fsDate = sdf2.format(cal.getTime());
+		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		feDate = sdf2.format(cal.getTime());
+		fsDate = fsDate.replace(' ', 'T')+"Z";
+		feDate = feDate.replace(' ', 'T')+"Z";
+
+		AnalyticsApi apiInstance = new AnalyticsApi();
+
+		ConversationAggregationQuery body = new ConversationAggregationQuery();
+		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+//		body.setInterval(fsDate+"/"+feDate);
+
+		JSONObject skills = getRoutingSkillList();
+		JSONArray entities = skills.getJSONArray("list");
+
+		List<MetricsEnum> meList = new ArrayList<>();
+		for (int i = 0; i < MetricsEnum.values().length; i++) {
+			if (i == 21 || i == 22 || i == 28 || i == 29) {
+			} else {
+				meList.add(MetricsEnum.values()[i]);
+			}
+		}
+		body.setMetrics(meList);
+		ConversationAggregateQueryFilter filter = new ConversationAggregateQueryFilter();
+		filter.setType(ConversationAggregateQueryFilter.TypeEnum.OR);
+
+
+
+		List<ConversationAggregateQueryClause> clauseList = new ArrayList<>();
+		ConversationAggregateQueryClause clause = new ConversationAggregateQueryClause();
+		clause.setType(ConversationAggregateQueryClause.TypeEnum.OR);
+		List<ConversationAggregateQueryPredicate> predicateList = new ArrayList<>();
+		ConversationAggregateQueryPredicate predicate = new ConversationAggregateQueryPredicate();
+		predicate.setDimension(DimensionEnum.REQUESTEDROUTINGSKILLID);
+		for (int i = 0; i < entities.length(); i++) {
+			JSONObject entity = entities.getJSONObject(i);
+
+			predicate.setValue(entity.getString("id"));
+			predicateList.clear();
+			predicateList.add(predicate);
+			clause.setPredicates(predicateList);
+			clauseList.clear();
+			clauseList.add(clause);
+			filter.setClauses(clauseList);
+			body.setFilter(filter);
+
+			ConversationAggregateQueryResponse result = apiInstance.postAnalyticsConversationsAggregatesQuery(body);
+
+			JSONObject resultJO = new JSONObject(om.writeValueAsString(result));
+			returnJO.put(entity.getString("id"), resultJO);
+		}
+
+		return returnJO;
 	}
 
 

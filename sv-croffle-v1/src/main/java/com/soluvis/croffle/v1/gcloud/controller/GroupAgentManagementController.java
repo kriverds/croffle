@@ -10,14 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.mypurecloud.sdk.v2.ApiException;
 import com.neovisionaries.ws.client.WebSocketException;
@@ -37,7 +36,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @notify
  *
  */
-@Controller
+@RestController
 @RequestMapping(value = "/v1/api/gcloud/management/group/agent")
 public class GroupAgentManagementController {
 
@@ -65,7 +64,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@GetMapping(value="/groups", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getGroups(HttpServletRequest request ) throws Exception{
+	public String getGroups(HttpServletRequest request ) throws Exception{
 		Map<String, Object> param = new HashMap<>();
 		param.put("rUUID", CommUtil.setAttrUUID(request));
 
@@ -94,7 +93,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@PostMapping(value="/groups", produces="application/json; charset=UTF-8")
-	public @ResponseBody String postGroups(HttpServletRequest request
+	public String postGroups(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -125,7 +124,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@PutMapping(value="/groups", produces="application/json; charset=UTF-8")
-	public @ResponseBody String putGroup(HttpServletRequest request
+	public String putGroup(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -155,7 +154,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@DeleteMapping(value="/groups", produces="application/json; charset=UTF-8")
-	public @ResponseBody String deleteGroup(HttpServletRequest request
+	public String deleteGroup(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -186,7 +185,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@GetMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getGroupMembers(HttpServletRequest request
+	public String getGroupMembers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -218,7 +217,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@PostMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String postGroupMembers(HttpServletRequest request
+	public String postGroupMembers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -249,7 +248,7 @@ public class GroupAgentManagementController {
 	 *
 	 */
 	@DeleteMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String deleteGroupMemebers(HttpServletRequest request
+	public String deleteGroupMemebers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soluvis.croffle.v1.lgup.service.UVoiceService;
+import com.soluvis.croffle.v1.lgup.service.UCubeService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UCubeController {
 
 	@Autowired
-	UVoiceService uVoiceService;
+	UCubeService uCubeService;
 
 	Logger logger = LoggerFactory.getLogger(UCubeController.class);
 	ObjectMapper om = new ObjectMapper();
@@ -32,11 +32,11 @@ public class UCubeController {
 	@GetMapping(value = "/rest/{ifId}", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String restAPI(HttpServletRequest request, @PathVariable("ifId") String ifId,
 			@RequestBody Map<String, Object> param) throws Exception {
-		logger.info("UVoice restAPI ID[{}]", ifId);
-		logger.info("UVoice restAPI param[{}]", param);
+		logger.info("UCube restAPI ID[{}]", ifId);
+		logger.info("UCube restAPI param[{}]", param);
 
 		JSONObject result = new JSONObject();
-		JSONArray ja = new JSONArray(om.writeValueAsString(uVoiceService.serviceByIfId(ifId, param)));
+		JSONArray ja = new JSONArray(om.writeValueAsString(uCubeService.serviceByIfId(ifId, param)));
 
 		result.put("list", ja);
 		result.put("count", ja.length());

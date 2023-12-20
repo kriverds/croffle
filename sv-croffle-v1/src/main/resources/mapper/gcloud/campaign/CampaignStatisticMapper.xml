@@ -5,35 +5,37 @@
 <mapper namespace="com.soluvis.croffle.v1.gcloud.mapper.CampaignStatisticMapper">
 	
 	<insert id="insertRawData"  parameterType="Map">
-		INSERT INTO bake.PDS_RAWDATA(
-			  PARTICIPANT_ID
-			, START_DATE
-			, START_TIME
-			, END_DATE
-			, END_TIME
-			, CAMPAIGN_ID
-			, T_DURATION
-			, T_DIALING
-			, T_INTERACT
-			, T_AGENT
-			, DISCONNECT_TYPE
-			, CONTACTLIST_ID
-			, ANI
-			, DNIS
-			, CREATED_DATE)
+		INSERT INTO bake.pds_rawdata(
+			  conversation_id
+			, start_ymd
+			, start_hmss
+			, end_ymd
+			, end_hmss
+			, campaign_id
+			, t_duration
+			, t_dialing
+			, t_ringing
+			, t_agent
+			, agent_id
+			, disconnect_type
+			, contactlist_id
+			, ani
+			, dnis
+			, create_date)
 		VALUES
 		<foreach collection="campaignResult" item="item" separator=",">
 		(
-			  #{item.PARTICIPANT_ID}
-			, #{item.START_DATE}
-			, #{item.START_TIME}
-			, #{item.END_DATE}
-			, #{item.END_TIME}
+			  #{item.CONVERSATION_ID}
+			, #{item.START_YMD}
+			, #{item.START_HMSS}
+			, #{item.END_YMD}
+			, #{item.END_HMSS}
 			, #{item.CAMPAIGN_ID}
 			, #{item.T_DURATION}
 			, #{item.T_DIALING}
-			, #{item.T_INTERACT}
+			, #{item.T_RINGING}
 			, #{item.T_AGENT}
+			, #{item.AGENT_ID}
 			, #{item.DISCONNECT_TYPE}
 			, #{item.CONTACTLIST_ID}
 			, #{item.ANI}
@@ -41,6 +43,34 @@
 			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
 		)
 		</foreach>
-		ON CONFLICT (PARTICIPANT_ID) DO NOTHING
+		ON CONFLICT (conversation_id) DO NOTHING
+	</insert>
+	
+	<insert id="insert15MinData"  parameterType="Map">
+		INSERT INTO bake.pds_15min(
+			  progress_ymd
+			, progress_hm
+			, campaign_id
+			, n_outbound_attempted
+			, n_connected
+			, n_outbound_connected
+			, n_offered
+			, n_outbound_abandoned
+			, create_date)
+		VALUES
+		<foreach collection="campaignResult" item="item" separator=",">
+		(
+			  #{item.PROGRESS_YMD}
+			, #{item.PROGRESS_HM}
+			, #{item.CAMPAIGN_ID}
+			, #{item.N_OUTBOUND_ATTEMPTED}
+			, #{item.N_CONNECTED}
+			, #{item.N_OUTBOUND_CONNECTED}
+			, #{item.N_OFFERED}
+			, #{item.N_OUTBOUND_ABANDONED}
+			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+		)
+		</foreach>
+		ON CONFLICT (PROGRESS_YMD, PROGRESS_HM, CAMPAIGN_ID) DO NOTHING
 	</insert>
 </mapper>

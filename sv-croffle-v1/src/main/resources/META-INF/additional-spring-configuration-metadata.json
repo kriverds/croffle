@@ -1,0 +1,132 @@
+{"properties": [
+  {
+    "name": "scheduler.agent.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.agent.cron'"
+  },
+  {
+    "name": "scheduler.alram.threshold.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.alram.threshold.cron'"
+  },
+  {
+    "name": "scheduler.alram.abandon.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.alram.abandon.cron'"
+  },
+  {
+    "name": "scheduler.alram.agentstat.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.alram.agentstat.cron'"
+  },
+  {
+    "name": "scheduler.realtime.agent.delay",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.realtime.agent.delay'"
+  },
+  {
+    "name": "scheduler.realtime.skill.delay",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.realtime.skill.delay'"
+  },
+  {
+    "name": "scheduler.realtime.queue.delay",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.realtime.queue.delay'"
+  },
+  {
+    "name": "scheduler.ha.check.delay",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.ha.check.delay'"
+  },
+  {
+    "name": "gcloud.client.id",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.client.id'"
+  },
+  {
+    "name": "gcloud.client.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.client.secret'"
+  },
+  {
+    "name": "gcloud.division.home",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.division.home'"
+  },
+  {
+    "name": "gcloud.division.mobile",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.division.mobile'"
+  },
+  {
+    "name": "gcloud.division.business",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.division.business'"
+  },
+  {
+    "name": "scheduler.agent.check.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.agent.check.cron'"
+  },
+  {
+    "name": "scheduler.alram.threshold.delay",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.alram.threshold.delay'"
+  },
+  {
+    "name": "ha.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'ha.timeout'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.ha.password",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.ha.password'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.ha.driverclassname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.ha.driverclassname'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.gcloud.password",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.gcloud.password'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.gcloud.driverclassname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.gcloud.driverclassname'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.lgup.password",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.lgup.password'"
+  },
+  {
+    "name": "com.soluvis.croffle.v1.lgup.driverclassname",
+    "type": "java.lang.String",
+    "description": "A description for 'com.soluvis.croffle.v1.lgup.driverclassname'"
+  },
+  {
+    "name": "apim.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'apim.client-id'"
+  },
+  {
+    "name": "apim.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'apim.secret'"
+  },
+  {
+    "name": "apim.pb.url",
+    "type": "java.lang.String",
+    "description": "A description for 'apim.pb.url'"
+  },
+  {
+    "name": "apim.pv.url",
+    "type": "java.lang.String",
+    "description": "A description for 'apim.pv.url'"
+  }
+]}

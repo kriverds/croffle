@@ -24,38 +24,38 @@ public class UVoiceService {
 		List<Map<String, Object>> result = null;
 
 		switch (ifId) {
-		case "0001":
-			result = uVoiceMapper.ifUVC0001(params);
+		case "1010":
+			result = uVoiceMapper.ifSTA1010(params);
 			break;
-		case "0002":
-			result = uVoiceMapper.ifUVC0002(params);
+		case "1020":
+			result = uVoiceMapper.ifSTA1020(params);
 			break;
-		case "0003":
-			result = uVoiceMapper.ifUVC0003(params);
+		case "1030":
+			result = uVoiceMapper.ifSTA1030(params);
 			break;
-		case "0004":
-			result = uVoiceMapper.ifUVC0004(params);
+		case "1040":
+			result = uVoiceMapper.ifSTA1040(params);
 			break;
-		case "0005":
-			result = uVoiceMapper.ifUVC0005(params);
+		case "1050":
+			result = uVoiceMapper.ifSTA1050(params);
 			break;
-		case "0006":
-			result = uVoiceMapper.ifUVC0006(params);
+		case "1060":
+			result = uVoiceMapper.ifSTA1060(params);
 			break;
-		case "0007":
-			result = uVoiceMapper.ifUVC0007(params);
+		case "1070":
+			result = uVoiceMapper.ifSTA1070(params);
 			break;
-		case "0008":
-			result = uVoiceMapper.ifUVC0008(params);
+		case "1080":
+			result = uVoiceMapper.ifSTA1080(params);
 			break;
-		case "0009":
-			result = uVoiceMapper.ifUVC0009(params);
+		case "1090":
+			result = uVoiceMapper.ifSTA1090(params);
 			break;
-		case "0010":
-			result = uVoiceMapper.ifUVC0010(params);
+		case "1100":
+			result = uVoiceMapper.ifSTA1100(params);
 			break;
-		case "0011":
-			result = uVoiceMapper.ifUVC0011(params);
+		case "1110":
+			result = uVoiceMapper.ifSTA1110(params);
 			break;
 		default:
 			result = new ArrayList<>();

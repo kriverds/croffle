@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.lgup.mapper.AgentMapper">
+	
+	<select id="selectModifiedAgent" parameterType="Map" resultType="CamelHashMap">
+		SELECT 
+			  email
+			, emp_id
+			, emp_name
+			, org_cd
+			, ex_hofc_stts_cd  
+		FROM 
+			bake.user_info
+		WHERE
+			(cti_create_status = 'Y' AND ex_hofc_stts_cd = 'T') OR (cti_create_status = 'N' AND ex_hofc_stts_cd = 'C')
+	</select>
+	
+	<update id="updateHiredAgent"  parameterType="Map">
+		UPDATE
+			bake.user_info
+		SET
+			gcloud_uuid = #{gcloudUUID}
+			, cti_create_status = 'Y'
+		WHERE
+			email = #{email}
+	</update>
+	
+	<update id="updateRetiredAgent"  parameterType="Map">
+		UPDATE
+			bake.user_info
+		SET
+			gcloud_uuid = ''
+			, cti_create_status = 'N'
+		WHERE
+			email = #{email}
+	</update>
+	
+</mapper>

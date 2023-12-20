@@ -5,16 +5,16 @@ import java.util.Map;
 
 public interface UVoiceMapper {
 
-	public List<Map<String,Object>> ifUVC0001(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0002(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0003(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0004(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0005(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0006(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0007(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0008(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0009(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0010(Map<String,Object> params);
-	public List<Map<String,Object>> ifUVC0011(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1010(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1020(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1030(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1040(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1050(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1060(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1070(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1080(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1090(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1100(Map<String,Object> params);
+	public List<Map<String,Object>> ifSTA1110(Map<String,Object> params);
 
 }

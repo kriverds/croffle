@@ -3,12 +3,11 @@ package com.soluvis.croffle.v1.ha.scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.soluvis.croffle.v1.ha.config.HAConfig;
-import com.soluvis.croffle.v1.ha.feign.HAFeignService;
-
-import feign.RetryableException;
+import com.soluvis.croffle.v1.ha.service.HAService;
+import com.soluvis.croffle.v1.util.GVal;
 
 
 /**
@@ -27,28 +26,21 @@ public class HAScheduler {
 	Logger logger = LoggerFactory.getLogger(HAScheduler.class);
 
 	@Autowired
-	HAFeignService hAService;
+	HAService hAService;
 
-//	@Scheduled(fixedDelayString = "${ha.inverval}")
+	@Scheduled(fixedDelayString = "${scheduler.ha.check.delay}")
 	public void checkHA() throws Exception {
-		logger.info("send heartbeat... currentRole[{}]", HAConfig.getCurrentRole());
-		String result = "";
-		try {
-			result = hAService.healthCheck();
-			logger.info("{}", result);
-			if(HAConfig.isEmergencyFlag()) {
-				HAConfig.setEmergencyFlag(false);
-				HAConfig.setRoleDefault();
-				logger.error("set Role Default[{}]", HAConfig.getCurrentRole());
-			}
-		} catch (RetryableException e) {
-			logger.error("HA Error {}", e.getMessage());
-			HAConfig.setEmergencyFlag(true);
-			HAConfig.setRolePrimary();
-			logger.error("set Role Primary[{}]", HAConfig.getCurrentRole());
-		}
+		logger.info("check role... currentRole[{}]", GVal.getHaRole());
+		int result = 0;
+		result = hAService.checkTimeout();
 
-		Thread.sleep(1_000L*1);
+		if("primary".equals(GVal.getHaRole()) && result != 2) {
+			GVal.setHaRole("backup");
+			logger.error("{}", "role change[primary > backup]");
+		} else if(result == 1) {
+			GVal.setHaRole("primary");
+			logger.error("{}", "role change[backup > primary]");
+		}
 	}
 
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.soluvis.croffle.v1.ha.mapper.HAMapper">
+	<select id="initSelect" resultType="Map">
+		SELECT
+			id
+		FROM
+			bake.ha_check
+		WHERE
+			application = 'croffle'
+	</select>
+	<insert id="initInsert" parameterType="Map">
+		INSERT INTO bake.ha_check
+		(
+			  application
+			, id
+			, create_date
+			, modify_date
+		)
+		VALUES
+		(
+			'croffle'
+			, #{id}
+			, TO_CHAR(CURRENT_TIMESTAMP, 'YYYYMMDDHH24MISS')
+			, TO_CHAR(CURRENT_TIMESTAMP, 'YYYYMMDDHH24MISS')
+		)
+	</insert>
+	<select id="checkTimeout" parameterType="Map" resultType="Map">
+		SELECT 
+			id
+		FROM
+		(	
+			SELECT 
+				  application
+				, id
+				, EXTRACT(EPOCH FROM CURRENT_TIMESTAMP-TO_TIMESTAMP(modify_date, 'YYYYMMDDHH24MISS')) AS sec 
+			FROM 
+				bake.ha_check
+		) temp
+		WHERE
+			application = 'croffle'
+		AND
+			(id = #{id} OR sec <![CDATA[>]]> #{timeout})
+	</select>
+	
+	<update id="updateHA" parameterType="Map">
+		UPDATE bake.ha_check
+		SET
+			  id = #{id}
+			, modify_date = TO_CHAR(CURRENT_TIMESTAMP, 'YYYYMMDDHH24MISS')
+		WHERE
+			application = 'croffle'
+	</update>
+</mapper>

@@ -1,6 +1,8 @@
 package com.soluvis.croffle.v1.gcloud.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,8 +84,28 @@ public class RoutingSkillManagementController {
 	 * @notify
 	 *
 	 */
-	@GetMapping(value="/skills/own", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/skills/own/{id}", produces="application/json; charset=UTF-8")
 	public String getUserRoutingskills(HttpServletRequest request
+			, @PathVariable("id") String id) throws Exception{
+		logger.info("{}", id);
+		Map<String, Object> param = new HashMap<>();
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> cMap = new HashMap<>();
+		cMap.put("id", id);
+		list.add(cMap);
+
+		param.put("userList", list);
+		param.put("rUUID", CommUtil.setAttrUUID(request));
+
+		JSONObject result = routingSkillManagementService.getUserRoutingskills(param);
+		result.put("count", result.length());
+
+		result.put("status", 200);
+		logger.info("{}", result);
+		return result.toString();
+	}
+	@PostMapping(value="/skills/own", produces="application/json; charset=UTF-8")
+	public String getUserRoutingskillsPost(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 

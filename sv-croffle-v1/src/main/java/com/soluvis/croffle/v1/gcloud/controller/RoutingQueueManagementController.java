@@ -8,13 +8,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.soluvis.croffle.v1.gcloud.service.RoutingQueueManagementService;
 import com.soluvis.croffle.v1.gcloud.util.CommUtil;
@@ -32,7 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @notify
  *
  */
-@Controller
+@RestController
 @RequestMapping(value = "/v1/api/gcloud/management/queue/routingqueue")
 public class RoutingQueueManagementController {
 
@@ -57,7 +56,7 @@ public class RoutingQueueManagementController {
 	 *
 	 */
 	@GetMapping(value="/queues", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getRoutingQueues(HttpServletRequest request) throws Exception{
+	public String getRoutingQueues(HttpServletRequest request) throws Exception{
 		Map<String, Object> param = new HashMap<>();
 		param.put("rUUID", CommUtil.setAttrUUID(request));
 
@@ -83,7 +82,7 @@ public class RoutingQueueManagementController {
 	 *
 	 */
 	@GetMapping(value="/queues/own", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getUserQueues(HttpServletRequest request
+	public String getUserQueues(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -111,7 +110,7 @@ public class RoutingQueueManagementController {
 	 *
 	 */
 	@GetMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getRoutingQueueMembers(HttpServletRequest request
+	public String getRoutingQueueMembers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -140,7 +139,7 @@ public class RoutingQueueManagementController {
 	 *
 	 */
 	@PostMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String postRoutingQueueMembers(HttpServletRequest request
+	public String postRoutingQueueMembers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -169,7 +168,7 @@ public class RoutingQueueManagementController {
 	 *
 	 */
 	@DeleteMapping(value="/members", produces="application/json; charset=UTF-8")
-	public @ResponseBody String deleteRoutingQueueMember(HttpServletRequest request
+	public String deleteRoutingQueueMember(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 

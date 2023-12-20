@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soluvis.croffle.v1.lgup.memobj.MiniWallBoard;
 import com.soluvis.croffle.v1.lgup.service.MiniWallBoardService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,10 +24,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MiniWallBoardController {
 
 	Logger logger = LoggerFactory.getLogger(MiniWallBoardController.class);
-	
+
 	@Autowired
 	MiniWallBoardService miniWallBoardService;
-	
+
 	/**
 	 * 메서드 설명	: 미니 전광판 화면을 띄워준다.
 	 * @Method Name : viewMiniWallBoardPage
@@ -54,7 +52,7 @@ public class MiniWallBoardController {
 		model.addAttribute("empId", empId);
 		return "agent-present";
 	}
-	
+
 	@RequestMapping(value = "/agent/setting")
 	public String viewMiniWallBoardSetting(Model model, HttpServletRequest request,
 			@RequestParam(value = "empId") String empId) throws Exception {
@@ -90,7 +88,7 @@ public class MiniWallBoardController {
 //		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/stat/total/skill", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getSkillStatTotal(HttpServletRequest request,
 			@RequestParam Map<String, Object> param) throws Exception {
@@ -102,7 +100,7 @@ public class MiniWallBoardController {
 //		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/stat/total/queue", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getQueueStatTotal(HttpServletRequest request,
 			@RequestParam Map<String, Object> param) throws Exception {
@@ -114,31 +112,31 @@ public class MiniWallBoardController {
 //		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/setting/skillgroup", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getSkillGroupList(HttpServletRequest request) throws Exception {
 		JSONObject result = new JSONObject();
 		ObjectMapper om = new ObjectMapper();
 		JSONArray ja = new JSONArray(om.writeValueAsString(miniWallBoardService.getSkillGroupList()));
 		result.put("data", ja);
-		
+
 		result.put("status", 200);
 		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/setting/queuegroup", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getQueueGroupList(HttpServletRequest request) throws Exception {
 		JSONObject result = new JSONObject();
 		ObjectMapper om = new ObjectMapper();
 		JSONArray ja = new JSONArray(om.writeValueAsString(miniWallBoardService.getQueueGroupList()));
 		result.put("data", ja);
-		
+
 		result.put("status", 200);
 		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/skill/list", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getPrivateSkillList(HttpServletRequest request,
 			@RequestParam Map<String, Object> param) throws Exception {
@@ -148,12 +146,12 @@ public class MiniWallBoardController {
 		ObjectMapper om = new ObjectMapper();
 		JSONArray ja = new JSONArray(om.writeValueAsString(miniWallBoardService.getPrivateSkillList(param)));
 		result.put("data", ja);
-		
+
 		result.put("status", 200);
 		logger.info("{}", result);
 		return result.toString();
 	}
-	
+
 	@GetMapping(value = "/agent/queue/list", produces = "application/json; charset=UTF-8")
 	public @ResponseBody String getPrivateQueueList(HttpServletRequest request,
 			@RequestParam Map<String, Object> param) throws Exception {
@@ -162,7 +160,7 @@ public class MiniWallBoardController {
 		ObjectMapper om = new ObjectMapper();
 		JSONArray ja = new JSONArray(om.writeValueAsString(miniWallBoardService.getPrivateQueueList(param)));
 		result.put("data", ja);
-		
+
 		result.put("status", 200);
 		logger.info("{}", result);
 		return result.toString();

@@ -13,5 +13,4 @@ public class SvCroffleBackendV1Application {
 	public static void main(String[] args) {
 		SpringApplication.run(SvCroffleBackendV1Application.class, args);
 	}
-
 }

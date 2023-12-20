@@ -15,7 +15,7 @@ class RoutingSkillManagementServiceTests {
 
 	@Autowired
 	RoutingSkillManagementService service;
-	
+
 	@Test
 	@DisplayName("스킬리스트 가져오기")
 	void testGetRoutingSkillList() {
@@ -26,12 +26,12 @@ class RoutingSkillManagementServiceTests {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	@DisplayName("스킬 추가하기")
 	void testAddRoutingSkill() {
 		Map<String,Object> param = new HashMap<>();
-		
+
 		List<Map<String,Object>> userList = new ArrayList<>();
 		Map<String,Object> user1 = new HashMap<>();
 		user1.put("id", "c3add500-da54-494b-a4de-2ee8ba6255f1");
@@ -40,7 +40,7 @@ class RoutingSkillManagementServiceTests {
 		user1.put("id", "ffa93b72-b4ab-4931-9677-c59f9d77228d");
 		userList.add(user2);
 		param.put("userList", userList);
-		
+
 		List<Map<String,Object>> skillList = new ArrayList<>();
 		Map<String,Object> skill1 = new HashMap<>();
 		skill1.put("id", "985335ed-5e41-45d8-b2ee-7d09591a683e");
@@ -58,7 +58,7 @@ class RoutingSkillManagementServiceTests {
 			e.printStackTrace();
 		}
 	}
-	
+
 //	@Test
 //	@DisplayName("스킬 삭제하기")
 //	void testDeleteRoutingSkill() {
@@ -69,7 +69,7 @@ class RoutingSkillManagementServiceTests {
 //			e.printStackTrace();
 //		}
 //	}
-//	
+//
 //	@Test
 //	@DisplayName("스킬 카트 변경")
 //	void testCartRoutingSkill() {

@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.soluvis.croffle.v1.lgup.mapper.UVoiceMapper;
+import com.soluvis.croffle.v1.lgup.mapper.RecordingMapper;
 
 @Service
 public class RecordingService {
 
 	@Autowired
-	UVoiceMapper uVoiceMapper;
+	RecordingMapper recordingMapper;
 
 	private final Logger logger = LoggerFactory.getLogger(RecordingService.class);
 
@@ -25,38 +25,11 @@ public class RecordingService {
 		List<Map<String, Object>> result = null;
 
 		switch (ifId) {
-		case "0001":
-			result = uVoiceMapper.ifUVC0001(params);
+		case "3010":
+			result = recordingMapper.ifSTA3010(params);
 			break;
-		case "0002":
-			result = uVoiceMapper.ifUVC0002(params);
-			break;
-		case "0003":
-			result = uVoiceMapper.ifUVC0003(params);
-			break;
-		case "0004":
-			result = uVoiceMapper.ifUVC0004(params);
-			break;
-		case "0005":
-			result = uVoiceMapper.ifUVC0005(params);
-			break;
-		case "0006":
-			result = uVoiceMapper.ifUVC0006(params);
-			break;
-		case "0007":
-			result = uVoiceMapper.ifUVC0007(params);
-			break;
-		case "0008":
-			result = uVoiceMapper.ifUVC0008(params);
-			break;
-		case "0009":
-			result = uVoiceMapper.ifUVC0009(params);
-			break;
-		case "0010":
-			result = uVoiceMapper.ifUVC0010(params);
-			break;
-		case "0011":
-			result = uVoiceMapper.ifUVC0011(params);
+		case "3020":
+			result = recordingMapper.ifSTA3020(params);
 			break;
 		default:
 			result = new ArrayList<>();

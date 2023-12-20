@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soluvis.croffle.v1.lgup.mapper.MiniWallBoardMapper;
-import com.soluvis.croffle.v1.lgup.memobj.MiniWallBoard;
+import com.soluvis.croffle.v1.lgup.memobj.RealTimeStat;
 
 @Service
 public class MiniWallBoardService {
@@ -25,8 +25,8 @@ public class MiniWallBoardService {
 		JSONArray result = new JSONArray();
 		String empId = param.get("empId").toString();
 		String[] arrEmpId = empId.split(",");
-		for (int i = 0; i < arrEmpId.length; i++) {
-			result.put(MiniWallBoard.getAgentStat(arrEmpId[i]));
+		for (String element : arrEmpId) {
+			result.put(RealTimeStat.getAgentStat(element));
 		}
 		return result;
 	}
@@ -34,8 +34,8 @@ public class MiniWallBoardService {
 		JSONArray result = new JSONArray();
 		String queueId = param.get("queueId").toString();
 		String[] arrQueueId = queueId.split(",");
-		for (int i = 0; i < arrQueueId.length; i++) {
-			result.put(MiniWallBoard.getQueueStat(arrQueueId[i]));
+		for (String element : arrQueueId) {
+			result.put(RealTimeStat.getQueueStat(element));
 		}
 		return result;
 	}
@@ -43,8 +43,8 @@ public class MiniWallBoardService {
 		JSONArray result = new JSONArray();
 		String skillId = param.get("skillId").toString();
 		String[] arrSkillId = skillId.split(",");
-		for (int i = 0; i < arrSkillId.length; i++) {
-			result.put(MiniWallBoard.getSkillStat(arrSkillId[i]));
+		for (String element : arrSkillId) {
+			result.put(RealTimeStat.getSkillStat(element));
 		}
 		return result;
 	}
@@ -57,8 +57,8 @@ public class MiniWallBoardService {
 	public List<Map<String, Object>> getPrivateSkillList(Map<String,Object> param) throws Exception {
 		String[] strArr = param.get("skillGroupList").toString().split(",");
 		List<Integer> skillGroupList = new ArrayList<>();
-		for (int i = 0; i < strArr.length; i++) {
-			skillGroupList.add(Integer.parseInt(strArr[i]));
+		for (String element : strArr) {
+			skillGroupList.add(Integer.parseInt(element));
 		}
 		logger.info("{}", skillGroupList);
 		param.put("skillGroupList", skillGroupList);
@@ -67,8 +67,8 @@ public class MiniWallBoardService {
 	public List<Map<String, Object>> getPrivateQueueList(Map<String,Object> param) throws Exception {
 		String[] strArr = param.get("queueGroupList").toString().split(",");
 		List<Integer> queueGroupList = new ArrayList<>();
-		for (int i = 0; i < strArr.length; i++) {
-			queueGroupList.add(Integer.parseInt(strArr[i]));
+		for (String element : strArr) {
+			queueGroupList.add(Integer.parseInt(element));
 		}
 		logger.info("{}", queueGroupList);
 

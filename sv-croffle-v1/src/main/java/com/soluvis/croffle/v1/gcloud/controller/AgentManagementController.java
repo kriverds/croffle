@@ -8,14 +8,13 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.soluvis.croffle.v1.gcloud.service.AgentManagementService;
 import com.soluvis.croffle.v1.gcloud.util.CommUtil;
@@ -33,7 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @notify
  *
  */
-@Controller
+@RestController
 @RequestMapping(value = "/v1/api/gcloud/management/agent")
 public class AgentManagementController {
 
@@ -58,7 +57,7 @@ public class AgentManagementController {
 	 *
 	 */
 	@GetMapping(value="/users", produces="application/json; charset=UTF-8")
-	public @ResponseBody String getAvailableUserList(HttpServletRequest request ) throws Exception{
+	public String getAvailableUserList(HttpServletRequest request) throws Exception{
 		Map<String, Object> param = new HashMap<>();
 		param.put("rUUID", CommUtil.setAttrUUID(request));
 
@@ -85,7 +84,7 @@ public class AgentManagementController {
 	 *
 	 */
 	@PostMapping(value="/users", produces="application/json; charset=UTF-8")
-	public @ResponseBody String postUsers(HttpServletRequest request
+	public String postUsers(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception {
 		logger.info("{}", param);
 
@@ -114,7 +113,7 @@ public class AgentManagementController {
 	 *
 	 */
 	@PatchMapping(value="/users", produces="application/json; charset=UTF-8")
-	public @ResponseBody String patchUser(HttpServletRequest request
+	public String patchUser(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
@@ -142,13 +141,25 @@ public class AgentManagementController {
 	 *
 	 */
 	@DeleteMapping(value="/users", produces="application/json; charset=UTF-8")
-	public @ResponseBody String deleteUser(HttpServletRequest request
+	public String deleteUser(HttpServletRequest request
 			, @RequestBody Map<String,Object> param) throws Exception{
 		logger.info("{}", param);
 
 		param.put("rUUID", CommUtil.setAttrUUID(request));
 
 		JSONObject result = agentManagementService.deleteUser(param);
+
+		result.put("status", 200);
+		logger.info("{}", result);
+		return result.toString();
+	}
+
+	@GetMapping(value="/roles", produces="application/json; charset=UTF-8")
+	public String getAuthorizationRoles(HttpServletRequest request) throws Exception{
+		Map<String, Object> param = new HashMap<>();
+		param.put("rUUID", CommUtil.setAttrUUID(request));
+
+		JSONObject result = agentManagementService.getAuthorizationRoles(param);
 
 		result.put("status", 200);
 		logger.info("{}", result);

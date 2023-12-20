@@ -9,11 +9,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.soluvis.croffle.v1.gcloud.service.CampaignStatisticService;
 import com.soluvis.croffle.v1.gcloud.util.CommUtil;
@@ -30,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @notify
  *
  */
-@Controller
+@RestController
 @RequestMapping(value = "/v1/api/gcloud/statistic/campaign")
 public class CampaignStatisticController {
 
@@ -41,7 +40,7 @@ public class CampaignStatisticController {
 	ObjectMapper om = new ObjectMapper();
 
 	@GetMapping(value = "/campaigns", produces = "application/json; charset=UTF-8")
-	public @ResponseBody String getOutboundCampaigns(HttpServletRequest request) throws Exception {
+	public String getOutboundCampaigns(HttpServletRequest request) throws Exception {
 		Map<String, Object> param = new HashMap<>();
 		param.put("rUUID", CommUtil.setAttrUUID(request));
 
@@ -63,7 +62,7 @@ public class CampaignStatisticController {
 	}
 
 	@GetMapping(value = "/campaigns/aggregate", produces = "application/json; charset=UTF-8")
-	public @ResponseBody String getCampaignAggregateQuery(HttpServletRequest request, @RequestBody Map<String, Object> param)
+	public String getCampaignAggregateQuery(HttpServletRequest request, @RequestParam Map<String, Object> param)
 			throws Exception {
 		logger.info("{}", param);
 
@@ -91,7 +90,7 @@ public class CampaignStatisticController {
 	 *
 	 */
 	@GetMapping(value = "/campaigns/conversation", produces = "application/json; charset=UTF-8")
-	public @ResponseBody String campaignConversationQuery(HttpServletRequest request, @RequestBody Map<String, Object> param)
+	public String campaignConversationQuery(HttpServletRequest request, @RequestParam Map<String, Object> param)
 			throws Exception {
 		logger.info("{}", param);
 
