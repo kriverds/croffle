@@ -1,5 +1,6 @@
-package com.soluvis.croffle.v1.gcloud.util;
+package com.soluvis.croffle.v1.util;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -13,6 +14,16 @@ public class CommUtil {
 	public static UUID setAttrUUID(HttpServletRequest request) {
 		UUID rUUID = UUID.randomUUID();
 		request.setAttribute("rUUID", rUUID);
+		return rUUID;
+	}
+
+	public static UUID getAttrUUID(Map<String, Object> param) {
+		UUID rUUID = null;
+		if (param.get("rUUID") == null) {
+			rUUID = UUID.randomUUID();
+		} else {
+			rUUID = (UUID) param.get("rUUID");
+		}
 		return rUUID;
 	}
 
@@ -40,6 +51,13 @@ public class CommUtil {
 			return Integer.parseInt(parents.get(param).toString());
 		} catch (Exception e) {
 			return 0;
+		}
+	}
+	public static JSONObject getJJSONObject(JSONObject parents, String param) {
+		try {
+			return parents.getJSONObject(param);
+		} catch (Exception e) {
+			return new JSONObject();
 		}
 	}
 }

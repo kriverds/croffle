@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Bean;
 
 import feign.RequestInterceptor;
 
-public class APIMServiceHeaderConfig {
+public class APIMFeignServiceHeaderConfig {
 
     @Bean
     RequestInterceptor apimRequestInterceptor() {
-		return new APIMServiceHeaderInterceptor();
+		return new APIMFeignServiceHeaderInterceptor();
 	}
 }

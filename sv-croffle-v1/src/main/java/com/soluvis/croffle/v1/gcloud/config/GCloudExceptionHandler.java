@@ -43,7 +43,6 @@ public class GCloudExceptionHandler {
 				hs = HttpStatus.BAD_REQUEST;
 				UUID rUUID = (UUID)request.getAttribute("rUUID");
 				GCConnector.close(rUUID);
-//				GCConnector.getJobList().clear();
 				errorMsg = "GCloud API ERROR";
 			}else if(ex instanceof ClassCastException) {
 				hs = HttpStatus.BAD_REQUEST;

@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.soluvis.croffle.v1.lgup.config.APIMServiceHeaderConfig;
+import com.soluvis.croffle.v1.lgup.config.APIMFeignServiceHeaderConfig;
 
-@FeignClient(name = "APIMClientPublicService", url = "${apim.pb.url}", configuration = APIMServiceHeaderConfig.class)
+/**
+ * 클래스 설명	: APIM Public 존 관련
+ * @Class Name 	: APIMClientPublicService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
+@FeignClient(name = "APIMClientPublicService", url = "${apim.pb.url}", configuration = APIMFeignServiceHeaderConfig.class)
 public interface APIMClientPublicService {
 
 	// 모바일 고객센터 상담사실적집계 전송 : IF-CCS-856

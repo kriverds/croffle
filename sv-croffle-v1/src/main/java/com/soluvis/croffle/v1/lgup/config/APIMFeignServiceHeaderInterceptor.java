@@ -9,9 +9,19 @@ import com.soluvis.croffle.v1.util.GVal;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
-public class APIMServiceHeaderInterceptor implements RequestInterceptor {
+/**
+ * 클래스 설명	: APIM Feign 수행 시 헤더 추가
+ * @Class Name 	: APIMFeignServiceHeaderInterceptor
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
+public class APIMFeignServiceHeaderInterceptor implements RequestInterceptor {
 
-	private final Logger logger = LoggerFactory.getLogger(APIMServiceHeaderInterceptor.class);
+	private final Logger logger = LoggerFactory.getLogger(APIMFeignServiceHeaderInterceptor.class);
 
 	@Value("${apim.client-id}")
 	String clientId;

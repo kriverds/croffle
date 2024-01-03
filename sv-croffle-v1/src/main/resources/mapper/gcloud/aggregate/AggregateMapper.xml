@@ -2,7 +2,7 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
-<mapper namespace="com.soluvis.croffle.v1.gcloud.mapper.VerifyMapper">
+<mapper namespace="com.soluvis.croffle.v1.gcloud.mapper.AggregateMapper">
 	
 	<insert id="insertAgentStatic"  parameterType="Map">
 		INSERT INTO bake.agent_15min
@@ -22,7 +22,7 @@
 		VALUES
 		<foreach collection="agentResult" item="item" separator=",">
 		(
-			  #{item.PROGRESS_YMD}, #{item.PROGRESS_HM}, #{item.USER_ID}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
+			  #{item.progressYMD}, #{item.progressHM}, #{item.userId}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
 			, #{item.nConnected}, #{item.nConsult}, #{item.nConsultTransferred}, #{item.nError}, #{item.nOffered}
 			, #{item.nOutbound}, #{item.nOutboundAbandoned}, #{item.nOutboundAttempted}, #{item.nOutboundConnected}, #{item.nOverSla}
 			, #{item.nStateTransitionError}, #{item.nTransferred}, #{item.oExternalMediaCount}, #{item.oMediaCount}, #{item.oMessageTurn}
@@ -34,18 +34,18 @@
 			, #{item.tTalk}, #{item.tTalkComplete}, #{item.tUserResponseTime}, #{item.tVoicemail}, #{item.tWait}
 			<choose>
 				<when test="item.statNameList.size!=0">
-			, array[<foreach collection="item.statNameList" item="name" separator=",">#{name}</foreach>]
+			, ARRAY[<foreach collection="item.statNameList" item="name" separator=",">#{name}</foreach>]
 				</when>
 				<otherwise>
-			, null
+			, NULL
 				</otherwise>
 			</choose>
 			<choose>
 				<when test="item.statValueList.size!=0">
-			, array[<foreach collection="item.statValueList" item="value" separator=",">#{value}</foreach>]
+			, ARRAY[<foreach collection="item.statValueList" item="value" separator=",">#{value}</foreach>]
 				</when>
 				<otherwise>
-			, null
+			, NULL
 				</otherwise>
 			</choose>
 			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
@@ -72,7 +72,7 @@
 		VALUES
 		<foreach collection="queueResult" item="item" separator=",">
 		(
-			  #{item.PROGRESS_YMD}, #{item.PROGRESS_HM}, #{item.QUEUE_ID}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
+			  #{item.progressYMD}, #{item.progressHM}, #{item.queueId}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
 			, #{item.nConnected}, #{item.nConsult}, #{item.nConsultTransferred}, #{item.nError}, #{item.nOffered}
 			, #{item.nOutbound}, #{item.nOutboundAbandoned}, #{item.nOutboundAttempted}, #{item.nOutboundConnected}, #{item.nOverSla}
 			, #{item.nStateTransitionError}, #{item.nTransferred}, #{item.oExternalMediaCount}, #{item.oMediaCount}, #{item.oMessageTurn}
@@ -106,7 +106,7 @@
 		VALUES
 		<foreach collection="skillResult" item="item" separator=",">
 		(
-			  #{item.PROGRESS_YMD}, #{item.PROGRESS_HM}, #{item.SKILL_ID}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
+			  #{item.progressYMD}, #{item.progressHM}, #{item.skillId}, #{item.nBlindTransferred}, #{item.nCobrowseSessions}
 			, #{item.nConnected}, #{item.nConsult}, #{item.nConsultTransferred}, #{item.nError}, #{item.nOffered}
 			, #{item.nOutbound}, #{item.nOutboundAbandoned}, #{item.nOutboundAttempted}, #{item.nOutboundConnected}, #{item.nOverSla}
 			, #{item.nStateTransitionError}, #{item.nTransferred}, #{item.oExternalMediaCount}, #{item.oMediaCount}, #{item.oMessageTurn}
@@ -121,6 +121,21 @@
 		</foreach>
 		ON CONFLICT (progress_ymd, progress_hm, skill_id) DO NOTHING
 	</insert>
+	
+	<delete id="deleteAgentDayData"  parameterType="Map">
+		DELETE FROM bake.agent_15min
+		WHERE progress_ymd = #{startDate}
+	</delete>
+	
+	<delete id="deleteSkillDayData"  parameterType="Map">
+		DELETE FROM bake.skill_15min
+		WHERE progress_ymd = #{startDate}
+	</delete>
+	
+	<delete id="deleteQueueDayData"  parameterType="Map">
+		DELETE FROM bake.queue_15min
+		WHERE progress_ymd = #{startDate}
+	</delete>
 	
 	
 </mapper>

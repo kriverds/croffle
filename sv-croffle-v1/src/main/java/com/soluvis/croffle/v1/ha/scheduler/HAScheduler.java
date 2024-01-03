@@ -14,7 +14,7 @@ import com.soluvis.croffle.v1.util.GVal;
  * 클래스 설명	: HA Heartbeat Check Scheduler
  * @Class Name 	: HAScheduler
  * @date   		: 2023. 10. 17.
- * @author   	: Riverds
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify

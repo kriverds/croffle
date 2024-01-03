@@ -13,12 +13,22 @@ import org.springframework.stereotype.Service;
 
 import com.soluvis.croffle.v1.lgup.mapper.UCubeMapper;
 
+/**
+ * 클래스 설명	: 유큐브 인터페이스 서비스
+ * @Class Name 	: UCubeService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
 public class UCubeService {
 
 	@Autowired
 	UCubeMapper uCubeMapper;
-	
+
 	@Autowired
 	APIMService apimSercice;
 
@@ -28,7 +38,7 @@ public class UCubeService {
 		JSONObject jResult = null;
 		List<Map<String, Object>> lmResult = null;
 		logger.info("UVoice I/F ID{}", ifId);
-		
+
 
 		switch (ifId) {
 		case "0010":
@@ -90,7 +100,7 @@ public class UCubeService {
 		}
 		return jResult;
 	}
-	
+
 	public JSONObject ifSTA0010(Map<String, Object> params) throws Exception{
 		return apimSercice.sendSMS(params);
 	}

@@ -9,12 +9,17 @@
 			  email
 			, emp_id
 			, emp_name
-			, org_cd
+			, a.org_cd
+			, b.channel
 			, ex_hofc_stts_cd  
+			, ex_dutyname 
+			, b.fl_org_name
 		FROM 
-			bake.user_info
+			  bake.user_info a
+			, bake.v_org_info b
 		WHERE
-			(cti_create_status = 'Y' AND ex_hofc_stts_cd = 'T') OR (cti_create_status = 'N' AND ex_hofc_stts_cd = 'C')
+			a.org_cd = b.org_cd
+		AND	(cti_create_status = 'Y' AND ex_hofc_stts_cd = 'T') OR (cti_create_status = 'N' AND ex_hofc_stts_cd = 'C')
 	</select>
 	
 	<update id="updateHiredAgent"  parameterType="Map">

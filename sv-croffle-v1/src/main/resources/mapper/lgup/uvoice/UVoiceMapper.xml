@@ -6,248 +6,248 @@
 	
 	<select id="ifUVC0001" parameterType="Map" resultType="Map">
 		SELECT 
-			  '20231110' as end_date
-			, '09' as end_hourly
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, 'T101010' as employee_id
-			, 0 as media_id
-			, 0 as center_id
-			, 0 as call_kind
-			, 0 as ready_time
-			, 0 as ready_count
-			, 0 as busy_time
-			, 0 as busy_count
-			, 0 as acw_time
-			, 0 as acw_count
-			, 0 as nrd_time
-			, 0 as nrd_count
+			  '20231110' AS end_date
+			, '09' AS end_hourly
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, 'T101010' AS employee_id
+			, 0 AS media_id
+			, 0 AS center_id
+			, 0 AS call_kind
+			, 0 AS ready_time
+			, 0 AS ready_count
+			, 0 AS busy_time
+			, 0 AS busy_count
+			, 0 AS acw_time
+			, 0 AS acw_count
+			, 0 AS nrd_time
+			, 0 AS nrd_count
 	</select>
 	<select id="ifUVC0002" parameterType="Map" resultType="Map">
 		SELECT 
-			  '20231110' as end_date
-			, '09' as end_hourly
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, 'T101010' as employee_id
-			, 0 as state_id
-			, 0 as reason_id
-			, 0 as media_id
-			, 0 as center_id
-			, 0 as call_kind
-			, 0 as reason_time
-			, 0 as reason_count
+			  '20231110' AS end_date
+			, '09' AS end_hourly
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, 'T101010' AS employee_id
+			, 0 AS state_id
+			, 0 AS reason_id
+			, 0 AS media_id
+			, 0 AS center_id
+			, 0 AS call_kind
+			, 0 AS reason_time
+			, 0 AS reason_count
 	</select>
 	<select id="ifUVC0003" parameterType="Map" resultType="Map">
 		SELECT 
-			  '20231110' as end_date
-			, '09' as end_hourly
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, 'T101010' as employee_id
-			, 0 as media_id
-			, 0 as skill_id
-			, 0 as queue_id
-			, 0 as call_kind
-			, 0 as call_type
-			, 0 as center_id
-			, 0 as distribute_count
-			, 0 as answer_count
-			, 0 as answer_time
-			, 0 as abandon_count
-			, 0 as abandon_time
-			, 0 as ib_hangup_count
+			  '20231110' AS end_date
+			, '09' AS end_hourly
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, 'T101010' AS employee_id
+			, 0 AS media_id
+			, 0 AS skill_id
+			, 0 AS queue_id
+			, 0 AS call_kind
+			, 0 AS call_type
+			, 0 AS center_id
+			, 0 AS distribute_count
+			, 0 AS answer_count
+			, 0 AS answer_time
+			, 0 AS abandon_count
+			, 0 AS abandon_time
+			, 0 AS ib_hangup_count
 	</select>
 	<select id="ifUVC0004" parameterType="Map" resultType="Map">
 		SELECT 
-			  '20231110' as end_date
-			, '09' as end_hourly
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, 'T101010' as employee_id
-			, 0 as state_id
-			, 0 as reason_id
-			, 0 as media_id
-			, 0 as skill_id
-			, 0 as call_kind
-			, 0 as call_type
-			, 0 as center_id
-			, 0 as reason_time
-			, 0 as reason_count
+			  '20231110' AS end_date
+			, '09' AS end_hourly
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, 'T101010' AS employee_id
+			, 0 AS state_id
+			, 0 AS reason_id
+			, 0 AS media_id
+			, 0 AS skill_id
+			, 0 AS call_kind
+			, 0 AS call_type
+			, 0 AS center_id
+			, 0 AS reason_time
+			, 0 AS reason_count
 	</select>
 	<select id="ifUVC0005" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as centerId
-			, 'T101010' as employee_id
-			, 0 as tenant_id
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, '12123' as login_id
-			, '테스트1' as employee_name
-			, '1234' as employee_paswd
-			, 0 as employee_calss
-			, 'asdf' as employee_duty
-			, '123@123.com' as email_addr
-			, 0 as blend_kind
-			, 0 as default_queue
-			, 0 as permit_id
-			, 0 as logoff_reason
-			, 'skill1' as skill_depth1
-			, 'skill2' as skill_depth2
-			, 'skill3' as skill_depth3
-			, 'skill4' as skill_depth4
-			, 'skill5' as skill_depth5
-			, 'skill6' as skill_depth6
-			, 'skill7' as skill_depth7
-			, 'skill8' as skill_depth8
-			, 'skill9' as skill_depth9
-			, 'skill10' as skill_depth10
-			, '18' as work_hours
-			, '18' as joining_date
-			, '18' as leaving_date
-			, 0 as monitor_flag
-			, '' as image_file_end_date
-			, '' as employee_alias
-			, '' as send_file_size
-			, '' as end_update_date
-			, '' as update_user
-			, '' as user_define1
-			, '' as user_define2
-			, '' as user_define3
-			, '' as tel_home
-			, '' as tel_cel_phone
-			, '' as tel_fax
-			, '' as postal_code
-			, '' as city_name
-			, '' as address_info
-			, '' as passwd_update_date
+			  0 AS centerId
+			, 'T101010' AS employee_id
+			, 0 AS tenant_id
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, '12123' AS login_id
+			, '테스트1' AS employee_name
+			, '1234' AS employee_paswd
+			, 0 AS employee_calss
+			, 'asdf' AS employee_duty
+			, '123@123.com' AS email_addr
+			, 0 AS blend_kind
+			, 0 AS default_queue
+			, 0 AS permit_id
+			, 0 AS logoff_reason
+			, 'skill1' AS skill_depth1
+			, 'skill2' AS skill_depth2
+			, 'skill3' AS skill_depth3
+			, 'skill4' AS skill_depth4
+			, 'skill5' AS skill_depth5
+			, 'skill6' AS skill_depth6
+			, 'skill7' AS skill_depth7
+			, 'skill8' AS skill_depth8
+			, 'skill9' AS skill_depth9
+			, 'skill10' AS skill_depth10
+			, '18' AS work_hours
+			, '18' AS joining_date
+			, '18' AS leaving_date
+			, 0 AS monitor_flag
+			, '' AS image_file_end_date
+			, '' AS employee_alias
+			, '' AS send_file_size
+			, '' AS end_update_date
+			, '' AS update_user
+			, '' AS user_define1
+			, '' AS user_define2
+			, '' AS user_define3
+			, '' AS tel_home
+			, '' AS tel_cel_phone
+			, '' AS tel_fax
+			, '' AS postal_code
+			, '' AS city_name
+			, '' AS address_info
+			, '' AS passwd_update_date
 	</select>
 	<select id="ifUVC0006" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as center_id
-			, 0 as tenant_id
-			, 0 as employee_sub_grp_id
-			, 0 as employee_grp_id
-			, '' as employee_sub_grp_name
-			, 0 as monitor_flag
+			  0 AS center_id
+			, 0 AS tenant_id
+			, 0 AS employee_sub_grp_id
+			, 0 AS employee_grp_id
+			, '' AS employee_sub_grp_name
+			, 0 AS monitor_flag
 	</select>
 	<select id="ifUVC0007" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as center_id
-			, 0 as tenant_id
-			, 0 as employee_sub_grp_id
-			, 0 as employee_sub_part_id
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, '' as employee_sub_part_name
-			, 0 as monitor_flag
+			  0 AS center_id
+			, 0 AS tenant_id
+			, 0 AS employee_sub_grp_id
+			, 0 AS employee_sub_part_id
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, '' AS employee_sub_part_name
+			, 0 AS monitor_flag
 	</select>
 	<select id="ifUVC0008" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as center_id
-			, 0 as tenant_id
-			, '' as tenant_name
-			, 0 as service_level_calc
+			  0 AS center_id
+			, 0 AS tenant_id
+			, '' AS tenant_name
+			, 0 AS service_level_calc
 	</select>
 	<select id="ifUVC0009" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as center_id
-			, 0 as tenant_id
-			, 0 as employee_grp_id
-			, '' as employee_grp_name
-			, 0 as monitor_flag
+			  0 AS center_id
+			, 0 AS tenant_id
+			, 0 AS employee_grp_id
+			, '' AS employee_grp_name
+			, 0 AS monitor_flag
 	</select>
 	<select id="ifUVC0010" parameterType="Map" resultType="Map">
 		SELECT 
-			  0 as center_id
-			, 0 as tenant_id
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, '' as employee_part_name
-			, 0 as monitor_flag
+			  0 AS center_id
+			, 0 AS tenant_id
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, '' AS employee_part_name
+			, 0 AS monitor_flag
 	</select>
 	<select id="ifUVC0011" parameterType="Map" resultType="Map">
 		SELECT 
-			  '20231110' as end_date
-			, '09' as end_hourly
-			, 0 as employee_grp_id
-			, 0 as employee_part_id
-			, 'T101010' as employee_id
-			, 0 as skill_id
-			, 0 as media_id
-			, 0 as call_kind
-			, 0 as center_id
-			, 0 as ib_conn_count
-			, 0 as ib_call_count
-			, 0 as ib_call_time
-			, 0 as ob_conn_count
-			, 0 as ob_conn_time
-			, 0 as ob_call_count
-			, 0 as ob_call_time
-			, 0 as it_conn_s_count
-			, 0 as it_conn_r_count
-			, 0 as it_call_s_count
-			, 0 as it_call_s_time
-			, 0 as it_call_r_count
-			, 0 as it_call_r_time
-			, 0 as cs_conn_s_count
-			, 0 as cs_conn_r_count
-			, 0 as cs_call_s_count
-			, 0 as cs_call_s_time
-			, 0 as cs_call_r_count
-			, 0 as cs_call_r_time
-			, 0 as tr_call_s_count
-			, 0 as tr_call_s_time
-			, 0 as tr_call_r_count
-			, 0 as tr_call_r_time
-			, 0 as cf_call_s_count
-			, 0 as cf_call_s_time
-			, 0 as cf_call_r_count
-			, 0 as cf_call_r_time
-			, 0 as grp_tr_count
-			, 0 as grp_tr_time
-			, 0 as abandon_count
-			, 0 as abandon_time
-			, 0 as abandon_ret_count
-			, 0 as abandon_ret_time
-			, 0 as hold_count
-			, 0 as hold_time
-			, 0 as call_wait_count
-			, 0 as call_wait_time
-			, 0 as dialring_count
-			, 0 as dialring_time
-			, 0 as obv_call_count
-			, 0 as obv_call_time
-			, 0 as ib_hangup_count
-			, 0 as ob_hangup_count
-			, 0 as tr_hangup_count
-			, 0 as ib_direct_conn_count
-			, 0 as direct_call_count
-			, 0 as direct_call_time
-			, 0 as direct_abandon_count
-			, 0 as direct_abandon_time
-			, 0 as grp_tr_conn_r_count
-			, 0 as grp_tr_call_r_count
-			, 0 as grp_tr_call_r_time
-			, 0 as grp_tr_call_ret_count
-			, 0 as grp_tr_call_ret_time
-			, 0 as grp_tr_abandon_r_count
-			, 0 as grp_tr_abandon_r_time
-			, 0 as other_ib_conn_count
-			, 0 as other_ib_call_count 
-			, 0 as other_ib_call_time
-			, 0 as ib_abandon_count
-			, 0 as ib_abandon_time
-			, 0 as ob_abandon_count
-			, 0 as ob_abandon_time
-			, 0 as it_abandon_count
-			, 0 as it_abandon_time
-			, 0 as gr_tr_ib_abandon_count
-			, 0 as gr_tr_ib_abandon_time
-			, 0 as gr_tr_ob_abandon_count
-			, 0 as gr_tr_ob_abandon_time
-			, 0 as gr_tr_it_abandon_count
-			, 0 as gr_tr_it_abandon_time
+			  '20231110' AS end_date
+			, '09' AS end_hourly
+			, 0 AS employee_grp_id
+			, 0 AS employee_part_id
+			, 'T101010' AS employee_id
+			, 0 AS skill_id
+			, 0 AS media_id
+			, 0 AS call_kind
+			, 0 AS center_id
+			, 0 AS ib_conn_count
+			, 0 AS ib_call_count
+			, 0 AS ib_call_time
+			, 0 AS ob_conn_count
+			, 0 AS ob_conn_time
+			, 0 AS ob_call_count
+			, 0 AS ob_call_time
+			, 0 AS it_conn_s_count
+			, 0 AS it_conn_r_count
+			, 0 AS it_call_s_count
+			, 0 AS it_call_s_time
+			, 0 AS it_call_r_count
+			, 0 AS it_call_r_time
+			, 0 AS cs_conn_s_count
+			, 0 AS cs_conn_r_count
+			, 0 AS cs_call_s_count
+			, 0 AS cs_call_s_time
+			, 0 AS cs_call_r_count
+			, 0 AS cs_call_r_time
+			, 0 AS tr_call_s_count
+			, 0 AS tr_call_s_time
+			, 0 AS tr_call_r_count
+			, 0 AS tr_call_r_time
+			, 0 AS cf_call_s_count
+			, 0 AS cf_call_s_time
+			, 0 AS cf_call_r_count
+			, 0 AS cf_call_r_time
+			, 0 AS grp_tr_count
+			, 0 AS grp_tr_time
+			, 0 AS abandon_count
+			, 0 AS abandon_time
+			, 0 AS abandon_ret_count
+			, 0 AS abandon_ret_time
+			, 0 AS hold_count
+			, 0 AS hold_time
+			, 0 AS call_wait_count
+			, 0 AS call_wait_time
+			, 0 AS dialring_count
+			, 0 AS dialring_time
+			, 0 AS obv_call_count
+			, 0 AS obv_call_time
+			, 0 AS ib_hangup_count
+			, 0 AS ob_hangup_count
+			, 0 AS tr_hangup_count
+			, 0 AS ib_direct_conn_count
+			, 0 AS direct_call_count
+			, 0 AS direct_call_time
+			, 0 AS direct_abandon_count
+			, 0 AS direct_abandon_time
+			, 0 AS grp_tr_conn_r_count
+			, 0 AS grp_tr_call_r_count
+			, 0 AS grp_tr_call_r_time
+			, 0 AS grp_tr_call_ret_count
+			, 0 AS grp_tr_call_ret_time
+			, 0 AS grp_tr_abandon_r_count
+			, 0 AS grp_tr_abandon_r_time
+			, 0 AS other_ib_conn_count
+			, 0 AS other_ib_call_count 
+			, 0 AS other_ib_call_time
+			, 0 AS ib_abandon_count
+			, 0 AS ib_abandon_time
+			, 0 AS ob_abandon_count
+			, 0 AS ob_abandon_time
+			, 0 AS it_abandon_count
+			, 0 AS it_abandon_time
+			, 0 AS gr_tr_ib_abandon_count
+			, 0 AS gr_tr_ib_abandon_time
+			, 0 AS gr_tr_ob_abandon_count
+			, 0 AS gr_tr_ob_abandon_time
+			, 0 AS gr_tr_it_abandon_count
+			, 0 AS gr_tr_it_abandon_time
 	</select>
 </mapper>
 

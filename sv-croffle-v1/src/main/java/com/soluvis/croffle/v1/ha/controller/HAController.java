@@ -19,18 +19,32 @@ import jakarta.servlet.http.HttpServletRequest;
  * 클래스 설명	: 서버 상태체크 컨트롤러
  * @Class Name 	: HAController
  * @date   		: 2023. 12. 20.
- * @author   	: Riverds
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- * 
+ *
  */
 @Controller
 @RequestMapping(value = "/health")
 public class HAController {
 
 	Logger logger = LoggerFactory.getLogger(HAController.class);
-	@GetMapping(value="/", produces="application/json; charset=UTF-8")
+	
+	/**
+	 * 메서드 설명	: 헬스체크
+	 * @Method Name : healthCheck
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	@GetMapping(value="", produces="application/json; charset=UTF-8")
 	public @ResponseBody String healthCheck(HttpServletRequest request ) throws Exception{
 		logger.info("currentRole[{}]", GVal.getHaRole());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

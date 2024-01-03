@@ -4,9 +4,11 @@ import java.util.LinkedHashMap;
 
 import com.google.common.base.CaseFormat;
 
-public class CamelHashMap extends LinkedHashMap {
+public class CamelHashMap extends LinkedHashMap<Object, Object> {
 
-    @Override
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public Object put(Object key, Object value) {
         return super.put(toLowerCamel((String) key), value);
     }

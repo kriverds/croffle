@@ -11,14 +11,14 @@ import com.soluvis.croffle.v1.lgup.service.MiniWallBoardService;
 
 
 /**
- * 클래스 설명	: CTI 상담원 연동 스케쥴러
- * @Class Name 	: AgentScheduler
- * @date   		: 2023. 11. 6.
- * @author   	: Riverds
+ * 클래스 설명	: 실시간 통계 조회 스케줄러
+ * @Class Name 	: RealTimeStatScheduler
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- *
+ * 
  */
 @Component
 public class RealTimeStatScheduler {

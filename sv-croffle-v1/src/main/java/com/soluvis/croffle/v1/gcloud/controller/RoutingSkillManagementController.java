@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soluvis.croffle.v1.gcloud.service.RoutingSkillManagementService;
-import com.soluvis.croffle.v1.gcloud.util.CommUtil;
+import com.soluvis.croffle.v1.util.CommUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * 클래스 설명	: 라우팅스킬 매니지먼트 컨트롤러
  * @Class Name 	: RoutingSkillManagementController
  * @date   		: 2023. 10. 10.
- * @author   	: Riverds
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify
@@ -49,7 +49,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	: 라우팅스킬 리스트를 조회한다.
 	 * @Method Name : getRoutingSkillList
 	 * @date   		: 2023. 10. 10.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request
@@ -74,7 +74,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	: 상담사가 보유한 라우팅스킬 리스트를 조회한다.
 	 * @Method Name : getUserRoutingskills
 	 * @date   		: 2023. 10. 10.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request
@@ -123,7 +123,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	: 상담사에게 라우팅스킬을 추가한다.
 	 * @Method Name : postUserRoutingskills
 	 * @date   		: 2023. 10. 10.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request
@@ -153,7 +153,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	: 상담사에게 부여된 라우팅스킬을 삭제한다.
 	 * @Method Name : deleteUserRoutingskill
 	 * @date   		: 2023. 10. 10.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request
@@ -183,7 +183,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	- 상담원이 보유중인 스킬을 카트에 있는 스킬로 교체한다.
 	 * @Method Name : changeSkillBySkillCart
 	 * @date   		: 2023. 9. 26.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request
@@ -211,7 +211,7 @@ public class RoutingSkillManagementController {
 	 * 메서드 설명	: 상담사 스킬 보유 현황 테이블을 현행화 한다.
 	 * @Method Name : postAgentSkillPresent
 	 * @date   		: 2023. 11. 21.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request

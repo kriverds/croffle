@@ -39,7 +39,7 @@
 		<if test="group_id != null">
 			a.group_id = #{group_id}
 		</if>
-		ORDER by
+		ORDER BY
 			b.name, a.name
 	</select>
 	
@@ -54,7 +54,7 @@
 			, modified_by
 		) VALUES
 		(
-			  nextval('bake.seq_scheduler_option_group')
+			  NEXTVAL('bake.seq_scheduler_option_group')
 			, #{name}
 			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
 			, 'system'
@@ -77,7 +77,7 @@
 			, modified_by
 		) VALUES
 		(
-			  nextval('bake.seq_scheduler_option')
+			  NEXTVAL('bake.seq_scheduler_option')
 			, #{application_id}
 			, #{name}
 			, #{value}
@@ -99,7 +99,8 @@
 	</update>
 	
 	<update id="updateOption" parameterType="Map" >
-		UPDATE bake.scheduler_option SET
+		UPDATE bake.scheduler_option 
+		SET
 			  application_id = #{application_id}
 			, name = #{name}
 			, value = #{value}

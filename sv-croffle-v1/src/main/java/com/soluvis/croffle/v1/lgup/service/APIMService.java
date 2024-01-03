@@ -16,9 +16,19 @@ import com.soluvis.croffle.v1.lgup.feign.APIMClientOAuth;
 import com.soluvis.croffle.v1.lgup.feign.APIMClientPrivateService;
 import com.soluvis.croffle.v1.lgup.feign.APIMClientPublicService;
 
+/**
+ * 클래스 설명	: APIM 연동 관련 서비스
+ * @Class Name 	: APIMService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
 public class APIMService {
-	
+
 	@Value("${apim.client-id}")
 	String clientId;
 	@Value("${apim.secret}")
@@ -26,21 +36,21 @@ public class APIMService {
 
 	@Autowired
 	APIMClientOAuth apimClientOAuth;
-	
+
 	@Autowired
 	APIMClientPrivateService apimClientPrivateService;
-	
+
 	@Autowired
 	APIMClientPublicService apimClientPublicService;
 
 	Logger logger = LoggerFactory.getLogger(APIMService.class);
-	
+
 	public String getAccessToken(Map<String, Object> param){
 		Map<String, Object> map = new HashMap<>();
 		map.put("grant_type", "client_credentials"); // 인증타입
 		map.put("client_id", clientId); // 인증타입
 		map.put("client_secret", secret); // 인증타입
-		
+
 		String result = apimClientOAuth.getAccessToken(map);
 		logger.info("{}", result);
 
@@ -74,16 +84,16 @@ public class APIMService {
 		map.put("lawcMndtSendYn", ""); // 법정필수여부
 		map.put("lrgSendYn", ""); // 대량발송여부
 		map.put("ocmpSendYn", ""); // 타사발송여부
-		map.put("arerYn", ""); // 연체여부 
-		map.put("msgSendRsvId", ""); // 메시지발송예약ID 
-		map.put("rsvYn", ""); // 예약여부 
-		map.put("hldrCustId", ""); // 명의자고객ID 
-		map.put("billAcntId", ""); // 청구계정ID 
+		map.put("arerYn", ""); // 연체여부
+		map.put("msgSendRsvId", ""); // 메시지발송예약ID
+		map.put("rsvYn", ""); // 예약여부
+		map.put("hldrCustId", ""); // 명의자고객ID
+		map.put("billAcntId", ""); // 청구계정ID
 		map.put("dealCd", ""); // 대리젘코드
 		//#필수
 		map.put("userId", ""); // 전체사용자ID
 		map.put("custRspoSqno", ""); // 고객응대누적번호
-		map.put("baseYymm", ""); // 기준년월 
+		map.put("baseYymm", ""); // 기준년월
 		map.put("dstbGrpSqno", ""); // 분배그룹누적번호
 		map.put("wapUrl", ""); // WAP URL
 		map.put("teleId", ""); // 텔레서비스ID
@@ -92,16 +102,16 @@ public class APIMService {
 		map.put("rlMsgFomSendFormCd", ""); // 실제발송형태코드
 		map.put("sendRsltCd", ""); // 발송결과코드
 		map.put("errCntn", ""); // 에러내용
-		map.put("rlSendMsgCntn", ""); // 실제발송메시지내용 
+		map.put("rlSendMsgCntn", ""); // 실제발송메시지내용
 		map.put("kkaoMsgFomId", ""); // 카카오메시지양식ID
 		map.put("btnOponCntn", ""); // 버튼옵션내용
 		//#필수
 		map.put("msgCrteKdCd", "AUTO"); // 메시지생성유형코드
 		map.put("adRcpAgrYn", ""); // 광고수신동의여부
-		map.put("lttrRcpDenyYn", ""); // 문자수신거부여부 
+		map.put("lttrRcpDenyYn", ""); // 문자수신거부여부
 		return new JSONObject(apimClientPrivateService.sendSMS(map));
 	}
-	
+
 	public JSONObject ctiAgentInfo(Map<String, Object> param) throws Exception{
 		Map<String, Object> rootMap = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -119,7 +129,7 @@ public class APIMService {
 		rootMap.put("ctiCslrInfoList", list);
 		return new JSONObject(apimClientPrivateService.ctiAgentNewInfo(rootMap));
 	}
-	
+
 	public JSONObject ctiAgentLoginInfo(Map<String, Object> param) throws Exception{
 		Map<String, Object> rootMap = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -132,7 +142,7 @@ public class APIMService {
 		rootMap.put("ctiCslrLginInfoList", list);
 		return new JSONObject(apimClientPrivateService.ctiAgentNewInfo(rootMap));
 	}
-	
+
 	public JSONObject ctiAgentCallStatic(Map<String, Object> param) throws Exception{
 		Map<String, Object> rootMap = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -155,7 +165,7 @@ public class APIMService {
 		rootMap.put("cslrPhclArstList", list);
 		return new JSONObject(apimClientPrivateService.ctiAgentNewInfo(rootMap));
 	}
-	
+
 	public JSONObject postMblArst(Map<String, Object> param) throws Exception{
 		Map<String, Object> rootMap = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -167,49 +177,49 @@ public class APIMService {
 		map.put("ctiDeptGrpCd", "12123"); // CTI부서그룹코드 #필수
 		map.put("emno", "2222"); // 사원번호 #필수
 		map.put("empNm", "염인익2"); // 사원명
-		map.put("grpNm", "U+Shop상담"); // 그룹명 
-		map.put("inbnCallCnt", 20); // 인바운드콜건수 
-		map.put("inbnCallTmct", 20); // 인바운드콜시간수 
-		map.put("psecInbnCallCnt", 20); // 초당인바운드콜건수 
+		map.put("grpNm", "U+Shop상담"); // 그룹명
+		map.put("inbnCallCnt", 20); // 인바운드콜건수
+		map.put("inbnCallTmct", 20); // 인바운드콜시간수
+		map.put("psecInbnCallCnt", 20); // 초당인바운드콜건수
 		map.put("obndCallCnt", 20); // 아웃바운드콜건수
-		map.put("obndTmct", 20); // 아웃바운드시간수 
-		map.put("cvrtCallCnt", 20); // 전환콜건수 
-		map.put("psecObndCallCnt", 20); // 초당아웃바운드콜건수 
-		map.put("etcCallCnt", 20); // 기타콜건수 
+		map.put("obndTmct", 20); // 아웃바운드시간수
+		map.put("cvrtCallCnt", 20); // 전환콜건수
+		map.put("psecObndCallCnt", 20); // 초당아웃바운드콜건수
+		map.put("etcCallCnt", 20); // 기타콜건수
 		map.put("cvrtCallRqmScnt", 20); // 전환콜소요초수
-		map.put("psecEtcCallCnt", 20); // 초당기타콜건수 
-		map.put("etcCallRqmScnt", 20); // 기타콜소요초수 
+		map.put("psecEtcCallCnt", 20); // 초당기타콜건수
+		map.put("etcCallRqmScnt", 20); // 기타콜소요초수
 		map.put("wrkTmRqmScnt", 20); // 근무시간소요초수
-		map.put("phclRqmScnt", 20); // 통화소요초수 
+		map.put("phclRqmScnt", 20); // 통화소요초수
 		map.put("logtRqmScnt", 20); // 로그아웃소요초수
-		map.put("lginRqmScnt", 20); // 로그인소요초수 
-		map.put("waitRqmScnt1", 20); // 대기소요초수1 
-		map.put("prssRqmScnt", 20); // 처리소요초수 
-		map.put("allPrssRqmScnt", 20); // 전체처리소요초수 
+		map.put("lginRqmScnt", 20); // 로그인소요초수
+		map.put("waitRqmScnt1", 20); // 대기소요초수1
+		map.put("prssRqmScnt", 20); // 처리소요초수
+		map.put("allPrssRqmScnt", 20); // 전체처리소요초수
 		map.put("waitRqmScnt", 20); // 대기소요초수
-		map.put("restTmRqmScnt", 20); // 휴식시간소요초수 
-		map.put("restTmct", 20); // 휴식시간수 
-		map.put("eduTmRqmScnt", 20); // 교육시간소요초수 
-		map.put("restTmRqmScnt2", 20); // 휴식시간소요초수2 
+		map.put("restTmRqmScnt", 20); // 휴식시간소요초수
+		map.put("restTmct", 20); // 휴식시간수
+		map.put("eduTmRqmScnt", 20); // 교육시간소요초수
+		map.put("restTmRqmScnt2", 20); // 휴식시간소요초수2
 		map.put("eduTmct", 20); // 교육시간수
-		map.put("masgTmRqmScnt", 20); // 안마시간소요초수 
+		map.put("masgTmRqmScnt", 20); // 안마시간소요초수
 		map.put("psycCnslTmct", 20); //  심리상담시간수
-		map.put("mtngTmRqmScnt", 20); // 회의시간소요초수 
-		map.put("indvJobTm", 20); // 개인업무시간 
+		map.put("mtngTmRqmScnt", 20); // 회의시간소요초수
+		map.put("indvJobTm", 20); // 개인업무시간
 		map.put("etcJobTm1", 20); // 기타업무시간1
-		map.put("ltrPrssRqmScnt", 20); // 이후처리소요초수 
-		map.put("indvJobRqmScnt", 20); // 개인업무소요초수 
-		map.put("clamRqmScnt", 20); // 클레임소요초수 
-		map.put("ltrPrssTmct", 20); // 이후처리시간수 
+		map.put("ltrPrssRqmScnt", 20); // 이후처리소요초수
+		map.put("indvJobRqmScnt", 20); // 개인업무소요초수
+		map.put("clamRqmScnt", 20); // 클레임소요초수
+		map.put("ltrPrssTmct", 20); // 이후처리시간수
 		map.put("custCnslRqmScnt", 20); // 고객상담소요초수
-		map.put("etcJobRqmScnt", 20); // 기타업무소요초수 
-		map.put("dscsRqmScnt", 20); // 협의소요초수 
-		map.put("jobDrctRqmScnt", 20); // 업무지시소요초수 
-		map.put("difJobRqmScnt", 20); // 차이업무소요초수 
+		map.put("etcJobRqmScnt", 20); // 기타업무소요초수
+		map.put("dscsRqmScnt", 20); // 협의소요초수
+		map.put("jobDrctRqmScnt", 20); // 업무지시소요초수
+		map.put("difJobRqmScnt", 20); // 차이업무소요초수
 		map.put("outsInquRqmScnt", 20); // 외부문의소요초수
 		map.put("ddAvrPhclCnt", 20); //  일평균통화건수
-		map.put("rcptLtrPrssRqmScnt", 20); // 접수이후처리소요초수 
-		map.put("wrkTmRqmScnt1", 20); // 근무시간소요초수1 
+		map.put("rcptLtrPrssRqmScnt", 20); // 접수이후처리소요초수
+		map.put("wrkTmRqmScnt1", 20); // 근무시간소요초수1
 		map.put("tmznAvrPhclCnt", 20); // 시간대평균통화건수
 		list.add(map);
 		rootMap.put("ctiMblCslrArst", list);
@@ -226,53 +236,53 @@ public class APIMService {
 		map.put("ctiDeptGrpCd", "12123"); // CTI부서그룹코드 #필수
 		map.put("emno", "2222"); // 사원번호 #필수
 		map.put("empNm", "염인익2"); // 사원명
-		map.put("grpNm", "U+Shop상담"); // 그룹명 
-		map.put("inbnCallCnt", 20); // 인바운드콜건수 
-		map.put("inbnCallTmct", 20); // 인바운드콜시간수 
-		map.put("psecInbnCallCnt", 20); // 초당인바운드콜건수 
+		map.put("grpNm", "U+Shop상담"); // 그룹명
+		map.put("inbnCallCnt", 20); // 인바운드콜건수
+		map.put("inbnCallTmct", 20); // 인바운드콜시간수
+		map.put("psecInbnCallCnt", 20); // 초당인바운드콜건수
 		map.put("obndCallCnt", 20); // 아웃바운드콜건수
-		map.put("obndTmct", 20); // 아웃바운드시간수 
-		map.put("cvrtCallCnt", 20); // 전환콜건수 
-		map.put("psecObndCallCnt", 20); // 초당아웃바운드콜건수 
-		map.put("etcCallCnt", 20); // 기타콜건수 
+		map.put("obndTmct", 20); // 아웃바운드시간수
+		map.put("cvrtCallCnt", 20); // 전환콜건수
+		map.put("psecObndCallCnt", 20); // 초당아웃바운드콜건수
+		map.put("etcCallCnt", 20); // 기타콜건수
 		map.put("cvrtCallRqmScnt", 20); // 전환콜소요초수
-		map.put("psecEtcCallCnt", 20); // 초당기타콜건수 
-		map.put("etcCallRqmScnt", 20); // 기타콜소요초수 
+		map.put("psecEtcCallCnt", 20); // 초당기타콜건수
+		map.put("etcCallRqmScnt", 20); // 기타콜소요초수
 		map.put("wrkTmRqmScnt", 20); // 근무시간소요초수
-		map.put("phclRqmScnt", 20); // 통화소요초수 
+		map.put("phclRqmScnt", 20); // 통화소요초수
 		map.put("logtRqmScnt", 20); // 로그아웃소요초수
-		map.put("lginRqmScnt", 20); // 로그인소요초수 
-		map.put("waitRqmScnt1", 20); // 대기소요초수1 
-		map.put("prssRqmScnt", 20); // 처리소요초수 
-		map.put("allPrssRqmScnt", 20); // 전체처리소요초수 
+		map.put("lginRqmScnt", 20); // 로그인소요초수
+		map.put("waitRqmScnt1", 20); // 대기소요초수1
+		map.put("prssRqmScnt", 20); // 처리소요초수
+		map.put("allPrssRqmScnt", 20); // 전체처리소요초수
 		map.put("waitRqmScnt", 20); // 대기소요초수
-		map.put("restTmRqmScnt", 20); // 휴식시간소요초수 
-		map.put("restTmct", 20); // 휴식시간수 
-		map.put("eduTmRqmScnt", 20); // 교육시간소요초수 
-		map.put("restTmRqmScnt2", 20); // 휴식시간소요초수2 
+		map.put("restTmRqmScnt", 20); // 휴식시간소요초수
+		map.put("restTmct", 20); // 휴식시간수
+		map.put("eduTmRqmScnt", 20); // 교육시간소요초수
+		map.put("restTmRqmScnt2", 20); // 휴식시간소요초수2
 		map.put("eduTmct", 20); // 교육시간수
-		map.put("masgTmRqmScnt", 20); // 안마시간소요초수 
+		map.put("masgTmRqmScnt", 20); // 안마시간소요초수
 		map.put("psycCnslTmct", 20); //  심리상담시간수
-		map.put("mtngTmRqmScnt", 20); // 회의시간소요초수 
-		map.put("indvJobTm", 20); // 개인업무시간 
+		map.put("mtngTmRqmScnt", 20); // 회의시간소요초수
+		map.put("indvJobTm", 20); // 개인업무시간
 		map.put("etcJobTm1", 20); // 기타업무시간1
-		map.put("ltrPrssRqmScnt", 20); // 이후처리소요초수 
-		map.put("indvJobRqmScnt", 20); // 개인업무소요초수 
-		map.put("clamRqmScnt", 20); // 클레임소요초수 
-		map.put("ltrPrssTmct", 20); // 이후처리시간수 
+		map.put("ltrPrssRqmScnt", 20); // 이후처리소요초수
+		map.put("indvJobRqmScnt", 20); // 개인업무소요초수
+		map.put("clamRqmScnt", 20); // 클레임소요초수
+		map.put("ltrPrssTmct", 20); // 이후처리시간수
 		map.put("custCnslRqmScnt", 20); // 고객상담소요초수
-		map.put("etcJobRqmScnt", 20); // 기타업무소요초수 
-		map.put("dscsRqmScnt", 20); // 협의소요초수 
-		map.put("jobDrctRqmScnt", 20); // 업무지시소요초수 
-		map.put("difJobRqmScnt", 20); // 차이업무소요초수 
+		map.put("etcJobRqmScnt", 20); // 기타업무소요초수
+		map.put("dscsRqmScnt", 20); // 협의소요초수
+		map.put("jobDrctRqmScnt", 20); // 업무지시소요초수
+		map.put("difJobRqmScnt", 20); // 차이업무소요초수
 		map.put("outsInquRqmScnt", 20); // 외부문의소요초수
 		map.put("ddAvrPhclCnt", 20); //  일평균통화건수
-		map.put("rcptLtrPrssRqmScnt", 20); // 접수이후처리소요초수 
-		map.put("wrkTmRqmScnt1", 20); // 근무시간소요초수1 
+		map.put("rcptLtrPrssRqmScnt", 20); // 접수이후처리소요초수
+		map.put("wrkTmRqmScnt1", 20); // 근무시간소요초수1
 		map.put("tmznAvrPhclCnt", 20); // 시간대평균통화건수
 		list.add(map);
 		rootMap.put("ctiMblCslrArst", list);
-		
+
 		return new JSONObject(apimClientPublicService.putMblArst(rootMap));
 	}
 	public JSONObject deleteMblArst(Map<String, Object> param) throws Exception{
@@ -289,7 +299,7 @@ public class APIMService {
 		rootMap.put("ctiMblCslrArst", list);
 		return new JSONObject(apimClientPublicService.deleteMblArst(rootMap));
 	}
-	
+
 	public JSONObject postHmArst(Map<String, Object> param) throws Exception{
 		Map<String, Object> rootMap = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -304,8 +314,8 @@ public class APIMService {
 		map.put("cntrNm", "홈_서울2"); // 센터명
 		map.put("ctusMmct", 20); // 근속개월수
 		map.put("inbnCallTmct", 20); // 인바운드콜시간수
-		map.put("inbnCallCnt", 20); // 인바운드콜건수 
-		map.put("obndTmct", 20); // 아웃바운드시간수 
+		map.put("inbnCallCnt", 20); // 인바운드콜건수
+		map.put("obndTmct", 20); // 아웃바운드시간수
 		map.put("obndCallCnt", 20); // 아웃바운드콜건수
 		map.put("itntQueRspoCnt", 20); // 인터넷큐응대건수
 		map.put("regTmRqmScnt", 20); // 등록시간소요초수
@@ -338,8 +348,8 @@ public class APIMService {
 		map.put("cntrNm", "홈_서울2"); // 센터명
 		map.put("ctusMmct", 20); // 근속개월수
 		map.put("inbnCallTmct", 20); // 인바운드콜시간수
-		map.put("inbnCallCnt", 20); // 인바운드콜건수 
-		map.put("obndTmct", 20); // 아웃바운드시간수 
+		map.put("inbnCallCnt", 20); // 인바운드콜건수
+		map.put("obndTmct", 20); // 아웃바운드시간수
 		map.put("obndCallCnt", 20); // 아웃바운드콜건수
 		map.put("itntQueRspoCnt", 20); // 인터넷큐응대건수
 		map.put("regTmRqmScnt", 20); // 등록시간소요초수

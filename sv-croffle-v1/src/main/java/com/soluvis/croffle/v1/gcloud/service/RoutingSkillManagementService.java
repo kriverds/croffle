@@ -15,12 +15,24 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
 import com.soluvis.croffle.v1.gcloud.mapper.RoutingSkillManagementMapper;
+import com.soluvis.croffle.v1.util.CommUtil;
 
+/**
+ * 클래스 설명	: GCloud 스킬 매니징 서비스
+ * @Class Name 	: RoutingSkillManagementService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
 public class RoutingSkillManagementService {
 
@@ -29,17 +41,34 @@ public class RoutingSkillManagementService {
 	@Autowired
 	RoutingSkillManagementMapper routingSkillManagementMapper;
 
+	@Value("${gcloud.skill.outbound.id}")
+	String outboundSkillId;
+
+
 	private final Logger logger = LoggerFactory.getLogger(RoutingSkillManagementService.class);
 
 	ObjectMapper om = new ObjectMapper();
 	TypeReference<List<Map<String, Object>>> listMapTypeReference = new TypeReference<>() {};
 
+	/**
+	 * 메서드 설명	: 상담사가 보유한 스킬 조회
+	 * @Method Name : getUserRoutingskills
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	public JSONObject getUserRoutingskills(Map<String,Object> param) throws Exception {
 		JSONObject jParam = new JSONObject(param);
 		logger.info("{}", jParam);
 		JSONArray userList = jParam.getJSONArray("userList");
 
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 
 		GCConnector.connect(rUUID);
 		JSONObject result = new JSONObject();
@@ -54,8 +83,21 @@ public class RoutingSkillManagementService {
 		return result;
 	}
 
+	/**
+	 * 메서드 설명	: 스킬 전체 목록 조회
+	 * @Method Name : getRoutingSkillList
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	public JSONObject getRoutingSkillList(Map<String,Object> param) throws Exception {
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 
 		GCConnector.connect(rUUID);
 		JSONObject result = gcconnector.getRoutingSkillList();
@@ -64,6 +106,19 @@ public class RoutingSkillManagementService {
 		return result;
 	}
 
+	/**
+	 * 메서드 설명	: 스킬 다중 부여/변경
+	 * @Method Name : patchUserRoutingskillsBulk
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@Transactional(transactionManager = "GCloudTransactionManager")
 	public JSONObject patchUserRoutingskillsBulk(Map<String,Object> param) throws Exception {
 		JSONObject result = new JSONObject();
@@ -75,10 +130,10 @@ public class RoutingSkillManagementService {
 		String jobDate = sdf.format(new Date());
 		String jobCategory = "추가";
 		int targetCart = -1;
-		mybatisParam.put("job_date", jobDate);
-		mybatisParam.put("job_category", jobCategory);
-		mybatisParam.put("target_cart", targetCart);
-		mybatisParam.put("operator_id", jParam.get("operatorId"));
+		mybatisParam.put("jobDate", jobDate);
+		mybatisParam.put("jobCategory", jobCategory);
+		mybatisParam.put("targetCart", targetCart);
+		mybatisParam.put("operatorId", jParam.get("operatorId"));
 
 		//유저 리스트 세팅
 		JSONArray userJA = jParam.getJSONArray("userList");
@@ -95,7 +150,7 @@ public class RoutingSkillManagementService {
 		mybatisParam.put("levelList", levelList);
 
 		//스킬 추가
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		GCConnector.connect(rUUID);
 		for (int i = 0; i < userJA.length(); i++) {
 			JSONObject user = userJA.getJSONObject(i);
@@ -116,6 +171,19 @@ public class RoutingSkillManagementService {
 		return result;
 	}
 
+	/**
+	 * 메서드 설명	: 스킬 삭제
+	 * @Method Name : deleteUserRoutingskill
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@Transactional(transactionManager = "GCloudTransactionManager")
 	public JSONObject deleteUserRoutingskill(Map<String,Object> param) throws Exception {
 		JSONObject result = new JSONObject();
@@ -127,10 +195,10 @@ public class RoutingSkillManagementService {
 		String jobDate = sdf.format(new Date());
 		String jobCategory = "삭제";
 		int targetCart = -1;
-		mybatisParam.put("job_date", jobDate);
-		mybatisParam.put("job_category", jobCategory);
-		mybatisParam.put("target_cart", targetCart);
-		mybatisParam.put("operator_id", jParam.get("operatorId"));
+		mybatisParam.put("jobDate", jobDate);
+		mybatisParam.put("jobCategory", jobCategory);
+		mybatisParam.put("targetCart", targetCart);
+		mybatisParam.put("operatorId", jParam.get("operatorId"));
 
 		//유저 리스트 세팅
 		JSONArray userJA = jParam.getJSONArray("userList");
@@ -147,7 +215,7 @@ public class RoutingSkillManagementService {
 		mybatisParam.put("levelList", levelList);
 
 		//스킬 삭제
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		GCConnector.connect(rUUID);
 		for (int i = 0; i < userJA.length(); i++) {
 			JSONObject user = userJA.getJSONObject(i);
@@ -177,6 +245,19 @@ public class RoutingSkillManagementService {
 		return result;
 	}
 
+	/**
+	 * 메서드 설명	: 스킬 카트 부여
+	 * @Method Name : changeSkillBySkillCart
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@Transactional(transactionManager = "GCloudTransactionManager")
 	public JSONObject changeSkillBySkillCart(Map<String, Object> param) throws Exception {
 		JSONObject result = new JSONObject();
@@ -188,27 +269,33 @@ public class RoutingSkillManagementService {
 		String jobDate = sdf.format(new Date());
 		String jobCategory = "카트";
 		int targetCart = (Integer) param.get("skillCartId");
-		mybatisParam.put("job_date", jobDate);
-		mybatisParam.put("job_category", jobCategory);
-		mybatisParam.put("target_cart", targetCart);
-		mybatisParam.put("operator_id", jParam.get("operatorId"));
+		mybatisParam.put("jobDate", jobDate);
+		mybatisParam.put("jobCategory", jobCategory);
+		mybatisParam.put("targetCart", targetCart);
+		mybatisParam.put("operatorId", jParam.get("operatorId"));
 
 		//유저 리스트 세팅
 		JSONArray userJA = jParam.getJSONArray("userList");
 
 		//스킬 리스트 세팅
 		List<Map<String, Object>> skillListByCart = routingSkillManagementMapper.selectSkillByCart(mybatisParam);
+		//아웃바운드 스킬 기본으로 추가
+		Map<String, Object> outboundSkillMap = new HashMap<>();
+		outboundSkillMap.put("skillId", outboundSkillId);
+		outboundSkillMap.put("skillLevel", 1D);
+		skillListByCart.add(outboundSkillMap);
+
 		List<String> skillList = new ArrayList<>();
 		List<Double> levelList = new ArrayList<>();
 		for (Map<String, Object> map : skillListByCart) {
-			skillList.add(map.get("skill_id").toString());
-			levelList.add(Double.parseDouble(map.get("skill_level").toString()));
+			skillList.add(map.get("skillId").toString());
+			levelList.add(Double.parseDouble(map.get("skillLevel").toString()));
 		}
 		mybatisParam.put("skillList", skillList);
 		mybatisParam.put("levelList", levelList);
 
 		//스킬 부여
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		GCConnector.connect(rUUID);
 		for (int i = 0; i < userJA.length(); i++) {
 			JSONObject user = userJA.getJSONObject(i);
@@ -232,10 +319,36 @@ public class RoutingSkillManagementService {
 		return result;
 	}
 
+	/**
+	 * 메서드 설명	: 스킬관리 히스토리 적재
+	 * @Method Name : saveSkillManagementHistory
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	public int saveSkillManagementHistory(Map<String,Object> param) throws Exception {
 		return routingSkillManagementMapper.insertSkillManagementHistory(param);
 	}
 
+	/**
+	 * 메서드 설명	: 상담사 스킬 매핑 적재
+	 * @Method Name : replaceAgentSkillPresent
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
 	@Transactional(transactionManager = "GCloudTransactionManager")
 	public JSONObject replaceAgentSkillPresent(Map<String,Object> param) throws Exception {
 		logger.info("{}", param);
@@ -247,7 +360,7 @@ public class RoutingSkillManagementService {
 		JSONArray userList = jParam.getJSONArray("userList");
 		int paramCnt = userList.length();
 
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 
 		GCConnector.connect(rUUID);
 		if(paramCnt==0) {
@@ -269,9 +382,9 @@ public class RoutingSkillManagementService {
 			for (int j = 0; j < userSkillList.length(); j++) {
 				Map<String,Object> presentMap = new HashMap<>();
 				JSONObject userSkill = userSkillList.getJSONObject(j);
-				presentMap.put("user_id", userUUID);
-				presentMap.put("skill_id", userSkill.getString("id"));
-				presentMap.put("skill_level", userSkill.get("proficiency"));
+				presentMap.put("userId", userUUID);
+				presentMap.put("skillId", userSkill.getString("id"));
+				presentMap.put("skillLevel", userSkill.get("proficiency"));
 				presentList.add(presentMap);
 			}
 		}

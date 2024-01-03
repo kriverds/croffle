@@ -50,17 +50,17 @@
     "description": "A description for 'gcloud.client.secret'"
   },
   {
-    "name": "gcloud.division.home",
+    "name": "gcloud.division.home.id",
     "type": "java.lang.String",
     "description": "A description for 'gcloud.division.home'"
   },
   {
-    "name": "gcloud.division.mobile",
+    "name": "gcloud.division.mobile.id",
     "type": "java.lang.String",
     "description": "A description for 'gcloud.division.mobile'"
   },
   {
-    "name": "gcloud.division.business",
+    "name": "gcloud.division.business.id",
     "type": "java.lang.String",
     "description": "A description for 'gcloud.division.business'"
   },
@@ -128,5 +128,35 @@
     "name": "apim.pv.url",
     "type": "java.lang.String",
     "description": "A description for 'apim.pv.url'"
+  },
+  {
+    "name": "gcloud.role.agentdefault.id",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.role.agentdefault.id'"
+  },
+  {
+    "name": "gcloud.skill.outbound.id",
+    "type": "java.lang.String",
+    "description": "A description for 'gcloud.skill.outbound.id'"
+  },
+  {
+    "name": "scheduler.campaign.15min.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.campaign.15min.cron'"
+  },
+  {
+    "name": "scheduler.campaign.day.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.campaign.day.cron'"
+  },
+  {
+    "name": "scheduler.aggregate.15min.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.aggregate.15min.cron'"
+  },
+  {
+    "name": "scheduler.aggregate.day.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.aggregate.day.cron'"
   }
 ]}

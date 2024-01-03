@@ -13,11 +13,10 @@ import com.soluvis.croffle.v1.lgup.service.MiniWallBoardService;
  * 클래스 설명	: 알람 등록 체크 스케줄러
  * @Class Name 	: AlarmScheduler
  * @date   		: 2023. 11. 6.
- * @author   	: Riverds
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify
- *	cron: 초 분 시 일 월 요일 년도
  */
 @Component
 public class AlarmScheduler {
@@ -29,7 +28,7 @@ public class AlarmScheduler {
 
 	@Scheduled(fixedDelayString = "${scheduler.alram.threshold.delay}")
 	public void checkThreshold() throws Exception {
-		logger.info("{}", "2 second");
+//		logger.info("{}", "2 second");
 	}
 
 	@Scheduled(cron = "${scheduler.alram.abandon.cron}")

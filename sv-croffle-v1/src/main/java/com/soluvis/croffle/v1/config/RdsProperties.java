@@ -6,6 +6,16 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 클래스 설명	: Datasource 관련 Properties Class
+ * @Class Name 	: RdsProperties
+ * @date   		: 2023. 12. 21.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ *
+ */
 public class RdsProperties {
 	private String jdbcurl = null;
 	private String username = null;

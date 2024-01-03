@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mypurecloud.sdk.v2.ApiClient;
@@ -25,7 +26,6 @@ import com.mypurecloud.sdk.v2.ApiResponse;
 import com.mypurecloud.sdk.v2.Configuration;
 import com.mypurecloud.sdk.v2.PureCloudRegionHosts;
 import com.mypurecloud.sdk.v2.api.AnalyticsApi;
-import com.mypurecloud.sdk.v2.api.AuthorizationApi;
 import com.mypurecloud.sdk.v2.api.ConversationsApi;
 import com.mypurecloud.sdk.v2.api.GroupsApi;
 import com.mypurecloud.sdk.v2.api.NotificationsApi;
@@ -52,18 +52,18 @@ import com.mypurecloud.sdk.v2.model.ConversationAggregationQuery;
 import com.mypurecloud.sdk.v2.model.ConversationAggregationQuery.MetricsEnum;
 import com.mypurecloud.sdk.v2.model.ConversationQuery;
 import com.mypurecloud.sdk.v2.model.CreateUser;
-import com.mypurecloud.sdk.v2.model.DomainOrganizationRole;
 import com.mypurecloud.sdk.v2.model.Group;
 import com.mypurecloud.sdk.v2.model.GroupCreate;
 import com.mypurecloud.sdk.v2.model.GroupCreate.VisibilityEnum;
 import com.mypurecloud.sdk.v2.model.GroupEntityListing;
 import com.mypurecloud.sdk.v2.model.GroupMembersUpdate;
 import com.mypurecloud.sdk.v2.model.GroupUpdate;
-import com.mypurecloud.sdk.v2.model.OrganizationRoleEntityListing;
 import com.mypurecloud.sdk.v2.model.Queue;
 import com.mypurecloud.sdk.v2.model.QueueEntityListing;
 import com.mypurecloud.sdk.v2.model.QueueMember;
 import com.mypurecloud.sdk.v2.model.QueueMemberEntityListing;
+import com.mypurecloud.sdk.v2.model.RoleDivisionGrants;
+import com.mypurecloud.sdk.v2.model.RoleDivisionPair;
 import com.mypurecloud.sdk.v2.model.RoutingSkill;
 import com.mypurecloud.sdk.v2.model.SegmentDetailQueryClause;
 import com.mypurecloud.sdk.v2.model.SegmentDetailQueryFilter;
@@ -86,13 +86,14 @@ import com.mypurecloud.sdk.v2.model.UserSkillEntityListing;
 import com.mypurecloud.sdk.v2.model.WritableEntity;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.soluvis.croffle.v1.gcloud.engine.listener.ChannelMetadataListener;
+import com.soluvis.croffle.v1.util.GVal;
 
 /**
  * 클래스 설명 : GCloud와 연결 및 Interface 제공.
  *
  * @Class Name : GCConnector
  * @date : 2023. 9. 27.
- * @author : Riverds
+ * @author : Kriverds
  * @version : 1.0 ----------------------------------------
  * @notify
  *
@@ -107,9 +108,19 @@ public class GCConnector {
 //	private static final String CLIENT_SECRET = "nhK4fw7a3vh-BPCdfRe311m1rWDbnXJoATteyyeVfvk";
 //	private static final String DIVISION_HOME = "fa910857-f776-4dd5-91a9-1d245882ab11";
 	// uplusdev
-	private static final String CLIENT_ID = "e9cc4eaa-5545-4e69-885a-e828949b6204";
-	private static final String CLIENT_SECRET = "8zoDLvhXlX-O3C38HD01A69uVkvX3u30M4tm08C8bk0";
-	private static final String DIVISION_HOME = "0aebaa53-2e66-4720-acdb-8a766e2ea6ae";
+//	private static final String CLIENT_ID = "e9cc4eaa-5545-4e69-885a-e828949b6204";
+//	private static final String CLIENT_SECRET = "8zoDLvhXlX-O3C38HD01A69uVkvX3u30M4tm08C8bk0";
+//	private static final String DIVISION_HOME = "0aebaa53-2e66-4720-acdb-8a766e2ea6ae";
+	// uplus
+//	private static final String CLIENT_ID = "0a89dcf2-1296-4142-a101-849ed636f7f0";
+//	private static final String CLIENT_SECRET = "ZarK8MInb98lEN6ekhPUON3YUd6eTqgzPa2yuitXmf8";
+
+	@Value("${gcloud.division.home.id}")
+	private String divisionHome;
+	@Value("${gcloud.division.mobile.id}")
+	private String divisionMobile;
+	@Value("${gcloud.division.business.id}")
+	private String divisionBuisiness;
 
 	private static NotificationHandler notificationHandler = null;
 
@@ -122,7 +133,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : connect
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws ApiException
 	 * @throws IOException
@@ -140,7 +151,8 @@ public class GCConnector {
 					.withProperty(ApiClientConnectorProperty.CONNECTOR_PROVIDER,
 							new ApacheHttpClientConnectorProvider())
 					.build();
-			ApiResponse<AuthResponse> authResponse = apiClient.authorizeClientCredentials(CLIENT_ID, CLIENT_SECRET);
+			ApiResponse<AuthResponse> authResponse = apiClient.authorizeClientCredentials(GVal.getGcClientId(), GVal.getGcClientSecret());
+//			ApiResponse<AuthResponse> authResponse = apiClient.authorizeClientCredentials(CLIENT_ID, CLIENT_SECRET);
 			logger.info("{}", "Authentication successful. Access token expires in "
 					+ authResponse.getBody().getExpires_in() + " seconds");
 			logger.info("{}", authResponse.getBody());
@@ -172,7 +184,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : close
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @notify
 	 *
@@ -193,7 +205,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getExtensionList
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws IOException
 	 * @throws ApiException
@@ -223,7 +235,6 @@ public class GCConnector {
 	 * #############################################################################
 	 * ################################## : 상담사
 	 * #############################################################################
-	 * ##################################
 	 */
 
 	/**
@@ -231,7 +242,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getAvailableUser
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param id
 	 * @return
@@ -265,7 +276,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getAvailableUserList
 	 * @date : 2023. 9. 25.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws ApiException
 	 * @throws IOException
@@ -312,7 +323,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : postUsers
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param name
 	 * @param department
@@ -321,13 +332,13 @@ public class GCConnector {
 	 * @throws JSONException
 	 * @notify - email이 Key로 중복 발생시 ApiException 에러
 	 */
-	public JSONObject postUsers(String name, String email, String department) throws IOException, ApiException, JSONException {
+	public JSONObject postUsers(String name, String email, String department, String title) throws IOException, ApiException, JSONException {
 		UsersApi apiInstance = new UsersApi();
 
 		CreateUser body = new CreateUser();
 		body.setName(name);
 		body.setEmail(email);
-		body.setDivisionId(DIVISION_HOME);
+		body.setDivisionId(divisionHome);
 		body.setDepartment(department);
 		logger.info("{}", new JSONObject(om.writeValueAsString(body)));
 
@@ -344,7 +355,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : patchUser
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @param department
@@ -376,7 +387,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : deleteUser
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @throws ApiException
@@ -389,46 +400,41 @@ public class GCConnector {
 		apiInstance.deleteUser(userId);
 	}
 
-	public JSONObject getAuthorizationRoles() throws IOException, ApiException, JSONException {
+	/**
+	 * 메서드 설명	: Division_Role Pair를 삽입한다.
+	 * @Method Name : postAuthorizationSubjectBulkadd
+	 * @date   		: 2023. 12. 21.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @return
+	 * @throws IOException
+	 * @throws ApiException
+	 * @throws JSONException
+	 * @notify
+	 *
+	 */
+	public JSONObject postAuthorizationSubjectBulkadd(String userId, String divisionId, String roleId) throws IOException, ApiException, JSONException {
+		UsersApi apiInstance = new UsersApi();
+        List<RoleDivisionPair> rdpList = new ArrayList<>();
+        RoleDivisionPair rdp = new RoleDivisionPair();
+//        rdp.setDivisionId("232637ae-d261-46e5-92ea-62e8e4696eb5");
+//        rdp.setRoleId("72725af5-f4b1-4e8a-90ff-1fdf026fbb98");
+        rdp.setDivisionId(divisionId);
+        rdp.setRoleId(roleId);
+        rdpList.add(rdp);
+        RoleDivisionGrants body = new RoleDivisionGrants(); // RoleDivisionGrants | Pairs of role and division IDs
+        body.setGrants(rdpList);
+        String subjectType = "PC_USER"; // String | what the type of the subject is (PC_GROUP, PC_USER or PC_OAUTH_CLIENT)
+        apiInstance.postAuthorizationSubjectBulkadd(userId, body, subjectType);
 
-		AuthorizationApi apiInstance = new AuthorizationApi();
-		Integer pageSize = 50; // Integer | Page size
-		Integer pageNumber = 1; // Integer | Page number
-		List<String> id = Arrays.asList(); // List<String> | A list of user IDs to fetch by bulk
-		List<String> jabberId = Arrays.asList(); // List<String> | A list of jabberIds to fetch by bulk (cannot be used
-													// with the \"id\" parameter)
-		String sortOrder = "ASC"; // String | Ascending or descending sort order
-		List<String> expand = Arrays.asList(); // List<String> | Which fields, if any, to expand
-		String integrationPresenceSource = null;// "integrationPresenceSource_example"; // String | Gets an integration
-												// presence for users instead of their defaults. This parameter will
-												// only be used when presence is provided as an \"expand\". When using
-												// this parameter the maximum number of users that can be returned is
-												// 100.
-		String state = "active"; // ""active"; // String | Only list users of this state
-
-		OrganizationRoleEntityListing  result = apiInstance.getAuthorizationRoles(pageSize, pageNumber, sortOrder, expand, sortOrder, integrationPresenceSource, state, expand, id, null, jabberId);
-		List<DomainOrganizationRole> en = result.getEntities();
-
-		JSONObject resultJO = new JSONObject();
-		JSONArray resultJA = new JSONArray();
-
-		for (DomainOrganizationRole child : en) {
-			JSONObject cJO = new JSONObject(om.writeValueAsString(child));
-			resultJA.put(cJO);
-		}
-
-		resultJO.put("count", resultJA.length());
-		resultJO.put("list", resultJA);
-
-		logger.info("{}", resultJO);
-		return resultJO;
+		return new JSONObject();
 	}
 
 	/*
 	 * #############################################################################
 	 * ################################## : 라우팅스킬
 	 * #############################################################################
-	 * ##################################
 	 */
 
 	/**
@@ -436,7 +442,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getRoutingSkillList
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws ApiException
 	 * @throws IOException
@@ -473,7 +479,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getUserRoutingskills
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @throws ApiException
@@ -514,7 +520,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : postUserRoutingskills
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @param skillId
@@ -545,7 +551,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : patchUserRoutingskillsBulk
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @param skillId
@@ -581,7 +587,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : deleteUserRoutingskill
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @param skillId
@@ -601,7 +607,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : putUserRoutingskillsBulk
 	 * @date : 2023. 9. 27.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @param skillId
@@ -638,7 +644,6 @@ public class GCConnector {
 	 * #############################################################################
 	 * ################################## : 그룹
 	 * #############################################################################
-	 * ##################################
 	 */
 
 	/**
@@ -646,7 +651,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getGroups
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws ApiException
 	 * @throws IOException
@@ -685,7 +690,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getGroup
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws ApiException
 	 * @throws IOException
@@ -706,7 +711,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : postGroup
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId
 	 * @throws ApiException
@@ -736,7 +741,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : putGroup
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId
 	 * @param name
@@ -766,7 +771,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : deleteGroup
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId
 	 * @throws ApiException
@@ -783,7 +788,6 @@ public class GCConnector {
 	 * #############################################################################
 	 * ################################## : 그룹 멤버
 	 * #############################################################################
-	 * ##################################
 	 */
 
 	/**
@@ -791,7 +795,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getGroupMembers
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId
 	 * @throws ApiException
@@ -831,7 +835,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : postGroupMembers
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId
 	 * @throws ApiException
@@ -867,7 +871,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : deleteGroupMemebers
 	 * @date : 2023. 9. 26.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param groupId - Comma(,) separated list of userIds to remove
 	 * @throws ApiException
@@ -900,7 +904,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getRoutingQueues
 	 * @date : 2023. 10. 10.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @throws IOException
 	 * @throws ApiException
@@ -943,7 +947,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getUserQueues
 	 * @date : 2023. 10. 10.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param userId
 	 * @throws IOException
@@ -984,7 +988,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : getRoutingQueueMembers
 	 * @date : 2023. 10. 10.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param queueId
 	 * @throws IOException
@@ -1032,7 +1036,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : postRoutingQueueMembers
 	 * @date : 2023. 10. 10.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param queueId
 	 * @param userId
@@ -1067,7 +1071,7 @@ public class GCConnector {
 	 *
 	 * @Method Name : deleteRoutingQueueMember
 	 * @date : 2023. 10. 10.
-	 * @author : Riverds
+	 * @author : Kriverds
 	 * @version : 1.0 ----------------------------------------
 	 * @param queueId
 	 * @param userId
@@ -1083,9 +1087,8 @@ public class GCConnector {
 
 	/*
 	 * #############################################################################
-	 * ################################## : 아웃바운드 통계
+	 * ################################## : 캠페인 통계
 	 * #############################################################################
-	 * ##################################
 	 */
 	public JSONObject getOutboundCampaigns() throws IOException, ApiException, JSONException {
 		OutboundApi apiInstance = new OutboundApi();
@@ -1148,7 +1151,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1158,8 +1161,8 @@ public class GCConnector {
 		logger.info("{}", fsDate+"/"+feDate);
 
 
-//		body.setInterval(fsDate+"/"+feDate);
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
 
 		JSONObject campaigns = getOutboundCampaigns();
 		JSONArray entities = campaigns.getJSONArray("entities");
@@ -1208,7 +1211,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1216,19 +1219,18 @@ public class GCConnector {
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		ConversationAggregationQuery body = new ConversationAggregationQuery();
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
-//		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
 
 		JSONObject campaigns = getOutboundCampaigns();
 		JSONArray entities = campaigns.getJSONArray("entities");
 
 		List<MetricsEnum> meList = new ArrayList<>();
-		for (int i = 0; i < MetricsEnum.values().length; i++) {
-			if (i == 21 || i == 22 || i == 28 || i == 29) {
-			} else {
-				meList.add(MetricsEnum.values()[i]);
-			}
-		}
+		meList.add(MetricsEnum.NOUTBOUNDATTEMPTED);
+		meList.add(MetricsEnum.NCONNECTED);
+		meList.add(MetricsEnum.NOFFERED);
+		meList.add(MetricsEnum.NOUTBOUNDCONNECTED);
+		meList.add(MetricsEnum.NOUTBOUNDABANDONED);
 		body.setMetrics(meList);
 		ConversationAggregateQueryFilter filter = new ConversationAggregateQueryFilter();
 		filter.setType(ConversationAggregateQueryFilter.TypeEnum.OR);
@@ -1262,6 +1264,11 @@ public class GCConnector {
 		return returnJO;
 	}
 
+	/*
+	 * #############################################################################
+	 * ################################## : Aggregate 통계
+	 * #############################################################################
+	 */
 	public JSONObject agentCallAggregateQuery(String startDate) throws IOException, ApiException, JSONException, ParseException {
 		JSONObject returnJO = new JSONObject();
 		String fsDate = "";
@@ -1272,7 +1279,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1280,8 +1287,8 @@ public class GCConnector {
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		ConversationAggregationQuery body = new ConversationAggregationQuery();
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
-//		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
 
 		JSONObject agents = getAvailableUserList();
 		JSONArray entities = agents.getJSONArray("list");
@@ -1336,7 +1343,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1344,8 +1351,8 @@ public class GCConnector {
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		UserAggregationQuery body = new UserAggregationQuery();
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
-//		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
 
 		JSONObject agents = getAvailableUserList();
 		JSONArray entities = agents.getJSONArray("list");
@@ -1399,7 +1406,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1407,8 +1414,8 @@ public class GCConnector {
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		ConversationAggregationQuery body = new ConversationAggregationQuery();
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
-//		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
 
 		JSONObject queues = getRoutingQueues();
 		JSONArray entities = queues.getJSONArray("list");
@@ -1463,7 +1470,7 @@ public class GCConnector {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		fsDate = sdf2.format(cal.getTime());
-		cal.add(Calendar.MILLISECOND, (15*60*1000)-1);
+		cal.add(Calendar.MILLISECOND, (15*60*1_000));
 		feDate = sdf2.format(cal.getTime());
 		fsDate = fsDate.replace(' ', 'T')+"Z";
 		feDate = feDate.replace(' ', 'T')+"Z";
@@ -1471,8 +1478,8 @@ public class GCConnector {
 		AnalyticsApi apiInstance = new AnalyticsApi();
 
 		ConversationAggregationQuery body = new ConversationAggregationQuery();
-		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
-//		body.setInterval(fsDate+"/"+feDate);
+//		body.setInterval("2023-11-01T00:00:00.000"+"/"+"2023-11-30T23:59:59.999");
+		body.setInterval(fsDate+"/"+feDate);
 
 		JSONObject skills = getRoutingSkillList();
 		JSONArray entities = skills.getJSONArray("list");

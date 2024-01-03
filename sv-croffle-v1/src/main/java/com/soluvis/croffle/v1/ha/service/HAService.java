@@ -14,10 +14,10 @@ import com.soluvis.croffle.v1.ha.mapper.HAMapper;
 import com.soluvis.croffle.v1.util.GVal;
 
 /**
- * 클래스 설명	: HA Service
+ * 클래스 설명	: HA 이중화 관리용 서비스
  * @Class Name 	: HAService
  * @date   		: 2023. 12. 12.
- * @author   	: Riverds
+ * @author   	: Kriverds
  * @version		: 1.0
  * ----------------------------------------
  * @notify
@@ -38,7 +38,7 @@ public class HAService {
 	 * 메서드 설명	: HA Timeout을 체크한다.
 	 * @Method Name : checkTimeout
 	 * @date   		: 2023. 12. 12.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @return
@@ -68,7 +68,7 @@ public class HAService {
 	 * 메서드 설명	: HA 테이블을 갱신한다.
 	 * @Method Name : mergeHA
 	 * @date   		: 2023. 12. 12.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @return

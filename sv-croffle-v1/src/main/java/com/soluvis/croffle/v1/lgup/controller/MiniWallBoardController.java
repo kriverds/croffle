@@ -32,7 +32,7 @@ public class MiniWallBoardController {
 	 * 메서드 설명	: 미니 전광판 화면을 띄워준다.
 	 * @Method Name : viewMiniWallBoardPage
 	 * @date   		: 2023. 11. 22.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param model
@@ -67,7 +67,7 @@ public class MiniWallBoardController {
 	 * 메서드 설명	: 요청된 사번에 대한 통계 제공
 	 * @Method Name : getAgentStat
 	 * @date   		: 2023. 11. 22.
-	 * @author   	: Riverds
+	 * @author   	: Kriverds
 	 * @version		: 1.0
 	 * ----------------------------------------
 	 * @param request

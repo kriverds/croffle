@@ -11,6 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.soluvis.croffle.v1.lgup.mapper.UVoiceMapper;
 
+/**
+ * 클래스 설명	: 유보이스 인터페이스 서비스
+ * @Class Name 	: UVoiceService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
 public class UVoiceService {
 

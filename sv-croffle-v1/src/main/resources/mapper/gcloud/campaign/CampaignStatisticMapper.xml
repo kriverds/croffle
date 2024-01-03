@@ -25,22 +25,22 @@
 		VALUES
 		<foreach collection="campaignResult" item="item" separator=",">
 		(
-			  #{item.CONVERSATION_ID}
-			, #{item.START_YMD}
-			, #{item.START_HMSS}
-			, #{item.END_YMD}
-			, #{item.END_HMSS}
-			, #{item.CAMPAIGN_ID}
-			, #{item.T_DURATION}
-			, #{item.T_DIALING}
-			, #{item.T_RINGING}
-			, #{item.T_AGENT}
-			, #{item.AGENT_ID}
-			, #{item.DISCONNECT_TYPE}
-			, #{item.CONTACTLIST_ID}
-			, #{item.ANI}
-			, #{item.DNIS}
-			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			  #{item.conversationId}
+			, #{item.startYMD}
+			, #{item.startHMSS}
+			, #{item.endYMD}
+			, #{item.endHMSS}
+			, #{item.campaignId}
+			, #{item.tDuration}
+			, #{item.tDialing}
+			, #{item.tRinging}
+			, #{item.tAgent}
+			, #{item.agentId}
+			, #{item.disconnectType}
+			, #{item.contactlistId}
+			, #{item.ani}
+			, #{item.dnis}
+			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
 		)
 		</foreach>
 		ON CONFLICT (conversation_id) DO NOTHING
@@ -60,17 +60,22 @@
 		VALUES
 		<foreach collection="campaignResult" item="item" separator=",">
 		(
-			  #{item.PROGRESS_YMD}
-			, #{item.PROGRESS_HM}
-			, #{item.CAMPAIGN_ID}
-			, #{item.N_OUTBOUND_ATTEMPTED}
-			, #{item.N_CONNECTED}
-			, #{item.N_OUTBOUND_CONNECTED}
-			, #{item.N_OFFERED}
-			, #{item.N_OUTBOUND_ABANDONED}
-			, to_char(current_timestamp , 'YYYYMMDDHH24MISS')
+			  #{item.progressYMD}
+			, #{item.progressHM}
+			, #{item.campaignId}
+			, #{item.nOutboundAttempted}
+			, #{item.nConnected}
+			, #{item.nOutboundConnected}
+			, #{item.nOffered}
+			, #{item.nOutboundAbandoned}
+			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
 		)
 		</foreach>
-		ON CONFLICT (PROGRESS_YMD, PROGRESS_HM, CAMPAIGN_ID) DO NOTHING
+		ON CONFLICT (progress_ymd, progress_hm, campaign_id) DO NOTHING
 	</insert>
+	
+	<delete id="deleteDayData"  parameterType="Map">
+		DELETE FROM bake.pds_15min
+		WHERE progress_ymd = #{startDate}
+	</delete>
 </mapper>

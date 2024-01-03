@@ -11,6 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.soluvis.croffle.v1.lgup.mapper.RecordingMapper;
 
+/**
+ * 클래스 설명	: 녹취 인터페이스 서비스
+ * @Class Name 	: RecordingService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
 public class RecordingService {
 

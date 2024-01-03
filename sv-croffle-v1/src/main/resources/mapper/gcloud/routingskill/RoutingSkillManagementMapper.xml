@@ -13,9 +13,9 @@
 		VALUES
 		<foreach collection="presentList" item="item" separator=",">
 		(
-			  #{item.user_id}
-			, #{item.skill_id}
-			, #{item.skill_level}
+			  #{item.userId}
+			, #{item.skillId}
+			, #{item.skillLevel}
 			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
 		)
 		</foreach>
@@ -37,27 +37,27 @@
 		<foreach collection="userList" item="item" separator=",">
 		(
 			  NEXTVAL('bake.skill_management_history_sq')
-			, #{job_date}
-			, #{job_category}
-			, #{target_cart}
+			, #{jobDate}
+			, #{jobCategory}
+			, #{targetCart}
 			, (SELECT emp_id FROM bake.user_info WHERE gcloud_uuid = #{item.id})
 			<choose>
 				<when test="skillList.size!=0">
-			, array[<foreach collection="skillList" item="skill" separator=",">#{skill}</foreach>]
+			, ARRAY[<foreach collection="skillList" item="skill" separator=",">#{skill}</foreach>]
 				</when>
 				<otherwise>
-			, null
+			, NULL
 				</otherwise>
 			</choose>
 			<choose>
 				<when test="levelList.size!=0">
-			, array[<foreach collection="levelList" item="level" separator=",">#{level}</foreach>]
+			, ARRAY[<foreach collection="levelList" item="level" separator=",">#{level}</foreach>]
 				</when>
 				<otherwise>
-			, null
+			, NULL
 				</otherwise>
 			</choose>
-			, #{operator_id}
+			, #{operatorId}
 			, TO_CHAR(CURRENT_TIMESTAMP , 'YYYYMMDDHH24MISS')
 		)
 		</foreach>
@@ -71,9 +71,9 @@
 	<delete id="deleteAgentSkillPresent" parameterType="Map">
 		DELETE FROM bake.agent_skill_mapping
 		WHERE user_id IN
-		(<foreach collection="userList" item="item" separator=",">
-			#{item.user_id}
-		</foreach>)
+			(<foreach collection="userList" item="item" separator=",">
+				#{item.userId}
+			</foreach>)
 	</delete>
 	
 	<select id="selectUser" resultType="Map" parameterType="Map">
@@ -84,11 +84,10 @@
 		WHERE
 			1=1
 		<if test="userList != null">
-		AND emp_id IN(
-			<foreach collection="userList" item="item" separator=",">
-			  #{item.id}
-			</foreach>
-		)
+		AND emp_id IN
+			(<foreach collection="userList" item="item" separator=",">
+				#{item.id}
+			</foreach>)
 		</if>
 	</select>
 	<select id="selectSkillByCart" resultType="Map" parameterType="Map">
@@ -97,6 +96,6 @@
 		FROM
 			bake.cart_to_skill
 		WHERE
-			cart_id = #{target_cart}
+			cart_id = #{targetCart}
 	</select>
 </mapper>

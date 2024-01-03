@@ -17,30 +17,53 @@ import org.springframework.stereotype.Service;
 
 import com.mypurecloud.sdk.v2.model.ConversationAggregationQuery;
 import com.soluvis.croffle.v1.gcloud.engine.GCConnector;
-import com.soluvis.croffle.v1.gcloud.mapper.VerifyMapper;
-import com.soluvis.croffle.v1.gcloud.util.CommUtil;
+import com.soluvis.croffle.v1.gcloud.mapper.AggregateMapper;
+import com.soluvis.croffle.v1.util.CommUtil;
 
+/**
+ * 클래스 설명	: GCloud 집계 통계 서비스
+ * @Class Name 	: AggregateService
+ * @date   		: 2024. 1. 2.
+ * @author   	: Kriverds
+ * @version		: 1.0
+ * ----------------------------------------
+ * @notify
+ * 
+ */
 @Service
-public class VerifyService {
+public class AggregateService {
 
 	@Autowired
 	GCConnector gcconnector;
 	@Autowired
-	VerifyMapper verifyMapper;
+	AggregateMapper aggregateMapper;
 
-	private final Logger logger = LoggerFactory.getLogger(VerifyService.class);
+	private final Logger logger = LoggerFactory.getLogger(AggregateService.class);
 
-	public JSONObject verifyAgentStatistic(Map<String,Object> param) throws Exception {
+	/**
+	 * 메서드 설명	: Agent Aggregate 통계
+	 * @Method Name : aggregateAgentStatistic
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	public JSONObject aggregateAgentStatistic(Map<String,Object> param) throws Exception {
 		JSONObject jParam = new JSONObject(param);
 
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		String startDate = jParam.getString("startDate");
 		if(Long.parseLong(startDate.substring(startDate.length()-2, startDate.length()))%15 != 0) {
 			throw new ParseException();
 		}
 		GCConnector.connect(rUUID);
-		JSONObject resultCall = gcconnector.agentCallAggregateQuery(startDate);
-		JSONObject resultStatus = gcconnector.agentStatusAggregateQuery(startDate);
+		JSONObject resultCall = gcconnector.agentCallAggregateQuery(startDate); // Agent Call 통계 조회
+		JSONObject resultStatus = gcconnector.agentStatusAggregateQuery(startDate); // Agent Status 통계 조회
 		GCConnector.close(rUUID);
 
 		List<Map<String,Object>> iList = new ArrayList<>();
@@ -48,10 +71,10 @@ public class VerifyService {
 		while(it.hasNext()) {
 			String agentId = it.next();
 			Map<String,Object> iMap = new HashMap<>();
-			iMap.put("USER_ID", agentId);
+			iMap.put("userId", agentId);
 
-			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) {
-				if (i == 21 || i == 22 || i == 28 || i == 29) {
+			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) { // myBatis 통계 파라미터 추가
+				if (i == 21 || i == 22 || i == 28 || i == 29) { // 해당 Metric 추가 시 API Error 발생
 				} else {
 					iMap.put(ConversationAggregationQuery.MetricsEnum.values()[i].toString(), 0);
 				}
@@ -85,7 +108,7 @@ public class VerifyService {
 			// Status 통계 항목
 			JSONObject aggregatesStatus = resultStatus.getJSONObject(agentId);
 			Map<String, String> stom = new HashMap<>();
-			JSONObject jstom = aggregatesStatus.getJSONObject("systemToOrganizationMappings");
+			JSONObject jstom =  CommUtil.getJJSONObject(aggregatesStatus, "systemToOrganizationMappings");
 			logger.info("{}", jstom);
 
 			Iterator<String> it2 = jstom.keys();
@@ -122,10 +145,12 @@ public class VerifyService {
 					}
 				}
 			}
+			
+			
 			iMap.put("statNameList", statNameList);
 			iMap.put("statValueList", statValueList);
-			iMap.put("PROGRESS_YMD", startDate.substring(0,8));
-			iMap.put("PROGRESS_HM", startDate.substring(8,12));
+			iMap.put("progressYMD", startDate.substring(0,8));
+			iMap.put("progressHM", startDate.substring(8,12));
 			iList.add(iMap);
 		}
 
@@ -136,24 +161,37 @@ public class VerifyService {
 
 		int iResult = 0;
 		if(resultCall.length() > 0) {
-			iResult = verifyMapper.insertAgentStatic(param);
+			iResult = aggregateMapper.insertAgentStatic(param);
 		}
 		rResult.put("progress", iResult);
 		return rResult;
 	}
 
-	public JSONObject verifyQueueStatistic(Map<String,Object> param) throws Exception {
+	/**
+	 * 메서드 설명	: Queue Aggregate 통계
+	 * @Method Name : aggregateQueueStatistic
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	public JSONObject aggregateQueueStatistic(Map<String,Object> param) throws Exception {
 		JSONObject jParam = new JSONObject(param);
 
 
 
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		String startDate = jParam.getString("startDate");
 		if(Long.parseLong(startDate.substring(startDate.length()-2, startDate.length()))%15 != 0) {
 			throw new ParseException();
 		}
 		GCConnector.connect(rUUID);
-		JSONObject result = gcconnector.queueAggregateQuery(startDate);
+		JSONObject result = gcconnector.queueAggregateQuery(startDate); // Queue Call 통계 조회
 		GCConnector.close(rUUID);
 
 		List<Map<String,Object>> iList = new ArrayList<>();
@@ -161,9 +199,9 @@ public class VerifyService {
 		while(it.hasNext()) {
 			String queueId = it.next();
 			Map<String,Object> iMap = new HashMap<>();
-			iMap.put("QUEUE_ID", queueId);
-			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) {
-				if (i == 21 || i == 22 || i == 28 || i == 29) {
+			iMap.put("queueId", queueId);
+			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) { // myBatis 통계 파라미터 추가
+				if (i == 21 || i == 22 || i == 28 || i == 29) { // 해당 Metric 추가 시 API Error 발생
 				} else {
 					iMap.put(ConversationAggregationQuery.MetricsEnum.values()[i].toString(), 0);
 				}
@@ -194,8 +232,8 @@ public class VerifyService {
 					}
 				}
 			}
-			iMap.put("PROGRESS_YMD", startDate.substring(0,8));
-			iMap.put("PROGRESS_HM", startDate.substring(8,12));
+			iMap.put("progressYMD", startDate.substring(0,8));
+			iMap.put("progressHM", startDate.substring(8,12));
 			iList.add(iMap);
 		}
 
@@ -206,22 +244,35 @@ public class VerifyService {
 
 		int iResult = 0;
 		if(result.length() > 0) {
-			iResult = verifyMapper.insertQueueStatic(param);
+			iResult = aggregateMapper.insertQueueStatic(param);
 		}
 		rResult.put("progress", iResult);
 		return rResult;
 	}
 
-	public JSONObject verifySkillStatistic(Map<String,Object> param) throws Exception {
+	/**
+	 * 메서드 설명	: Skill Aggregate 통계
+	 * @Method Name : aggregateSkillStatistic
+	 * @date   		: 2024. 1. 2.
+	 * @author   	: Kriverds
+	 * @version		: 1.0
+	 * ----------------------------------------
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 * @notify
+	 * 
+	 */
+	public JSONObject aggregateSkillStatistic(Map<String,Object> param) throws Exception {
 		JSONObject jParam = new JSONObject(param);
 
-		UUID rUUID = (UUID) param.get("rUUID");
+		UUID rUUID = CommUtil.getAttrUUID(param);
 		String startDate = jParam.getString("startDate");
 		if(Long.parseLong(startDate.substring(startDate.length()-2, startDate.length()))%15 != 0) {
 			throw new ParseException();
 		}
 		GCConnector.connect(rUUID);
-		JSONObject result = gcconnector.skillAggregateQuery(startDate);
+		JSONObject result = gcconnector.skillAggregateQuery(startDate); // Skill Call 통계 조회
 		GCConnector.close(rUUID);
 
 		List<Map<String,Object>> iList = new ArrayList<>();
@@ -229,9 +280,9 @@ public class VerifyService {
 		while(it.hasNext()) {
 			String skillId = it.next();
 			Map<String,Object> iMap = new HashMap<>();
-			iMap.put("SKILL_ID", skillId);
-			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) {
-				if (i == 21 || i == 22 || i == 28 || i == 29) {
+			iMap.put("skillId", skillId);
+			for (int i = 0; i < ConversationAggregationQuery.MetricsEnum.values().length; i++) { // myBatis 통계 파라미터 추가
+				if (i == 21 || i == 22 || i == 28 || i == 29) { // 해당 Metric 추가 시 API Error 발생
 				} else {
 					iMap.put(ConversationAggregationQuery.MetricsEnum.values()[i].toString(), 0);
 				}
@@ -262,8 +313,8 @@ public class VerifyService {
 					}
 				}
 			}
-			iMap.put("PROGRESS_YMD", startDate.substring(0,8));
-			iMap.put("PROGRESS_HM", startDate.substring(8,12));
+			iMap.put("progressYMD", startDate.substring(0,8));
+			iMap.put("progressHM", startDate.substring(8,12));
 			iList.add(iMap);
 		}
 
@@ -274,9 +325,18 @@ public class VerifyService {
 
 		int iResult = 0;
 		if(result.length() > 0) {
-			iResult = verifyMapper.insertSkillStatic(param);
+			iResult = aggregateMapper.insertSkillStatic(param);
 		}
 		rResult.put("progress", iResult);
 		return rResult;
+	}
+	public int deleteAgentDayData(Map<String,Object> param) throws Exception {
+		return aggregateMapper.deleteAgentDayData(param);
+	}
+	public int deleteQueueDayData(Map<String,Object> param) throws Exception {
+		return aggregateMapper.deleteQueueDayData(param);
+	}
+	public int deleteSkillDayData(Map<String,Object> param) throws Exception {
+		return aggregateMapper.deleteSkillDayData(param);
 	}
 }
