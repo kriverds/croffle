@@ -12,5 +12,6 @@ public interface RoutingSkillManagementMapper {
 	public int insertSkillManagementHistory(Map<String,Object> params);
 
 	public List<Map<String,Object>> selectUser(Map<String,Object> params);
+	public List<Map<String,Object>> selectAvailableUserAll(Map<String,Object> params);
 	public List<Map<String,Object>> selectSkillByCart(Map<String,Object> params);
 }

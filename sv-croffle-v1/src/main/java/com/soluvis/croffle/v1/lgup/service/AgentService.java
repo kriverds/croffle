@@ -100,19 +100,13 @@ public class AgentService {
 		if(agentList.isEmpty()) {
 			return iResult;
 		}
+		logger.info("{}", agentList);
 
 		JSONArray userList = new JSONArray(agentList);
 		GCConnector.connect(rUUID);
 		JSONObject result = new JSONObject();
 		for (int i = 0; i < userList.length(); i++) {
 			JSONObject user = userList.getJSONObject(i);
-			String name = user.getString("empName"); //이름
-			String email = user.getString("email"); //이메일
-			String title = user.getString("exDutyname"); //직책
-			String department = user.getString("flOrgName"); //조직 풀네임
-			JSONObject cJO = gcconnector.postUsers(name, email, department, title); // GCloud User 생성
-			String userId = cJO.get("id").toString();
-
 			String channel = user.getString("channel"); // 채널에따라 Division 구분
 			String divisionId = "";
 			if ("기업".equals(channel)) {
@@ -122,6 +116,15 @@ public class AgentService {
 			} else {
 				divisionId = divisionMobileId;
 			}
+			String name = user.getString("empName"); //이름
+			String email = user.getString("email"); //이메일
+			String title = user.getString("exDutyname"); //직책
+//			String department = user.getString("flOrgName"); //조직 풀네임
+			String department = user.getString("orgName"); //조직 풀네임
+			JSONObject cJO = gcconnector.postUsers(name, email, department, title, divisionId); // GCloud User 생성
+			String userId = cJO.get("id").toString();
+
+			
 
 			gcconnector.postAuthorizationSubjectBulkadd(userId, divisionId, roleAgentdefaultId); // GCloud User Role 부여
 			gcconnector.postUserRoutingskills(userId, outboundSkillId, 1.0D); // GCloud User Outbound Skill 부여

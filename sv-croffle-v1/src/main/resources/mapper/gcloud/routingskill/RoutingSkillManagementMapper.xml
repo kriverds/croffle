@@ -90,7 +90,15 @@
 			</foreach>)
 		</if>
 	</select>
-	<select id="selectSkillByCart" resultType="Map" parameterType="Map">
+	<select id="selectAvailableUserAll" resultType="Map" parameterType="Map">
+		SELECT 
+			gcloud_uuid AS id
+		FROM
+			bake.user_info
+		WHERE
+			gcloud_uuid is not null		
+	</select>
+	<select id="selectSkillByCart" resultType="CamelHashMap" parameterType="Map">
 		SELECT 
 			*
 		FROM

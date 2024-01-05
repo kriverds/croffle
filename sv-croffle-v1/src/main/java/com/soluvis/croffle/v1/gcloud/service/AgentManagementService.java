@@ -82,7 +82,8 @@ public class AgentManagementService {
 			String email = CommUtil.getJString(user, "email");
 			String department = CommUtil.getJString(user, "department");
 			String title = CommUtil.getJString(user, "title");
-			JSONObject cJO = gcconnector.postUsers(name, email, department, title); // GCloud 생성
+			String divisionId = CommUtil.getJString(user, "divisionId");
+			JSONObject cJO = gcconnector.postUsers(name, email, department, title, divisionId); // GCloud 생성
 			result.put(cJO.get("id").toString(), cJO);
 		}
 		GCConnector.close(rUUID);

@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mypurecloud.sdk.v2.ApiClient;
@@ -115,12 +114,12 @@ public class GCConnector {
 //	private static final String CLIENT_ID = "0a89dcf2-1296-4142-a101-849ed636f7f0";
 //	private static final String CLIENT_SECRET = "ZarK8MInb98lEN6ekhPUON3YUd6eTqgzPa2yuitXmf8";
 
-	@Value("${gcloud.division.home.id}")
-	private String divisionHome;
-	@Value("${gcloud.division.mobile.id}")
-	private String divisionMobile;
-	@Value("${gcloud.division.business.id}")
-	private String divisionBuisiness;
+//	@Value("${gcloud.division.home.id}")
+//	private String divisionHome;
+//	@Value("${gcloud.division.mobile.id}")
+//	private String divisionMobile;
+//	@Value("${gcloud.division.business.id}")
+//	private String divisionBuisiness;
 
 	private static NotificationHandler notificationHandler = null;
 
@@ -332,14 +331,15 @@ public class GCConnector {
 	 * @throws JSONException
 	 * @notify - email이 Key로 중복 발생시 ApiException 에러
 	 */
-	public JSONObject postUsers(String name, String email, String department, String title) throws IOException, ApiException, JSONException {
+	public JSONObject postUsers(String name, String email, String department, String title, String divisionId) throws IOException, ApiException, JSONException {
 		UsersApi apiInstance = new UsersApi();
 
 		CreateUser body = new CreateUser();
 		body.setName(name);
 		body.setEmail(email);
-		body.setDivisionId(divisionHome);
+		body.setDivisionId(divisionId);
 		body.setDepartment(department);
+		body.setTitle(title);
 		logger.info("{}", new JSONObject(om.writeValueAsString(body)));
 
 		User result = apiInstance.postUsers(body);
@@ -625,8 +625,8 @@ public class GCConnector {
 
 		for(Map<String,Object> map : skillList) {
 			UserRoutingSkillPost ursp = new UserRoutingSkillPost();
-			ursp.setId(map.get("skill_id").toString());
-			double level = (int) map.get("skill_level");
+			ursp.setId(map.get("skillId").toString());
+			double level = (int) map.get("skillLevel");
 			ursp.setProficiency(level);
 			body.add(ursp);
 		}

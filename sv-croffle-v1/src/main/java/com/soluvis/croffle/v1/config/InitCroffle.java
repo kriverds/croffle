@@ -43,7 +43,11 @@ public class InitCroffle {
 	public void init() {
 		logger.info("{}", "@PostConstruct");
 		initGVal();
-		initHA();
+		try {
+			initHA();
+		} catch (Exception e) {
+			logger.error("{}", e);
+		}
 	}
 
 	/**
@@ -56,7 +60,7 @@ public class InitCroffle {
 	 * @notify
 	 *
 	 */
-	private void initHA() {
+	private void initHA() throws Exception{
 		boolean primaryFlag = false;
 		List<Map<String, Object>> qResult = hAMapper.initSelect();
 		if (qResult.isEmpty()) {

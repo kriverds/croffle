@@ -282,7 +282,7 @@ public class RoutingSkillManagementService {
 		//아웃바운드 스킬 기본으로 추가
 		Map<String, Object> outboundSkillMap = new HashMap<>();
 		outboundSkillMap.put("skillId", outboundSkillId);
-		outboundSkillMap.put("skillLevel", 1D);
+		outboundSkillMap.put("skillLevel", 1);
 		skillListByCart.add(outboundSkillMap);
 
 		List<String> skillList = new ArrayList<>();
@@ -364,7 +364,7 @@ public class RoutingSkillManagementService {
 
 		GCConnector.connect(rUUID);
 		if(paramCnt==0) {
-			userList = gcconnector.getAvailableUserList().getJSONArray("list");
+			userList = new JSONArray(routingSkillManagementMapper.selectAvailableUserAll(param));
 		}
 
 		for (int i = 0; i < userList.length(); i++) {
@@ -373,7 +373,7 @@ public class RoutingSkillManagementService {
 
 			String userUUID = user.getString("id");
 
-			deleteUserMap.put("user_id", userUUID);
+			deleteUserMap.put("userId", userUUID);
 			deleteUserList.add(deleteUserMap);
 
 			JSONArray userSkillList = gcconnector.getUserRoutingskills(userUUID).getJSONArray("list");
